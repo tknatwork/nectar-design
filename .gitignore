@@ -4,3 +4,14 @@ dist/
 .DS_Store
 .env
 .env.local
+
+# Build test artifacts
+css/test.css
+
+# One-time migration scripts (no longer needed)
+scripts/convert-to-dtcg.mjs
+
+# Tool export files (belong in .design-workspace/)
+tokens/nectar-tokens-penpot.zip
+tokens/penpot-import/
+tokens/supernova-motion-tokens.json

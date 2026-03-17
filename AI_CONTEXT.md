@@ -8,11 +8,12 @@ A public React component library and design token system. Ships 6 components (Bu
 
 ## Key facts
 
-- **Build:** tsup (ESM-only) with a prebuild token compilation step
-- **Tokens:** 3-tier JSON pipeline → CSS custom properties → Tailwind @theme
+- **Build:** tsup (ESM-only) with prebuild token + motion compilation
+- **Tokens:** 5-tier pipeline (primitives → seed → map → semantic → components) → 479 CSS vars
+- **Motion:** 6 animation patterns → GSAP presets, Framer Motion variants, CSS @keyframes
 - **Styling:** cva + Tailwind v4 — never hardcode colors
 - **Package manager:** pnpm only
-- **Exports:** `nectar-ui` (JS), `nectar-ui/tokens.css`, `nectar-ui/theme.css`
+- **Exports:** `nectar-ui` (JS), `nectar-ui/tokens.css`, `nectar-ui/theme.css`, `nectar-ui/gsap`, `nectar-ui/framer`, `nectar-ui/animation.css`
 
 ## Rules
 
