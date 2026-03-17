@@ -1,0 +1,466 @@
+{
+  "alias": {
+    "color": {
+      "primary": {
+        "$value": "{map.color.primary.Base}",
+        "$type": "color",
+        "$description": "Primary brand color — resolves through map → seed → honey"
+      },
+      "primary-fg": {
+        "$value": "{seed.colorTextBase}",
+        "$type": "color",
+        "$description": "Text on primary"
+      },
+      "accent": {
+        "$value": "{map.color.accent.Base}",
+        "$type": "color",
+        "$description": "Accent — resolves through map → seed → skyMid"
+      },
+      "accent-fg": {
+        "$value": "{seed.colorTextBase}",
+        "$type": "color",
+        "$description": "Text on accent"
+      },
+      "destructive": {
+        "$value": "{map.color.error.Base}",
+        "$type": "color",
+        "$description": "Error/destructive — resolves through map → seed → terracotta"
+      },
+      "destructive-fg": {
+        "$value": "{seed.colorBgBase}",
+        "$type": "color",
+        "$description": "Text on destructive"
+      },
+      "success": {
+        "$value": "{map.color.success.Base}",
+        "$type": "color",
+        "$description": "Success — resolves through map → seed → sage"
+      },
+      "success-fg": {
+        "$value": "{seed.colorBgBase}",
+        "$type": "color",
+        "$description": "Text on success"
+      },
+      "warning": {
+        "$value": "{map.color.warning.Base}",
+        "$type": "color",
+        "$description": "Warning — resolves through map → seed → amber"
+      },
+      "warning-fg": {
+        "$value": "{seed.colorTextBase}",
+        "$type": "color"
+      },
+      "neutral-base": {
+        "$value": "{map.color.neutralText.colorTextSecondary}",
+        "$type": "color",
+        "$description": "Neutral mid — secondary text alpha"
+      },
+      "neutral-light": {
+        "$value": "{map.color.neutralFill.colorFillTertiary}",
+        "$type": "color",
+        "$description": "Neutral light — subtle fill"
+      },
+      "neutral-dark": {
+        "$value": "{map.color.neutralText.colorText}",
+        "$type": "color",
+        "$description": "Neutral dark — primary text alpha"
+      }
+    },
+    "spacing": {
+      "xs": {
+        "$value": "{seed.spacing.1}",
+        "$type": "dimension",
+        "$description": "4px — tight"
+      },
+      "sm": {
+        "$value": "{seed.spacing.2}",
+        "$type": "dimension",
+        "$description": "8px — small gaps"
+      },
+      "md": {
+        "$value": "{seed.spacing.4}",
+        "$type": "dimension",
+        "$description": "16px — default"
+      },
+      "lg": {
+        "$value": "{seed.spacing.6}",
+        "$type": "dimension",
+        "$description": "24px — sections"
+      },
+      "xl": {
+        "$value": "{seed.spacing.8}",
+        "$type": "dimension",
+        "$description": "32px — large gaps"
+      },
+      "2xl": {
+        "$value": "{seed.spacing.12}",
+        "$type": "dimension",
+        "$description": "48px — major gaps"
+      },
+      "section": {
+        "$value": "{seed.spacing.24}",
+        "$type": "dimension",
+        "$description": "96px — between sections"
+      },
+      "padding-button-h": {
+        "$value": "{seed.spacing.3}",
+        "$type": "dimension",
+        "$description": "12px — Ant standard horizontal button padding"
+      },
+      "padding-button-v": {
+        "$value": "{seed.spacing.1}",
+        "$type": "dimension",
+        "$description": "4px — Ant standard vertical button padding"
+      },
+      "gap-component": {
+        "$value": "{seed.spacing.2}",
+        "$type": "dimension",
+        "$description": "8px — gap within components"
+      },
+      "gap-section": {
+        "$value": "{seed.spacing.4}",
+        "$type": "dimension",
+        "$description": "16px — gap between component groups"
+      }
+    },
+    "typography": {
+      "heading": {
+        "1": {
+          "fontSize": {
+            "$value": "{seed.typography.fontSize.4xl}",
+            "$type": "dimension"
+          },
+          "fontWeight": {
+            "$value": "{seed.typography.fontWeight.bold}",
+            "$type": "fontWeight",
+            "$description": "700 — Libre Baskerville max"
+          },
+          "lineHeight": {
+            "$value": "{seed.typography.lineHeight.tight}",
+            "$type": "number"
+          },
+          "fontFamily": {
+            "$value": "{seed.typography.fontFamily.display}",
+            "$type": "fontFamily"
+          }
+        },
+        "2": {
+          "fontSize": {
+            "$value": "{seed.typography.fontSize.3xl}",
+            "$type": "dimension"
+          },
+          "fontWeight": {
+            "$value": "{seed.typography.fontWeight.bold}",
+            "$type": "fontWeight"
+          },
+          "lineHeight": {
+            "$value": "{seed.typography.lineHeight.tight}",
+            "$type": "number"
+          },
+          "fontFamily": {
+            "$value": "{seed.typography.fontFamily.display}",
+            "$type": "fontFamily"
+          }
+        },
+        "3": {
+          "fontSize": {
+            "$value": "{seed.typography.fontSize.2xl}",
+            "$type": "dimension"
+          },
+          "fontWeight": {
+            "$value": "{seed.typography.fontWeight.semibold}",
+            "$type": "fontWeight"
+          },
+          "lineHeight": {
+            "$value": "{seed.typography.lineHeight.tight}",
+            "$type": "number"
+          },
+          "fontFamily": {
+            "$value": "{seed.typography.fontFamily.display}",
+            "$type": "fontFamily"
+          }
+        },
+        "4": {
+          "fontSize": {
+            "$value": "{seed.typography.fontSize.xl}",
+            "$type": "dimension"
+          },
+          "fontWeight": {
+            "$value": "{seed.typography.fontWeight.semibold}",
+            "$type": "fontWeight"
+          },
+          "lineHeight": {
+            "$value": "{seed.typography.lineHeight.normal}",
+            "$type": "number"
+          },
+          "fontFamily": {
+            "$value": "{seed.typography.fontFamily.display}",
+            "$type": "fontFamily"
+          }
+        },
+        "5": {
+          "fontSize": {
+            "$value": "{seed.typography.fontSize.lg}",
+            "$type": "dimension"
+          },
+          "fontWeight": {
+            "$value": "{seed.typography.fontWeight.medium}",
+            "$type": "fontWeight"
+          },
+          "lineHeight": {
+            "$value": "{seed.typography.lineHeight.normal}",
+            "$type": "number"
+          },
+          "fontFamily": {
+            "$value": "{seed.typography.fontFamily.display}",
+            "$type": "fontFamily"
+          }
+        },
+        "6": {
+          "fontSize": {
+            "$value": "{seed.typography.fontSize.md}",
+            "$type": "dimension"
+          },
+          "fontWeight": {
+            "$value": "{seed.typography.fontWeight.medium}",
+            "$type": "fontWeight"
+          },
+          "lineHeight": {
+            "$value": "{seed.typography.lineHeight.normal}",
+            "$type": "number"
+          },
+          "fontFamily": {
+            "$value": "{seed.typography.fontFamily.display}",
+            "$type": "fontFamily"
+          }
+        }
+      },
+      "title": {
+        "1": {
+          "fontSize": {
+            "$value": "{seed.typography.fontSize.xl}",
+            "$type": "dimension"
+          },
+          "fontWeight": {
+            "$value": "{seed.typography.fontWeight.semibold}",
+            "$type": "fontWeight"
+          },
+          "lineHeight": {
+            "$value": "{seed.typography.lineHeight.normal}",
+            "$type": "number"
+          },
+          "fontFamily": {
+            "$value": "{seed.typography.fontFamily.sans}",
+            "$type": "fontFamily"
+          }
+        },
+        "2": {
+          "fontSize": {
+            "$value": "{seed.typography.fontSize.lg}",
+            "$type": "dimension"
+          },
+          "fontWeight": {
+            "$value": "{seed.typography.fontWeight.medium}",
+            "$type": "fontWeight"
+          },
+          "lineHeight": {
+            "$value": "{seed.typography.lineHeight.normal}",
+            "$type": "number"
+          },
+          "fontFamily": {
+            "$value": "{seed.typography.fontFamily.sans}",
+            "$type": "fontFamily"
+          }
+        },
+        "3": {
+          "fontSize": {
+            "$value": "{seed.typography.fontSize.md}",
+            "$type": "dimension"
+          },
+          "fontWeight": {
+            "$value": "{seed.typography.fontWeight.medium}",
+            "$type": "fontWeight"
+          },
+          "lineHeight": {
+            "$value": "{seed.typography.lineHeight.normal}",
+            "$type": "number"
+          },
+          "fontFamily": {
+            "$value": "{seed.typography.fontFamily.sans}",
+            "$type": "fontFamily"
+          }
+        }
+      },
+      "body": {
+        "base": {
+          "fontSize": {
+            "$value": "{seed.typography.fontSize.base}",
+            "$type": "dimension"
+          },
+          "fontWeight": {
+            "$value": "{seed.typography.fontWeight.normal}",
+            "$type": "fontWeight"
+          },
+          "lineHeight": {
+            "$value": "{seed.typography.lineHeight.normal}",
+            "$type": "number"
+          }
+        },
+        "sm": {
+          "fontSize": {
+            "$value": "{seed.typography.fontSize.sm}",
+            "$type": "dimension"
+          },
+          "lineHeight": {
+            "$value": "{seed.typography.lineHeight.normal}",
+            "$type": "number"
+          }
+        },
+        "lg": {
+          "fontSize": {
+            "$value": "{seed.typography.fontSize.md}",
+            "$type": "dimension"
+          },
+          "lineHeight": {
+            "$value": "{seed.typography.lineHeight.relaxed}",
+            "$type": "number"
+          }
+        }
+      },
+      "caption": {
+        "fontFamily": {
+          "$value": "{seed.typography.fontFamily.caption}",
+          "$type": "fontFamily"
+        },
+        "fontSize": {
+          "$value": "{seed.typography.fontSize.sm}",
+          "$type": "dimension"
+        },
+        "lineHeight": {
+          "$value": "{seed.typography.lineHeight.normal}",
+          "$type": "number"
+        }
+      },
+      "code": {
+        "fontFamily": {
+          "$value": "{seed.typography.fontFamily.mono}",
+          "$type": "fontFamily"
+        },
+        "fontSize": {
+          "$value": "{seed.typography.fontSize.sm}",
+          "$type": "dimension"
+        },
+        "lineHeight": {
+          "$value": "{seed.typography.lineHeight.normal}",
+          "$type": "number"
+        }
+      }
+    },
+    "grid": {
+      "columns-mobile": {
+        "$value": "4",
+        "$type": "number",
+        "$description": "Mobile columns (Android + iOS)"
+      },
+      "columns-tablet": {
+        "$value": "8",
+        "$type": "number",
+        "$description": "Tablet columns"
+      },
+      "columns-desktop": {
+        "$value": "12",
+        "$type": "number",
+        "$description": "Desktop/wide columns"
+      },
+      "gutter-mobile": {
+        "$value": "{seed.spacing.4}",
+        "$type": "dimension",
+        "$description": "16px mobile gutter"
+      },
+      "gutter-tablet": {
+        "$value": "{seed.spacing.6}",
+        "$type": "dimension",
+        "$description": "24px tablet/desktop gutter"
+      },
+      "gutter-wide": {
+        "$value": "{seed.spacing.8}",
+        "$type": "dimension",
+        "$description": "32px wide gutter"
+      },
+      "margin-android": {
+        "$value": "{seed.spacing.4}",
+        "$type": "dimension",
+        "$description": "16px Android margin"
+      },
+      "margin-ios": {
+        "$value": "{seed.spacing.5}",
+        "$type": "dimension",
+        "$description": "20px iOS margin"
+      },
+      "margin-tablet": {
+        "$value": "{seed.spacing.8}",
+        "$type": "dimension",
+        "$description": "32px tablet margin"
+      },
+      "margin-desktop": {
+        "$value": "{seed.spacing.10}",
+        "$type": "dimension",
+        "$description": "40px desktop margin"
+      },
+      "margin-wide": {
+        "$value": "{seed.spacing.12}",
+        "$type": "dimension",
+        "$description": "48px wide margin"
+      },
+      "max-width-desktop": {
+        "$value": "{seed.container.lg}",
+        "$type": "dimension",
+        "$description": "1200px desktop container"
+      },
+      "max-width-wide": {
+        "$value": "{seed.container.xl}",
+        "$type": "dimension",
+        "$description": "1400px wide container"
+      }
+    },
+    "border": {
+      "width": {
+        "$value": "{seed.borderWidth.3}",
+        "$type": "dimension",
+        "$description": "Default thick border (neo-brutalist)"
+      },
+      "radius": {
+        "$value": "{seed.borderRadius.sm}",
+        "$type": "dimension",
+        "$description": "Small radius (4px) — structured, less bubbly"
+      }
+    },
+    "shadow": {
+      "base": {
+        "$value": "{seed.shadow.md}",
+        "$type": "shadow",
+        "$description": "Default hard shadow"
+      }
+    },
+    "motion": {
+      "transition": {
+        "fast": {
+          "$value": "{seed.motion.duration.instant} {seed.motion.easing.easeOutCirc}",
+          "$description": "Instant snap — near-zero delay, snappy curve"
+        },
+        "base": {
+          "$value": "{seed.motion.duration.base} {seed.motion.easing.easeOut}",
+          "$description": "Standard smooth — default for most interactions"
+        },
+        "bounce": {
+          "$value": "{seed.motion.duration.slow} {seed.motion.easing.easeOutBack}",
+          "$description": "Slow + overshoot — playful, visible bounce"
+        },
+        "snap": {
+          "$value": "{seed.motion.duration.fast} {seed.motion.easing.easeInOutCirc}",
+          "$description": "Quick + symmetric — punchy, mechanical feel"
+        }
+      }
+    }
+  }
+}

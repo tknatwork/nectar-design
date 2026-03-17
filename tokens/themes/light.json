@@ -1,0 +1,167 @@
+{
+  "theme": {
+    "bg": {
+      "$value": "#FFFDF5",
+      "$type": "color",
+      "$description": "Cream — warm contrast with elements"
+    },
+    "fg": {
+      "$value": "#3E3A44",
+      "$type": "color",
+      "$description": "Graphite — cool dark grey body text"
+    },
+    "surface": {
+      "$value": "#FFFFFF",
+      "$type": "color",
+      "$description": "Card / panel — pure white lifts off cream"
+    },
+    "surface-fg": {
+      "$value": "#3E3A44",
+      "$type": "color",
+      "$description": "Graphite text on surface"
+    },
+    "primary": {
+      "$value": "#FFE082",
+      "$type": "color",
+      "$description": "Honey (primary)"
+    },
+    "primary-fg": {
+      "$value": "#2D2A32",
+      "$type": "color",
+      "$description": "Dark text on honey"
+    },
+    "accent": {
+      "$value": "#B3D4F0",
+      "$type": "color",
+      "$description": "Sky mid (accent)"
+    },
+    "accent-fg": {
+      "$value": "#2D2A32",
+      "$type": "color",
+      "$description": "Dark text on sky mid"
+    },
+    "muted": {
+      "$value": "#F0EDED",
+      "$type": "color",
+      "$description": "Fog — subtle grey"
+    },
+    "muted-fg": {
+      "$value": "#8B8589",
+      "$type": "color",
+      "$description": "Slate text"
+    },
+    "border": {
+      "$value": "#C9C5C2",
+      "$type": "color",
+      "$description": "Warm ash border — slightly darker for definition"
+    },
+    "shadow-color": {
+      "$value": "#D9D5D2",
+      "$type": "color",
+      "$description": "Shadow fill — lighter than border for depth"
+    },
+    "input": {
+      "$value": "#FFFFFF",
+      "$type": "color",
+      "$description": "Input bg — clean white"
+    },
+    "ring": {
+      "$value": "#FFE082",
+      "$type": "color",
+      "$description": "Focus ring (honey)"
+    },
+    "destructive": {
+      "$value": "#C0503E",
+      "$type": "color",
+      "$description": "Deep terracotta — richer error, matches link/highlight tone"
+    },
+    "destructive-fg": {
+      "$value": "#FFFFFF",
+      "$type": "color"
+    },
+    "success": {
+      "$value": "#5BAD7A",
+      "$type": "color",
+      "$description": "Muted sage — softer success"
+    },
+    "success-fg": {
+      "$value": "#FFFFFF",
+      "$type": "color",
+      "$description": "White text on darker sage"
+    },
+    "warning": {
+      "$value": "#F39C12",
+      "$type": "color"
+    },
+    "button-bg": {
+      "$value": "#8B8589",
+      "$type": "color",
+      "$description": "Default button — slate fill (matches border)"
+    },
+    "button-fg": {
+      "$value": "#FFFFFF",
+      "$type": "color",
+      "$description": "Default button text — white on slate"
+    },
+    "button-border": {
+      "$value": "#8B8589",
+      "$type": "color",
+      "$description": "Slate — visible contrast against shadow"
+    },
+    "outline-bg": {
+      "$value": "transparent",
+      "$type": "color",
+      "$description": "Outline variant bg — transparent, bg shows through"
+    },
+    "outline-fg": {
+      "$value": "#2D2A32",
+      "$type": "color",
+      "$description": "Outline variant text — dark"
+    },
+    "outline-border": {
+      "$value": "#8B8589",
+      "$type": "color",
+      "$description": "Outline variant border — slate, visible on transparent"
+    },
+    "th-bg": {
+      "$value": "#8B8589",
+      "$type": "color",
+      "$description": "Slate table header bg"
+    },
+    "th-fg": {
+      "$value": "#FFFFFF",
+      "$type": "color",
+      "$description": "White text on table header"
+    },
+    "badge-fg": {
+      "$value": "#2D2A32",
+      "$type": "color",
+      "$description": "Dark text on pastel badges"
+    },
+    "toggle-track": {
+      "$value": "#FFE082",
+      "$type": "color",
+      "$description": "Honey — active state shows primary colour"
+    },
+    "toggle-thumb": {
+      "$value": "#8B8589",
+      "$type": "color",
+      "$description": "Slate — strong visual weight in light mode"
+    },
+    "card-primary-bg": {
+      "$value": "#FFF9C4",
+      "$type": "color",
+      "$description": "Lemon — soft yellow primary card bg"
+    },
+    "card-accent-bg": {
+      "$value": "#EAF4FB",
+      "$type": "color",
+      "$description": "Sky light — cool seed accent card bg"
+    },
+    "card-text": {
+      "$value": "#5E5965",
+      "$type": "color",
+      "$description": "Muted text for card descriptions — softer than fg"
+    }
+  }
+}

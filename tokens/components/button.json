@@ -1,0 +1,31 @@
+{
+  "component": {
+    "button": {
+      "$description": "Button component tokens — all values alias to map/seed tiers",
+
+      "controlHeight":   { "$value": "{seed.controlHeight}",       "$type": "number", "$description": "Default height (md = 40px)" },
+      "controlHeightSM": { "$value": "{map.controlHeight.SM}",     "$type": "number", "$description": "Small height (sm = 32px)" },
+      "controlHeightLG": { "$value": "{map.controlHeight.LG}",     "$type": "number", "$description": "Large height (lg = 48px)" },
+
+      "paddingInline":   { "$value": "{map.size.MS}",  "$type": "number", "$description": "Default horizontal padding (16px = px-4)" },
+      "paddingInlineSM": { "$value": "{map.size.SM}",  "$type": "number", "$description": "Small horizontal padding (12px = px-3)" },
+      "paddingInlineLG": { "$value": "{map.size.LG}",  "$type": "number", "$description": "Large horizontal padding (24px = px-6)" },
+
+      "fontSize":        { "$value": "{map.fontSize.SM}",       "$type": "number", "$description": "Default/small font size (13px ~ text-sm)" },
+      "fontSizeLG":      { "$value": "{seed.fontSize}",         "$type": "number", "$description": "Large font size (16px = text-base)" },
+
+      "borderRadius":    { "$value": "{map.borderRadius.MD}",   "$type": "number", "$description": "Default radius (8px = rounded-md)" },
+      "borderRadiusSM":  { "$value": "{map.borderRadius.SM}",   "$type": "number", "$description": "Small radius (4px = rounded-sm)" },
+      "borderRadiusLG":  { "$value": "{map.borderRadius.LG}",   "$type": "number", "$description": "Large radius (12px = rounded-lg)" },
+
+      "primaryBg":       { "$value": "{map.color.primary.Base}",      "$type": "color", "$description": "Primary intent background" },
+      "primaryFg":       { "$value": "{seed.colorTextBase}",          "$type": "color", "$description": "Primary intent text — dark on honey" },
+      "accentBg":        { "$value": "{map.color.accent.Base}",       "$type": "color", "$description": "Accent intent background" },
+      "accentFg":        { "$value": "{seed.colorTextBase}",          "$type": "color", "$description": "Accent intent text" },
+      "destructiveBg":   { "$value": "{map.color.error.Base}",        "$type": "color", "$description": "Destructive intent background" },
+      "destructiveFg":   { "$value": "{seed.colorBgBase}",            "$type": "color", "$description": "Destructive intent text — light on terracotta" },
+
+      "gap":             { "$value": "{map.size.XS}",  "$type": "number", "$description": "Icon-text gap (8px = gap-2)" }
+    }
+  }
+}

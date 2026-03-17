@@ -1,0 +1,14 @@
+{
+  "tokenSetOrder": [
+    "core/primitives",
+    "core/seed",
+    "core/map",
+    "core/semantic",
+    "components/button",
+    "components/card",
+    "components/input",
+    "components/badge",
+    "themes/light",
+    "themes/dark"
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "animation": {
+    "$description": "Animation pattern tokens — single source for GSAP, Framer Motion, and CSS @keyframes. Each pattern defines from/to states, timing, and trigger behavior.",
+
+    "page-enter": {
+      "$type": "animation",
+      "$description": "Page transition — subtle fade + slide up on route change",
+      "from": {
+        "opacity": { "$value": "0", "$type": "number" },
+        "y": { "$value": "8", "$type": "number", "$description": "Translate Y in px" }
+      },
+      "to": {
+        "opacity": { "$value": "1", "$type": "number" },
+        "y": { "$value": "0", "$type": "number" }
+      },
+      "duration": { "$value": "{seed.motion.duration.base}", "$type": "duration" },
+      "easing": { "$value": "{seed.motion.easing.easeOut}", "$type": "cubicBezier" },
+      "trigger": { "$value": "mount", "$type": "string" }
+    },
+
+    "page-exit": {
+      "$type": "animation",
+      "$description": "Page exit — reverse of enter",
+      "from": {
+        "opacity": { "$value": "1", "$type": "number" },
+        "y": { "$value": "0", "$type": "number" }
+      },
+      "to": {
+        "opacity": { "$value": "0", "$type": "number" },
+        "y": { "$value": "-8", "$type": "number" }
+      },
+      "duration": { "$value": "{seed.motion.duration.fast}", "$type": "duration" },
+      "easing": { "$value": "{seed.motion.easing.easeInOut}", "$type": "cubicBezier" },
+      "trigger": { "$value": "unmount", "$type": "string" }
+    },
+
+    "scroll-reveal": {
+      "$type": "animation",
+      "$description": "Scroll-triggered reveal — fade + slide from direction",
+      "from": {
+        "opacity": { "$value": "0", "$type": "number" },
+        "y": { "$value": "24", "$type": "number", "$description": "Default offset (bottom). Overridden by direction prop." }
+      },
+      "to": {
+        "opacity": { "$value": "1", "$type": "number" },
+        "y": { "$value": "0", "$type": "number" }
+      },
+      "duration": { "$value": "{seed.motion.duration.base}", "$type": "duration" },
+      "easing": { "$value": "{seed.motion.easing.easeOut}", "$type": "cubicBezier" },
+      "trigger": { "$value": "scroll", "$type": "string" },
+      "scrollTrigger": {
+        "start": { "$value": "top 85%", "$type": "string" },
+        "toggleActions": { "$value": "play none none none", "$type": "string" }
+      }
+    },
+
+    "heading-stagger": {
+      "$type": "animation",
+      "$description": "Staggered heading reveal — each word/char fades + slides up sequentially",
+      "from": {
+        "opacity": { "$value": "0", "$type": "number" },
+        "y": { "$value": "12", "$type": "number" }
+      },
+      "to": {
+        "opacity": { "$value": "1", "$type": "number" },
+        "y": { "$value": "0", "$type": "number" }
+      },
+      "duration": { "$value": "{seed.motion.duration.fast}", "$type": "duration" },
+      "easing": { "$value": "{seed.motion.easing.easeOutQuint}", "$type": "cubicBezier" },
+      "trigger": { "$value": "mount", "$type": "string" },
+      "stagger": {
+        "baseDelay": { "$value": "0.03", "$type": "number", "$description": "Per-element stagger delay in seconds" },
+        "maxTotal": { "$value": "0.8", "$type": "number", "$description": "Cap total stagger time in seconds" }
+      }
+    },
+
+    "fade-in": {
+      "$type": "animation",
+      "$description": "Simple fade — no movement, just opacity",
+      "from": {
+        "opacity": { "$value": "0", "$type": "number" }
+      },
+      "to": {
+        "opacity": { "$value": "1", "$type": "number" }
+      },
+      "duration": { "$value": "{seed.motion.duration.base}", "$type": "duration" },
+      "easing": { "$value": "{seed.motion.easing.easeOut}", "$type": "cubicBezier" },
+      "trigger": { "$value": "mount", "$type": "string" }
+    },
+
+    "scale-in": {
+      "$type": "animation",
+      "$description": "Scale entrance — zoom from slightly smaller with optional bounce",
+      "from": {
+        "opacity": { "$value": "0", "$type": "number" },
+        "scale": { "$value": "0.95", "$type": "number" }
+      },
+      "to": {
+        "opacity": { "$value": "1", "$type": "number" },
+        "scale": { "$value": "1", "$type": "number" }
+      },
+      "duration": { "$value": "{seed.motion.duration.slow}", "$type": "duration" },
+      "easing": { "$value": "{seed.motion.easing.easeOutBack}", "$type": "cubicBezier" },
+      "trigger": { "$value": "mount", "$type": "string" }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "component": {
+    "badge": {
+      "$description": "Badge component tokens — compact indicator with intent colors",
+
+      "heightSM": { "$value": "20",  "$type": "number", "$description": "Small badge height (h-5)" },
+      "heightMD": { "$value": "24",  "$type": "number", "$description": "Default badge height (h-6)" },
+      "heightLG": { "$value": "28",  "$type": "number", "$description": "Large badge height (h-7)" },
+
+      "paddingInlineSM": { "$value": "6",   "$type": "number", "$description": "Small padding (px-1.5)" },
+      "paddingInlineMD": { "$value": "10",  "$type": "number", "$description": "Default padding (px-2.5)" },
+      "paddingInlineLG": { "$value": "{map.size.SM}", "$type": "number", "$description": "Large padding (12px = px-3)" },
+
+      "fontSizeSM":  { "$value": "{map.fontSize.XS}",  "$type": "number", "$description": "Small/default font (10px ~ text-xs)" },
+      "fontSizeLG":  { "$value": "{map.fontSize.SM}",  "$type": "number", "$description": "Large font (13px ~ text-sm)" },
+
+      "borderRadius":   { "$value": "{map.borderRadius.MD}", "$type": "number", "$description": "Default radius (8px = rounded-md)" },
+      "borderRadiusSM": { "$value": "{map.borderRadius.SM}", "$type": "number", "$description": "Small radius (4px = rounded-sm)" },
+
+      "defaultBg": { "$value": "{map.color.neutralFill.colorFillSecondary}", "$type": "color", "$description": "Default intent — muted fill" },
+      "defaultFg": { "$value": "{map.color.neutralText.colorTextSecondary}", "$type": "color", "$description": "Default intent — muted text" },
+
+      "primaryBg":     { "$value": "{map.color.primary.Bg}",     "$type": "color", "$description": "Primary intent bg (10% tint)" },
+      "successBg":     { "$value": "{map.color.success.Bg}",     "$type": "color", "$description": "Success intent bg" },
+      "warningBg":     { "$value": "{map.color.warning.Bg}",     "$type": "color", "$description": "Warning intent bg" },
+      "destructiveBg": { "$value": "{map.color.error.Bg}",       "$type": "color", "$description": "Destructive intent bg" },
+      "accentBg":      { "$value": "{map.color.accent.Bg}",      "$type": "color", "$description": "Accent intent bg" }
+    }
+  }
+}

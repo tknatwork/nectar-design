@@ -1,0 +1,105 @@
+{
+  "seed": {
+    "$description": "Brand-level seed tokens — the minimal set that defines the entire design system. Change one value here and all derived tokens (map, semantic, component) shift accordingly.",
+
+    "colorPrimary": {
+      "$value": "{seed.color.pastel.honey}",
+      "$type": "color",
+      "$description": "Primary brand color — honey golden"
+    },
+    "colorSuccess": {
+      "$value": "{seed.color.success}",
+      "$type": "color",
+      "$description": "Success intent — muted sage"
+    },
+    "colorWarning": {
+      "$value": "{seed.color.warning}",
+      "$type": "color",
+      "$description": "Warning intent — amber"
+    },
+    "colorError": {
+      "$value": "{seed.color.danger}",
+      "$type": "color",
+      "$description": "Error intent — terracotta"
+    },
+    "colorAccent": {
+      "$value": "{seed.color.pastel.skyMid}",
+      "$type": "color",
+      "$description": "Accent — cool complement to honey"
+    },
+    "colorTextBase": {
+      "$value": "#3E3A44",
+      "$type": "color",
+      "$description": "Base text color (graphite) — alpha derivatives computed in map tier"
+    },
+    "colorBgBase": {
+      "$value": "#FFFDF5",
+      "$type": "color",
+      "$description": "Base background color (cream) — surfaces derived in map tier"
+    },
+
+    "fontSize": {
+      "$value": "16",
+      "$type": "number",
+      "$description": "Base font size in px — type scale derived via major third (1.25) ratio"
+    },
+    "fontFamily": {
+      "$value": "{seed.typography.fontFamily.sans}",
+      "$type": "fontFamily",
+      "$description": "Primary font — Switzer geometric sans"
+    },
+    "fontFamilyDisplay": {
+      "$value": "{seed.typography.fontFamily.display}",
+      "$type": "fontFamily",
+      "$description": "Display/heading font — Libre Baskerville serif"
+    },
+    "fontFamilyCode": {
+      "$value": "{seed.typography.fontFamily.mono}",
+      "$type": "fontFamily",
+      "$description": "Monospace font — Roboto Mono"
+    },
+
+    "sizeUnit": {
+      "$value": "4",
+      "$type": "number",
+      "$description": "Base spatial unit in px — all spacing = sizeUnit × (sizeStep + offset)"
+    },
+    "sizeStep": {
+      "$value": "4",
+      "$type": "number",
+      "$description": "Step multiplier — combined with sizeUnit produces 4/8/12/16/20/24/32/40/48 scale"
+    },
+    "controlHeight": {
+      "$value": "40",
+      "$type": "number",
+      "$description": "Default control height in px (md = h-10). SM=32, LG=48 derived in map tier."
+    },
+
+    "borderRadius": {
+      "$value": "4",
+      "$type": "number",
+      "$description": "Base border radius in px (sm). Scale derived in map tier: XS=2, SM=4, MD=8, LG=12."
+    },
+    "lineWidth": {
+      "$value": "3",
+      "$type": "number",
+      "$description": "Default border width in px — neo-brutalist thick border"
+    },
+
+    "motion": {
+      "$value": "true",
+      "$type": "boolean",
+      "$description": "Enable animations globally — respects prefers-reduced-motion"
+    },
+    "motionBase": {
+      "$value": "0",
+      "$type": "number",
+      "$description": "Base motion duration in seconds — derivatives add motionUnit increments"
+    },
+    "motionUnit": {
+      "$value": "0.1",
+      "$type": "number",
+      "$description": "Duration increment in seconds — motionBase + N × motionUnit"
+    }
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "map": {
+    "$description": "Derived map tokens — computed from seed values. 10-state color derivatives via color-mix(), alpha-based neutral text, sizing/typography/radius scales.",
+
+    "color": {
+      "primary": {
+        "Bg":          { "$value": "color-mix(in oklch, {seed.colorPrimary} 15%, white)", "$type": "color", "$description": "Lightest primary tint — backgrounds" },
+        "BgHover":     { "$value": "color-mix(in oklch, {seed.colorPrimary} 25%, white)", "$type": "color", "$description": "Hovered background tint" },
+        "Border":      { "$value": "color-mix(in oklch, {seed.colorPrimary} 35%, white)", "$type": "color", "$description": "Light border" },
+        "BorderHover": { "$value": "color-mix(in oklch, {seed.colorPrimary} 50%, white)", "$type": "color", "$description": "Hovered border" },
+        "Hover":       { "$value": "color-mix(in oklch, {seed.colorPrimary} 85%, white)", "$type": "color", "$description": "Hovered element fill" },
+        "Base":        { "$value": "{seed.colorPrimary}", "$type": "color", "$description": "Base primary — honey" },
+        "Active":      { "$value": "color-mix(in oklch, {seed.colorPrimary} 85%, black)", "$type": "color", "$description": "Pressed/active state" },
+        "TextHover":   { "$value": "color-mix(in oklch, {seed.colorPrimary} 85%, white)", "$type": "color", "$description": "Hovered text" },
+        "Text":        { "$value": "{seed.colorPrimary}", "$type": "color", "$description": "Primary-colored text" },
+        "TextActive":  { "$value": "color-mix(in oklch, {seed.colorPrimary} 85%, black)", "$type": "color", "$description": "Active text" }
+      },
+      "success": {
+        "Bg":          { "$value": "color-mix(in oklch, {seed.colorSuccess} 15%, white)", "$type": "color" },
+        "BgHover":     { "$value": "color-mix(in oklch, {seed.colorSuccess} 25%, white)", "$type": "color" },
+        "Border":      { "$value": "color-mix(in oklch, {seed.colorSuccess} 35%, white)", "$type": "color" },
+        "BorderHover": { "$value": "color-mix(in oklch, {seed.colorSuccess} 50%, white)", "$type": "color" },
+        "Hover":       { "$value": "color-mix(in oklch, {seed.colorSuccess} 85%, white)", "$type": "color" },
+        "Base":        { "$value": "{seed.colorSuccess}", "$type": "color" },
+        "Active":      { "$value": "color-mix(in oklch, {seed.colorSuccess} 85%, black)", "$type": "color" },
+        "TextHover":   { "$value": "color-mix(in oklch, {seed.colorSuccess} 85%, white)", "$type": "color" },
+        "Text":        { "$value": "{seed.colorSuccess}", "$type": "color" },
+        "TextActive":  { "$value": "color-mix(in oklch, {seed.colorSuccess} 85%, black)", "$type": "color" }
+      },
+      "warning": {
+        "Bg":          { "$value": "color-mix(in oklch, {seed.colorWarning} 15%, white)", "$type": "color" },
+        "BgHover":     { "$value": "color-mix(in oklch, {seed.colorWarning} 25%, white)", "$type": "color" },
+        "Border":      { "$value": "color-mix(in oklch, {seed.colorWarning} 35%, white)", "$type": "color" },
+        "BorderHover": { "$value": "color-mix(in oklch, {seed.colorWarning} 50%, white)", "$type": "color" },
+        "Hover":       { "$value": "color-mix(in oklch, {seed.colorWarning} 85%, white)", "$type": "color" },
+        "Base":        { "$value": "{seed.colorWarning}", "$type": "color" },
+        "Active":      { "$value": "color-mix(in oklch, {seed.colorWarning} 85%, black)", "$type": "color" },
+        "TextHover":   { "$value": "color-mix(in oklch, {seed.colorWarning} 85%, white)", "$type": "color" },
+        "Text":        { "$value": "{seed.colorWarning}", "$type": "color" },
+        "TextActive":  { "$value": "color-mix(in oklch, {seed.colorWarning} 85%, black)", "$type": "color" }
+      },
+      "error": {
+        "Bg":          { "$value": "color-mix(in oklch, {seed.colorError} 15%, white)", "$type": "color" },
+        "BgHover":     { "$value": "color-mix(in oklch, {seed.colorError} 25%, white)", "$type": "color" },
+        "Border":      { "$value": "color-mix(in oklch, {seed.colorError} 35%, white)", "$type": "color" },
+        "BorderHover": { "$value": "color-mix(in oklch, {seed.colorError} 50%, white)", "$type": "color" },
+        "Hover":       { "$value": "color-mix(in oklch, {seed.colorError} 85%, white)", "$type": "color" },
+        "Base":        { "$value": "{seed.colorError}", "$type": "color" },
+        "Active":      { "$value": "color-mix(in oklch, {seed.colorError} 85%, black)", "$type": "color" },
+        "TextHover":   { "$value": "color-mix(in oklch, {seed.colorError} 85%, white)", "$type": "color" },
+        "Text":        { "$value": "{seed.colorError}", "$type": "color" },
+        "TextActive":  { "$value": "color-mix(in oklch, {seed.colorError} 85%, black)", "$type": "color" }
+      },
+      "accent": {
+        "Bg":          { "$value": "color-mix(in oklch, {seed.colorAccent} 15%, white)", "$type": "color" },
+        "BgHover":     { "$value": "color-mix(in oklch, {seed.colorAccent} 25%, white)", "$type": "color" },
+        "Border":      { "$value": "color-mix(in oklch, {seed.colorAccent} 35%, white)", "$type": "color" },
+        "BorderHover": { "$value": "color-mix(in oklch, {seed.colorAccent} 50%, white)", "$type": "color" },
+        "Hover":       { "$value": "color-mix(in oklch, {seed.colorAccent} 85%, white)", "$type": "color" },
+        "Base":        { "$value": "{seed.colorAccent}", "$type": "color" },
+        "Active":      { "$value": "color-mix(in oklch, {seed.colorAccent} 85%, black)", "$type": "color" },
+        "TextHover":   { "$value": "color-mix(in oklch, {seed.colorAccent} 85%, white)", "$type": "color" },
+        "Text":        { "$value": "{seed.colorAccent}", "$type": "color" },
+        "TextActive":  { "$value": "color-mix(in oklch, {seed.colorAccent} 85%, black)", "$type": "color" }
+      },
+
+      "neutralText": {
+        "colorText":           { "$value": "oklch(from {seed.colorTextBase} l c h / 0.88)", "$type": "color", "$description": "Primary text — 88% opacity" },
+        "colorTextSecondary":  { "$value": "oklch(from {seed.colorTextBase} l c h / 0.65)", "$type": "color", "$description": "Secondary text — 65% opacity" },
+        "colorTextTertiary":   { "$value": "oklch(from {seed.colorTextBase} l c h / 0.45)", "$type": "color", "$description": "Tertiary/placeholder text — 45% opacity" },
+        "colorTextQuaternary": { "$value": "oklch(from {seed.colorTextBase} l c h / 0.25)", "$type": "color", "$description": "Disabled/hint text — 25% opacity" }
+      },
+      "neutralFill": {
+        "colorFill":          { "$value": "oklch(from {seed.colorTextBase} l c h / 0.15)", "$type": "color", "$description": "Strong fill — 15% opacity" },
+        "colorFillSecondary": { "$value": "oklch(from {seed.colorTextBase} l c h / 0.06)", "$type": "color", "$description": "Medium fill — 6% opacity" },
+        "colorFillTertiary":  { "$value": "oklch(from {seed.colorTextBase} l c h / 0.04)", "$type": "color", "$description": "Subtle fill — 4% opacity" }
+      },
+      "neutralBg": {
+        "colorBgLayout":    { "$value": "{seed.colorBgBase}", "$type": "color", "$description": "Page background" },
+        "colorBgContainer": { "$value": "color-mix(in oklch, {seed.colorBgBase}, white 50%)", "$type": "color", "$description": "Card/panel surface" },
+        "colorBgElevated":  { "$value": "color-mix(in oklch, {seed.colorBgBase}, white 75%)", "$type": "color", "$description": "Elevated surface (dropdowns, popovers)" }
+      },
+      "neutralBorder": {
+        "colorBorder":          { "$value": "oklch(from {seed.colorTextBase} l c h / 0.15)", "$type": "color", "$description": "Default border" },
+        "colorBorderSecondary": { "$value": "oklch(from {seed.colorTextBase} l c h / 0.06)", "$type": "color", "$description": "Subtle border" }
+      }
+    },
+
+    "size": {
+      "XXS": { "$value": "4",  "$type": "number", "$description": "sizeUnit × 1" },
+      "XS":  { "$value": "8",  "$type": "number", "$description": "sizeUnit × 2" },
+      "SM":  { "$value": "12", "$type": "number", "$description": "sizeUnit × 3" },
+      "MS":  { "$value": "16", "$type": "number", "$description": "sizeUnit × 4" },
+      "MD":  { "$value": "20", "$type": "number", "$description": "sizeUnit × 5" },
+      "LG":  { "$value": "24", "$type": "number", "$description": "sizeUnit × 6" },
+      "XL":  { "$value": "32", "$type": "number", "$description": "sizeUnit × 8" },
+      "XXL": { "$value": "48", "$type": "number", "$description": "sizeUnit × 12" }
+    },
+
+    "controlHeight": {
+      "SM": { "$value": "32", "$type": "number", "$description": "Small control — h-8 (80% of base)" },
+      "LG": { "$value": "48", "$type": "number", "$description": "Large control — h-12 (120% of base)" },
+      "XS": { "$value": "24", "$type": "number", "$description": "Extra small control — h-6 (60% of base)" }
+    },
+
+    "borderRadius": {
+      "XS":  { "$value": "2",    "$type": "number", "$description": "Minimal rounding" },
+      "SM":  { "$value": "4",    "$type": "number", "$description": "Default (matches seed.borderRadius)" },
+      "MD":  { "$value": "8",    "$type": "number", "$description": "Medium rounding" },
+      "LG":  { "$value": "12",   "$type": "number", "$description": "Large rounding" },
+      "XL":  { "$value": "16",   "$type": "number", "$description": "Extra large rounding" },
+      "Full": { "$value": "9999", "$type": "number", "$description": "Pill shape" }
+    },
+
+    "fontSize": {
+      "XS":       { "$value": "10", "$type": "number", "$description": "Fine print" },
+      "SM":       { "$value": "13", "$type": "number", "$description": "Small/caption" },
+      "LG":       { "$value": "20", "$type": "number", "$description": "Large body" },
+      "XL":       { "$value": "25", "$type": "number", "$description": "Title 2" },
+      "Heading5": { "$value": "20", "$type": "number", "$description": "H5 — matches LG" },
+      "Heading4": { "$value": "25", "$type": "number", "$description": "H4" },
+      "Heading3": { "$value": "31", "$type": "number", "$description": "H3" },
+      "Heading2": { "$value": "39", "$type": "number", "$description": "H2" },
+      "Heading1": { "$value": "49", "$type": "number", "$description": "H1" }
+    },
+
+    "lineHeight": {
+      "base":     { "$value": "1.5",   "$type": "number", "$description": "Default line height" },
+      "SM":       { "$value": "1.667", "$type": "number", "$description": "Small text line height" },
+      "LG":       { "$value": "1.4",   "$type": "number", "$description": "Large text line height" },
+      "Heading5": { "$value": "1.4",   "$type": "number" },
+      "Heading4": { "$value": "1.4",   "$type": "number" },
+      "Heading3": { "$value": "1.333", "$type": "number" },
+      "Heading2": { "$value": "1.267", "$type": "number" },
+      "Heading1": { "$value": "1.25",  "$type": "number" }
+    }
+  }
+}

@@ -1,0 +1,693 @@
+{
+  "seed": {
+    "color": {
+      "pastel": {
+        "lavender": {
+          "$value": "#E8D5F5",
+          "$type": "color",
+          "$description": "Soft purple"
+        },
+        "mint": {
+          "$value": "#D5F5E3",
+          "$type": "color",
+          "$description": "Soft green"
+        },
+        "peach": {
+          "$value": "#FADADD",
+          "$type": "color",
+          "$description": "Soft pink-orange"
+        },
+        "coral": {
+          "$value": "#F5B7B1",
+          "$type": "color",
+          "$description": "Warm pink — primary brand"
+        },
+        "coralLight": {
+          "$value": "#FBE0DC",
+          "$type": "color",
+          "$description": "Light coral tint"
+        },
+        "coralDeep": {
+          "$value": "#E8948C",
+          "$type": "color",
+          "$description": "Deep coral for dark-mode accents"
+        },
+        "rose": {
+          "$value": "#D4654F",
+          "$type": "color",
+          "$description": "Warm terracotta — dark mode destructive"
+        },
+        "ember": {
+          "$value": "#C0503E",
+          "$type": "color",
+          "$description": "Deep terracotta — light mode destructive"
+        },
+        "sage": {
+          "$value": "#D5E1D5",
+          "$type": "color",
+          "$description": "Muted green"
+        },
+        "spring": {
+          "$value": "#A3D9B8",
+          "$type": "color",
+          "$description": "Spring green — midpoint between meadow & mint"
+        },
+        "meadow": {
+          "$value": "#7BC89A",
+          "$type": "color",
+          "$description": "Bright soft green — dark mode success"
+        },
+        "forest": {
+          "$value": "#3D7A5E",
+          "$type": "color",
+          "$description": "Deep muted green"
+        },
+        "lichen": {
+          "$value": "#E8E6C8",
+          "$type": "color",
+          "$description": "Pale olive — warm yellow-green tint"
+        },
+        "olive": {
+          "$value": "#8B9A6B",
+          "$type": "color",
+          "$description": "Olive — classic muted yellow-green"
+        },
+        "moss": {
+          "$value": "#6B7F4E",
+          "$type": "color",
+          "$description": "Moss — deep earthy green"
+        },
+        "pine": {
+          "$value": "#4A5E35",
+          "$type": "color",
+          "$description": "Pine — darkest olive, forest floor"
+        },
+        "blush": {
+          "$value": "#F5D5E0",
+          "$type": "color",
+          "$description": "Light rose"
+        },
+        "wisteria": {
+          "$value": "#C3A6D4",
+          "$type": "color",
+          "$description": "Medium purple — warm lilac"
+        },
+        "plum": {
+          "$value": "#7B5C8E",
+          "$type": "color",
+          "$description": "Deep purple — rich plum"
+        },
+        "sky": {
+          "$value": "#D5E8F5",
+          "$type": "color",
+          "$description": "Soft blue"
+        },
+        "skyLight": {
+          "$value": "#EAF4FB",
+          "$type": "color",
+          "$description": "Lightest blue tint"
+        },
+        "skyMid": {
+          "$value": "#B3D4F0",
+          "$type": "color",
+          "$description": "Medium blue"
+        },
+        "azure": {
+          "$value": "#A8C8E8",
+          "$type": "color",
+          "$description": "Steel blue — muted"
+        },
+        "navy": {
+          "$value": "#3D5A80",
+          "$type": "color",
+          "$description": "Muted navy — dark accent for dark mode"
+        },
+        "lemon": {
+          "$value": "#FFF9C4",
+          "$type": "color",
+          "$description": "Soft yellow"
+        },
+        "butter": {
+          "$value": "#FFF3A3",
+          "$type": "color",
+          "$description": "Warm butter yellow"
+        },
+        "honey": {
+          "$value": "#FFE082",
+          "$type": "color",
+          "$description": "Rich golden yellow"
+        },
+        "honeyDeep": {
+          "$value": "#D4A843",
+          "$type": "color",
+          "$description": "Deep honey for dark mode primary"
+        },
+        "cream": {
+          "$value": "#FFFDF5",
+          "$type": "color",
+          "$description": "Off-white warm yellow"
+        },
+        "fog": {
+          "$value": "#F0EDED",
+          "$type": "color",
+          "$description": "Cool light grey"
+        },
+        "ash": {
+          "$value": "#D9D5D2",
+          "$type": "color",
+          "$description": "Warm mid grey"
+        },
+        "slate": {
+          "$value": "#8B8589",
+          "$type": "color",
+          "$description": "Cool dark grey"
+        },
+        "graphite": {
+          "$value": "#3E3A44",
+          "$type": "color",
+          "$description": "Dark warm grey — deeper than slate"
+        },
+        "cloud": {
+          "$value": "#F7F5F3",
+          "$type": "color",
+          "$description": "Warm off-white"
+        },
+        "nearBlack": {
+          "$value": "#12101A",
+          "$type": "color",
+          "$description": "Near-black — 2 shades darker than graphite"
+        }
+      },
+      "neutral": {
+        "50": {
+          "$value": "#FAFAF9",
+          "$type": "color"
+        },
+        "100": {
+          "$value": "#F5F5F4",
+          "$type": "color"
+        },
+        "200": {
+          "$value": "#E7E5E4",
+          "$type": "color"
+        },
+        "300": {
+          "$value": "#D6D3D1",
+          "$type": "color"
+        },
+        "400": {
+          "$value": "#A8A29E",
+          "$type": "color"
+        },
+        "500": {
+          "$value": "#78716C",
+          "$type": "color"
+        },
+        "600": {
+          "$value": "#57534E",
+          "$type": "color"
+        },
+        "700": {
+          "$value": "#44403C",
+          "$type": "color"
+        },
+        "800": {
+          "$value": "#292524",
+          "$type": "color"
+        },
+        "900": {
+          "$value": "#1C1917",
+          "$type": "color"
+        },
+        "950": {
+          "$value": "#0C0A09",
+          "$type": "color"
+        }
+      },
+      "ink": {
+        "$value": "#1A1A2E",
+        "$type": "color",
+        "$description": "Deep dark — primary text & borders"
+      },
+      "white": {
+        "$value": "#FFFFFF",
+        "$type": "color"
+      },
+      "black": {
+        "$value": "#000000",
+        "$type": "color"
+      },
+      "danger": {
+        "$value": "#D96B5C",
+        "$type": "color",
+        "$description": "Terracotta — softer error, harmonizes with pastels"
+      },
+      "success": {
+        "$value": "#5BAD7A",
+        "$type": "color",
+        "$description": "Muted sage — softer success, harmonizes with mint/sage"
+      },
+      "warning": {
+        "$value": "#F39C12",
+        "$type": "color",
+        "$description": "Warning / caution"
+      }
+    },
+    "spacing": {
+      "0": {
+        "$value": "0",
+        "$type": "dimension"
+      },
+      "1": {
+        "$value": "4px",
+        "$type": "dimension"
+      },
+      "2": {
+        "$value": "8px",
+        "$type": "dimension"
+      },
+      "3": {
+        "$value": "12px",
+        "$type": "dimension"
+      },
+      "4": {
+        "$value": "16px",
+        "$type": "dimension"
+      },
+      "5": {
+        "$value": "20px",
+        "$type": "dimension"
+      },
+      "6": {
+        "$value": "24px",
+        "$type": "dimension"
+      },
+      "8": {
+        "$value": "32px",
+        "$type": "dimension"
+      },
+      "10": {
+        "$value": "40px",
+        "$type": "dimension"
+      },
+      "12": {
+        "$value": "48px",
+        "$type": "dimension"
+      },
+      "16": {
+        "$value": "64px",
+        "$type": "dimension"
+      },
+      "20": {
+        "$value": "80px",
+        "$type": "dimension"
+      },
+      "24": {
+        "$value": "96px",
+        "$type": "dimension"
+      }
+    },
+    "breakpoint": {
+      "android": {
+        "$value": "360px",
+        "$type": "dimension",
+        "$description": "Android minimum — Galaxy/Pixel base viewport"
+      },
+      "ios": {
+        "$value": "390px",
+        "$type": "dimension",
+        "$description": "iOS minimum — iPhone 16e viewport"
+      },
+      "tablet": {
+        "$value": "768px",
+        "$type": "dimension",
+        "$description": "Tablet — iPad Mini portrait"
+      },
+      "desktop": {
+        "$value": "1024px",
+        "$type": "dimension",
+        "$description": "Desktop — laptops/iPad Pro landscape"
+      },
+      "wide": {
+        "$value": "1440px",
+        "$type": "dimension",
+        "$description": "Wide desktop — QHD+ displays"
+      }
+    },
+    "container": {
+      "sm": {
+        "$value": "640px",
+        "$type": "dimension",
+        "$description": "Small container max-width"
+      },
+      "md": {
+        "$value": "768px",
+        "$type": "dimension",
+        "$description": "Medium container max-width"
+      },
+      "lg": {
+        "$value": "1200px",
+        "$type": "dimension",
+        "$description": "Desktop container max-width"
+      },
+      "xl": {
+        "$value": "1400px",
+        "$type": "dimension",
+        "$description": "Wide container max-width"
+      }
+    },
+    "typography": {
+      "fontFamily": {
+        "sans": {
+          "$value": "'Switzer', sans-serif",
+          "$type": "fontFamily",
+          "$description": "Primary — geometric sans"
+        },
+        "mono": {
+          "$value": "'Roboto Mono', monospace",
+          "$type": "fontFamily",
+          "$description": "Code blocks"
+        },
+        "caption": {
+          "$value": "'Merriweather', serif",
+          "$type": "fontFamily",
+          "$description": "Captions & pull quotes"
+        },
+        "display": {
+          "$value": "'Libre Baskerville', serif",
+          "$type": "fontFamily",
+          "$description": "Serif display — all headings"
+        }
+      },
+      "fontSize": {
+        "xs": {
+          "$value": "0.64rem",
+          "$type": "dimension",
+          "$description": "~10px — fine print"
+        },
+        "sm": {
+          "$value": "0.8rem",
+          "$type": "dimension",
+          "$description": "~13px — small / caption"
+        },
+        "base": {
+          "$value": "1rem",
+          "$type": "dimension",
+          "$description": "16px — body"
+        },
+        "md": {
+          "$value": "1.25rem",
+          "$type": "dimension",
+          "$description": "~20px — title 3 / h6"
+        },
+        "lg": {
+          "$value": "1.563rem",
+          "$type": "dimension",
+          "$description": "~25px — title 2 / h5"
+        },
+        "xl": {
+          "$value": "1.953rem",
+          "$type": "dimension",
+          "$description": "~31px — title 1 / h4"
+        },
+        "2xl": {
+          "$value": "2.441rem",
+          "$type": "dimension",
+          "$description": "~39px — h3"
+        },
+        "3xl": {
+          "$value": "3.052rem",
+          "$type": "dimension",
+          "$description": "~49px — h2"
+        },
+        "4xl": {
+          "$value": "3.815rem",
+          "$type": "dimension",
+          "$description": "~61px — h1"
+        }
+      },
+      "fontWeight": {
+        "normal": {
+          "$value": "400",
+          "$type": "fontWeight"
+        },
+        "medium": {
+          "$value": "500",
+          "$type": "fontWeight"
+        },
+        "semibold": {
+          "$value": "600",
+          "$type": "fontWeight"
+        },
+        "bold": {
+          "$value": "700",
+          "$type": "fontWeight"
+        },
+        "black": {
+          "$value": "900",
+          "$type": "fontWeight"
+        }
+      },
+      "lineHeight": {
+        "tight": {
+          "$value": "1.25",
+          "$type": "number"
+        },
+        "normal": {
+          "$value": "1.5",
+          "$type": "number"
+        },
+        "relaxed": {
+          "$value": "1.75",
+          "$type": "number"
+        }
+      }
+    },
+    "borderWidth": {
+      "0": {
+        "$value": "0",
+        "$type": "dimension"
+      },
+      "1": {
+        "$value": "1px",
+        "$type": "dimension"
+      },
+      "2": {
+        "$value": "2px",
+        "$type": "dimension"
+      },
+      "3": {
+        "$value": "3px",
+        "$type": "dimension",
+        "$description": "Neo-brutalist default"
+      },
+      "4": {
+        "$value": "4px",
+        "$type": "dimension"
+      }
+    },
+    "borderRadius": {
+      "none": {
+        "$value": "0",
+        "$type": "dimension",
+        "$description": "Sharp corners — default"
+      },
+      "sm": {
+        "$value": "4px",
+        "$type": "dimension"
+      },
+      "md": {
+        "$value": "8px",
+        "$type": "dimension"
+      },
+      "lg": {
+        "$value": "12px",
+        "$type": "dimension"
+      },
+      "xl": {
+        "$value": "16px",
+        "$type": "dimension"
+      },
+      "full": {
+        "$value": "9999px",
+        "$type": "dimension"
+      }
+    },
+    "shadow": {
+      "sm": {
+        "$value": "2px 2px 0 0",
+        "$type": "shadow",
+        "$description": "Small hard shadow"
+      },
+      "md": {
+        "$value": "4px 4px 0 0",
+        "$type": "shadow",
+        "$description": "Medium hard shadow"
+      },
+      "lg": {
+        "$value": "6px 6px 0 0",
+        "$type": "shadow",
+        "$description": "Large hard shadow"
+      },
+      "xl": {
+        "$value": "8px 8px 0 0",
+        "$type": "shadow",
+        "$description": "Extra large hard shadow"
+      }
+    },
+    "opacity": {
+      "0": {
+        "$value": "0",
+        "$type": "number"
+      },
+      "25": {
+        "$value": "0.25",
+        "$type": "number"
+      },
+      "50": {
+        "$value": "0.5",
+        "$type": "number"
+      },
+      "75": {
+        "$value": "0.75",
+        "$type": "number"
+      },
+      "100": {
+        "$value": "1",
+        "$type": "number"
+      }
+    },
+    "zIndex": {
+      "0": {
+        "$value": "0",
+        "$type": "number"
+      },
+      "10": {
+        "$value": "10",
+        "$type": "number"
+      },
+      "20": {
+        "$value": "20",
+        "$type": "number"
+      },
+      "30": {
+        "$value": "30",
+        "$type": "number"
+      },
+      "40": {
+        "$value": "40",
+        "$type": "number"
+      },
+      "50": {
+        "$value": "50",
+        "$type": "number"
+      }
+    },
+    "motion": {
+      "duration": {
+        "instant": {
+          "$value": "50ms",
+          "$type": "duration",
+          "$description": "Micro-interactions (button press)"
+        },
+        "fast": {
+          "$value": "120ms",
+          "$type": "duration",
+          "$description": "Quick transitions (hover, toggle)"
+        },
+        "base": {
+          "$value": "200ms",
+          "$type": "duration",
+          "$description": "Standard transitions"
+        },
+        "slow": {
+          "$value": "300ms",
+          "$type": "duration",
+          "$description": "Complex transitions (expand, slide)"
+        },
+        "slower": {
+          "$value": "500ms",
+          "$type": "duration",
+          "$description": "Page-level transitions"
+        }
+      },
+      "easing": {
+        "easeOut": {
+          "$value": [
+            0.215,
+            0.61,
+            0.355,
+            1
+          ],
+          "$type": "cubicBezier",
+          "$description": "Default exit — smooth deceleration"
+        },
+        "easeInOut": {
+          "$value": [
+            0.645,
+            0.045,
+            0.355,
+            1
+          ],
+          "$type": "cubicBezier",
+          "$description": "Symmetric — enter + exit"
+        },
+        "easeOutCirc": {
+          "$value": [
+            0.08,
+            0.82,
+            0.17,
+            1
+          ],
+          "$type": "cubicBezier",
+          "$description": "Snappy exit — organic feel"
+        },
+        "easeInOutCirc": {
+          "$value": [
+            0.78,
+            0.14,
+            0.15,
+            0.86
+          ],
+          "$type": "cubicBezier",
+          "$description": "Snappy symmetric"
+        },
+        "easeOutBack": {
+          "$value": [
+            0.12,
+            0.4,
+            0.29,
+            1.46
+          ],
+          "$type": "cubicBezier",
+          "$description": "Bouncy overshoot — playful"
+        },
+        "easeInBack": {
+          "$value": "cubic-bezier(0.71, -0.46, 0.88, 0.6)",
+          "$type": "cubicBezier",
+          "$description": "Anticipation pull-back"
+        },
+        "easeOutQuint": {
+          "$value": [
+            0.23,
+            1,
+            0.32,
+            1
+          ],
+          "$type": "cubicBezier",
+          "$description": "Aggressive deceleration"
+        },
+        "easeInQuint": {
+          "$value": [
+            0.755,
+            0.05,
+            0.855,
+            0.06
+          ],
+          "$type": "cubicBezier",
+          "$description": "Slow start, fast end"
+        }
+      }
+    }
+  }
+}

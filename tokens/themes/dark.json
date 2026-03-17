@@ -1,0 +1,168 @@
+{
+  "theme": {
+    "bg": {
+      "$value": "#1E1B22",
+      "$type": "color",
+      "$description": "Warm charcoal — not pure black"
+    },
+    "fg": {
+      "$value": "#F7F5F3",
+      "$type": "color",
+      "$description": "Cloud — warm off-white body text"
+    },
+    "surface": {
+      "$value": "#2A2630",
+      "$type": "color",
+      "$description": "Slightly lifted surface"
+    },
+    "surface-fg": {
+      "$value": "#F7F5F3",
+      "$type": "color",
+      "$description": "Cloud text on surface"
+    },
+    "primary": {
+      "$value": "#D4A843",
+      "$type": "color",
+      "$description": "Deep honey — vivid on dark"
+    },
+    "primary-fg": {
+      "$value": "#1E1B22",
+      "$type": "color",
+      "$description": "Dark text on primary"
+    },
+    "accent": {
+      "$value": "#3D5A80",
+      "$type": "color",
+      "$description": "Navy — muted deep blue, complements honey deep"
+    },
+    "accent-fg": {
+      "$value": "#F0EDED",
+      "$type": "color",
+      "$description": "Light text on navy"
+    },
+    "muted": {
+      "$value": "#2A2630",
+      "$type": "color",
+      "$description": "Matches surface"
+    },
+    "muted-fg": {
+      "$value": "#8B8589",
+      "$type": "color",
+      "$description": "Slate grey — muted text"
+    },
+    "border": {
+      "$value": "#5E5965",
+      "$type": "color",
+      "$description": "Lighter border — more visible on dark"
+    },
+    "shadow-color": {
+      "$value": "#8B8589",
+      "$type": "color",
+      "$description": "Slate — defined shadow, visible on dark bg"
+    },
+    "input": {
+      "$value": "#2A2630",
+      "$type": "color",
+      "$description": "Input bg — matches surface"
+    },
+    "ring": {
+      "$value": "#D4A843",
+      "$type": "color",
+      "$description": "Focus ring (deep honey)"
+    },
+    "destructive": {
+      "$value": "#D4654F",
+      "$type": "color",
+      "$description": "Terracotta — visible on dark, cohesive with link tone"
+    },
+    "destructive-fg": {
+      "$value": "#1E1B22",
+      "$type": "color",
+      "$description": "Dark text on destructive"
+    },
+    "success": {
+      "$value": "#7BC89A",
+      "$type": "color",
+      "$description": "Lighter sage — visible on dark"
+    },
+    "success-fg": {
+      "$value": "#1E1B22",
+      "$type": "color",
+      "$description": "Dark text on lighter sage"
+    },
+    "warning": {
+      "$value": "#F1C40F",
+      "$type": "color"
+    },
+    "button-bg": {
+      "$value": "#FFFDF5",
+      "$type": "color",
+      "$description": "Default button — cream fill on dark bg"
+    },
+    "button-fg": {
+      "$value": "#2D2A32",
+      "$type": "color",
+      "$description": "Default button text — dark on cream"
+    },
+    "button-border": {
+      "$value": "#FFFDF5",
+      "$type": "color",
+      "$description": "Cream — matches button-bg for clean borderless look"
+    },
+    "outline-bg": {
+      "$value": "transparent",
+      "$type": "color",
+      "$description": "Outline variant bg — transparent, bg shows through"
+    },
+    "outline-fg": {
+      "$value": "#F0EDED",
+      "$type": "color",
+      "$description": "Outline variant text — light on dark bg"
+    },
+    "outline-border": {
+      "$value": "#8B8589",
+      "$type": "color",
+      "$description": "Outline variant border — slate, visible on dark"
+    },
+    "th-bg": {
+      "$value": "#3E3A44",
+      "$type": "color",
+      "$description": "Lighter table header — distinguished from surface"
+    },
+    "th-fg": {
+      "$value": "#F0EDED",
+      "$type": "color",
+      "$description": "Light text on dark table header"
+    },
+    "badge-fg": {
+      "$value": "#2D2A32",
+      "$type": "color",
+      "$description": "Dark text on pastel badges (pastels stay light)"
+    },
+    "toggle-track": {
+      "$value": "#C4983B",
+      "$type": "color",
+      "$description": "Muted honey — softer than primary for toggle"
+    },
+    "toggle-thumb": {
+      "$value": "#D9D5D2",
+      "$type": "color",
+      "$description": "Ash — softer than fg for toggle"
+    },
+    "card-primary-bg": {
+      "$value": "#4A3F20",
+      "$type": "color",
+      "$description": "Muted dark honey — readable light text on card"
+    },
+    "card-accent-bg": {
+      "$value": "#1E2D3D",
+      "$type": "color",
+      "$description": "Dark muted blue — readable light text on card"
+    },
+    "card-text": {
+      "$value": "#D9D5D2",
+      "$type": "color",
+      "$description": "Ash — softer card description text"
+    }
+  }
+}
