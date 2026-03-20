@@ -1,4 +1,4 @@
-# CLAUDE.md — nectar-ui
+# CLAUDE.md — nectar-design
 
 > **Public design system package** extracted from the Nectar Portfolio Platform.
 > All UI components, design tokens, hooks, and utilities for building themed interfaces.
@@ -21,15 +21,15 @@
 ## Package Exports
 
 ```ts
-import { Button, Card, Badge, Input, Textarea, ProjectLayout } from 'nectar-ui';
-import { useTheme, useReducedMotion, cn } from 'nectar-ui';
-import 'nectar-ui/tokens.css';   // 479 CSS custom properties
-import 'nectar-ui/theme.css';    // Tailwind @theme mapping
-import 'nectar-ui/animation.css'; // CSS @keyframes + utility classes
+import { Button, Card, Badge, Input, Textarea, ProjectLayout } from 'nectar-design';
+import { useTheme, useReducedMotion, cn } from 'nectar-design';
+import 'nectar-design/tokens.css';   // 479 CSS custom properties
+import 'nectar-design/theme.css';    // Tailwind @theme mapping
+import 'nectar-design/animation.css'; // CSS @keyframes + utility classes
 
 // Animation presets (tree-shakeable)
-import { presets, duration, easing } from 'nectar-ui/gsap';
-import { pageEnter, scrollReveal } from 'nectar-ui/framer';
+import { presets, duration, easing } from 'nectar-design/gsap';
+import { pageEnter, scrollReveal } from 'nectar-design/framer';
 ```
 
 ---

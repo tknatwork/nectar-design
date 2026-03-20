@@ -398,7 +398,7 @@ if (isProjectMode) {
   // --- Global mode: generate the full tokens.css ---
 
   const css = `/* ==========================================================================
-   nectar-ui — Generated Tokens
+   nectar-design — Generated Tokens
    Do not edit manually. Run: node scripts/build-tokens.js
 
    Tier 1: Seed   (--seed-*)       → Raw primitives

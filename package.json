@@ -1,5 +1,5 @@
 {
-  "name": "nectar-ui",
+  "name": "nectar-design",
   "version": "0.1.0",
   "description": "Design token pipeline + React component library. 5-tier token architecture with Tailwind v4 integration.",
   "type": "module",
@@ -23,8 +23,8 @@
     "scripts/build-motion-presets.mjs"
   ],
   "scripts": {
-    "prebuild": "node scripts/build-tokens-sd.mjs && node scripts/build-motion-presets.mjs",
-    "build": "tsup && cp css/tokens.css dist/tokens.css && cp css/theme.css dist/theme.css",
+    "prebuild": "node scripts/build-tokens-sd.mjs",
+    "build": "tsup && node scripts/build-motion-presets.mjs && cp css/tokens.css dist/tokens.css && cp css/theme.css dist/theme.css",
     "dev": "tsup --watch",
     "lint": "tsc --noEmit",
     "clean": "rm -rf dist"
@@ -64,10 +64,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tknatwork/nectar-ui.git"
+    "url": "https://github.com/tknatwork/nectar-design.git"
   },
-  "homepage": "https://github.com/tknatwork/nectar-ui#readme",
+  "homepage": "https://github.com/tknatwork/nectar-design#readme",
   "bugs": {
-    "url": "https://github.com/tknatwork/nectar-ui/issues"
+    "url": "https://github.com/tknatwork/nectar-design/issues"
   }
 }

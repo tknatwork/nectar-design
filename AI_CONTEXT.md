@@ -1,4 +1,4 @@
-# AI Context — nectar-ui
+# AI Context — nectar-design
 
 > Quick orientation for AI models. Full details in [CLAUDE.md](./CLAUDE.md).
 
@@ -13,7 +13,7 @@ A public React component library and design token system. Ships 6 components (Bu
 - **Motion:** 6 animation patterns → GSAP presets, Framer Motion variants, CSS @keyframes
 - **Styling:** cva + Tailwind v4 — never hardcode colors
 - **Package manager:** pnpm only
-- **Exports:** `nectar-ui` (JS), `nectar-ui/tokens.css`, `nectar-ui/theme.css`, `nectar-ui/gsap`, `nectar-ui/framer`, `nectar-ui/animation.css`
+- **Exports:** `nectar-design` (JS), `nectar-design/tokens.css`, `nectar-design/theme.css`, `nectar-design/gsap`, `nectar-design/framer`, `nectar-design/animation.css`
 
 ## Rules
 

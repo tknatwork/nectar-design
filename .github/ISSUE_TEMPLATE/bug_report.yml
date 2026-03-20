@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug in nectar-ui
+description: Report a bug in nectar-design
 labels: ["bug"]
 body:
   - type: textarea
@@ -22,7 +22,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: nectar-ui version
+      label: nectar-design version
       placeholder: "0.1.0"
     validations:
       required: true

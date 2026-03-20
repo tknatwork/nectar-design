@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in nectar-ui, please report it responsibly.
+If you discover a security vulnerability in nectar-design, please report it responsibly.
 
 **Contact:** Email [hi@tusharkantnaik.com](mailto:hi@tusharkantnaik.com)
 
@@ -16,6 +16,6 @@ If you discover a security vulnerability in nectar-ui, please report it responsi
 
 ## Scope
 
-nectar-ui is a client-side React component library with no server-side code,
+nectar-design is a client-side React component library with no server-side code,
 no user input processing, and no network requests. The primary security
 concerns are supply chain integrity and XSS prevention in component rendering.
