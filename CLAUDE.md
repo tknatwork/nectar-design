@@ -38,10 +38,10 @@ import { pageEnter, scrollReveal } from 'nectar-design/framer';
 
 ```
 Tier 1: tokens/core/primitives.json  (134 raw values — hex, px, cubicBezier)
-Tier 2: tokens/core/seed.json        (20 brand decisions — colorPrimary, controlHeight)
+Tier 2: tokens/core/seed.json        (19 brand decisions — colorPrimary, controlHeight)
 Tier 3: tokens/core/map.json         (96 derived — 50 intent colors via color-mix, neutral alphas, scales)
 Tier 4: tokens/core/semantic.json    (93 aliases — spacing, typography, grid, motion)
-Tier 5: tokens/components/*.json     (61 tokens — button, card, input, badge)
+Tier 5: tokens/components/*.json     (57 tokens — button, card, input, badge)
         tokens/themes/light|dark.json (33 vars each)
 
 Build:  scripts/build-tokens-sd.mjs  → css/tokens.css (479 CSS custom properties)
@@ -68,12 +68,51 @@ Build:  scripts/build-tokens-sd.mjs  → css/tokens.css (479 CSS custom properti
 
 ---
 
+## Testing
+
+| Layer | Framework | What it covers |
+|-------|-----------|----------------|
+| Unit | Vitest + React Testing Library | Button variants, Card sizes, Badge variants, Input ref forwarding, useReducedMotion, cn() utility, token CSS output (43 tests) |
+| Visual | Chromatic (via Storybook) | Screenshot diffs on PRs — 31 snapshots, 9 components |
+
+```bash
+pnpm test             # Run Vitest unit tests
+pnpm test -- --watch  # Watch mode
+```
+
+---
+
+## Storybook
+
+Visual component catalog for browsing all components and token documentation.
+
+- **Config:** `.storybook/`
+- **Stories:** `src/**/*.stories.tsx`
+- **Components:** Button (8 variants), Card (3 sizes), Badge (5 variants), Input, Textarea, ProjectLayout
+- **Token pages:** Color swatches, spacing scale, typography specimens
+
+```bash
+pnpm storybook        # Launch dev server (default port 6006)
+pnpm build-storybook  # Build static Storybook
+```
+
+**Visual regression (Chromatic):**
+- Runs automatically on PRs touching `packages/nectar-design/**`
+- CI workflow: `.github/workflows/chromatic.yml`
+- Requires `CHROMATIC_PROJECT_TOKEN` GitHub Actions secret
+- Review visual diffs in the Chromatic dashboard — no code review needed for visual changes
+
+---
+
 ## Development Commands
 
 ```bash
 pnpm install          # Install dependencies
 pnpm build            # Build tokens + compile with tsup + copy CSS
 pnpm dev              # Watch mode (tsup --watch)
+pnpm test             # Vitest unit tests (43 tests)
+pnpm storybook        # Launch Storybook dev server
+pnpm build-storybook  # Build static Storybook
 ```
 
 ---
@@ -96,6 +135,8 @@ pnpm dev              # Watch mode (tsup --watch)
 - `scripts/build-motion-presets.mjs` — animation preset compiler
 - `css/theme.css` — Tailwind @theme contract
 - `tokens/motion/patterns.json` — animation pattern tokens
+- `.storybook/` — Storybook configuration
+- `vitest.config.ts` — Test configuration
 
 ---
 
