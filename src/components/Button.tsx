@@ -45,9 +45,21 @@ const buttonVariants = cva(
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants>;
 
-export function Button({ className, intent, size, ...props }: ButtonProps) {
+/**
+ * Primary action button with intent and size variants.
+ * Defaults to `type="button"` to prevent accidental form submission.
+ *
+ * @example
+ * ```tsx
+ * <Button intent="primary" size="md">Save</Button>
+ * <Button intent="destructive" onClick={handleDelete}>Delete</Button>
+ * <Button intent="outline" size="sm">Cancel</Button>
+ * ```
+ */
+export function Button({ className, intent, size, type = 'button', ...props }: ButtonProps) {
   return (
     <button
+      type={type}
       className={cn(buttonVariants({ intent, size }), className)}
       {...props}
     />

@@ -16,3 +16,5 @@ scripts/convert-to-dtcg.mjs
 tokens/nectar-tokens-penpot.zip
 tokens/penpot-import/
 tokens/supernova-motion-tokens.json
+build-storybook.log
+test-results/

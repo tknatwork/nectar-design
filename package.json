@@ -14,7 +14,13 @@
     "./theme.css": "./dist/theme.css",
     "./gsap": "./dist/gsap/presets.js",
     "./framer": "./dist/framer/variants.js",
-    "./animation.css": "./dist/animation-keyframes.css"
+    "./animation.css": "./dist/animation-keyframes.css",
+    "./tiptap.css": "./dist/tiptap-theme.css",
+    "./circadian": {
+      "import": "./dist/circadian/index.js",
+      "types": "./dist/circadian/index.d.ts"
+    },
+    "./circadian.css": "./dist/circadian.css"
   },
   "files": [
     "dist",
@@ -24,12 +30,14 @@
   ],
   "scripts": {
     "prebuild": "node scripts/build-tokens-sd.mjs",
-    "build": "tsup && node scripts/build-motion-presets.mjs && cp css/tokens.css dist/tokens.css && cp css/theme.css dist/theme.css",
+    "build": "tsup && node scripts/build-motion-presets.mjs && cp css/tokens.css dist/tokens.css && cp css/theme.css dist/theme.css && cp css/tiptap-theme.css dist/tiptap-theme.css && cp css/circadian.css dist/circadian.css",
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "tsc --noEmit",
     "clean": "rm -rf dist",
+    "size": "size-limit",
+    "size:check": "size-limit --limit",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -39,12 +47,17 @@
     "tailwindcss": ">=4"
   },
   "dependencies": {
+    "@base-ui-components/react": "1.0.0-rc.0",
+    "@iconify/react": "^6.0.2",
+    "chroma-js": "^3.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "suncalc": "^1.9.0",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.2",
+    "@size-limit/file": "^12.0.1",
     "@storybook/addon-a11y": "^10.3.1",
     "@storybook/addon-docs": "^10.3.1",
     "@storybook/addon-onboarding": "^10.3.1",
@@ -52,20 +65,22 @@
     "@storybook/react-vite": "^10.3.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/chroma-js": "^3.1.2",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "@vitest/browser-playwright": "4.1.0",
-    "@vitest/coverage-v8": "4.1.0",
-    "chromatic": "^15.3.0",
+    "@types/suncalc": "^1.9.2",
+    "axe-core": "^4.11.1",
     "jsdom": "^29.0.1",
-    "playwright": "^1.58.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "size-limit": "^12.0.1",
     "storybook": "^10.3.1",
     "style-dictionary": "^5.3.3",
     "tsup": "^8.5.0",
     "typescript": "~5.9.3",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.0",
+    "vitest-axe": "^0.1.0"
   },
   "keywords": [
     "design-system",
@@ -75,6 +90,16 @@
     "cva",
     "components",
     "ui"
+  ],
+  "size-limit": [
+    {
+      "path": "dist/index.js",
+      "limit": "30 kB"
+    },
+    {
+      "path": "dist/tokens.css",
+      "limit": "15 kB"
+    }
   ],
   "engines": {
     "node": ">=18"

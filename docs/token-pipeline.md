@@ -64,7 +64,7 @@ graph TD
 
 ## Reference Chain Example
 
-```
+```text
 --badge-primaryBg
   → var(--map-color-primary-Bg)
     → color-mix(in oklch, var(--seed-colorPrimary) 15%, white)

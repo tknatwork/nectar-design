@@ -13,6 +13,15 @@ const preview: Preview = {
       },
     },
 
+    viewport: {
+      viewports: {
+        mobile: { name: 'Mobile (390px)', styles: { width: '390px', height: '844px' } },
+        tablet: { name: 'Tablet (768px)', styles: { width: '768px', height: '1024px' } },
+        desktop: { name: 'Desktop (1024px)', styles: { width: '1024px', height: '768px' } },
+        wide: { name: 'Wide (1440px)', styles: { width: '1440px', height: '900px' } },
+      },
+    },
+
     a11y: {
       // 'todo' - show a11y violations in the test UI only
       // 'error' - fail CI on a11y violations

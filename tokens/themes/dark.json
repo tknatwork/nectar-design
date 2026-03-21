@@ -31,9 +31,9 @@
       "$description": "Dark text on primary"
     },
     "accent": {
-      "$value": "#3D5A80",
+      "$value": "#2E4563",
       "$type": "color",
-      "$description": "Navy — muted deep blue, complements honey deep"
+      "$description": "Deep navy — AAA 8.40:1 with light fg"
     },
     "accent-fg": {
       "$value": "#F0EDED",
@@ -46,9 +46,9 @@
       "$description": "Matches surface"
     },
     "muted-fg": {
-      "$value": "#8B8589",
+      "$value": "#BAB5B9",
       "$type": "color",
-      "$description": "Slate grey — muted text"
+      "$description": "Light slate — AAA 7.33:1 on muted bg"
     },
     "border": {
       "$value": "#5E5965",
@@ -71,9 +71,9 @@
       "$description": "Focus ring (deep honey)"
     },
     "destructive": {
-      "$value": "#D4654F",
+      "$value": "#EE9580",
       "$type": "color",
-      "$description": "Terracotta — visible on dark, cohesive with link tone"
+      "$description": "Light terracotta — AAA 7.49:1 on dark bg"
     },
     "destructive-fg": {
       "$value": "#1E1B22",

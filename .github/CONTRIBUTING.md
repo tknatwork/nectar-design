@@ -29,15 +29,20 @@ Please read and follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md). All co
 
 1. **Fork** the repository on GitHub.
 2. **Clone** your fork locally:
+
    ```bash
    git clone https://github.com/<your-username>/nectar-design.git
    cd nectar-design
    ```
+
 3. Install dependencies with **pnpm** (the only supported package manager):
+
    ```bash
    pnpm install
    ```
+
 4. Build the project to verify your setup:
+
    ```bash
    pnpm build
    ```
@@ -54,11 +59,13 @@ Please read and follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md). All co
 ### Workflow
 
 1. Create a feature branch off `dev`:
+
    ```bash
    git checkout dev
    git pull origin dev
    git checkout -b feat/my-feature
    ```
+
 2. Make your changes and commit following the [commit message format](#commit-message-format).
 3. Push your branch and open a PR targeting `dev`.
 
@@ -90,7 +97,7 @@ Always run `pnpm build` and `pnpm lint` before submitting a PR. PRs with lint er
 
 nectar-design follows the **Conventional Commits** specification:
 
-```
+```text
 type(scope): description
 ```
 
@@ -113,7 +120,7 @@ Use the component or area name, e.g. `button`, `tokens`, `badge`, `build`.
 
 ### Examples
 
-```
+```text
 feat(button): add loading state variant
 fix(badge): correct pill border-radius token
 docs(contributing): update branch strategy

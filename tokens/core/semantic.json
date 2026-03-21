@@ -442,6 +442,28 @@
         "$description": "Default hard shadow"
       }
     },
+    "a11y": {
+      "focus-ring-width": {
+        "$value": "3px",
+        "$type": "dimension",
+        "$description": "AAA visible focus indicator width"
+      },
+      "focus-ring-offset": {
+        "$value": "2px",
+        "$type": "dimension",
+        "$description": "Gap between element and focus ring"
+      },
+      "min-touch-target": {
+        "$value": "44px",
+        "$type": "dimension",
+        "$description": "WCAG 2.5.5 minimum touch target"
+      },
+      "min-touch-target-enhanced": {
+        "$value": "48px",
+        "$type": "dimension",
+        "$description": "AAA enhanced touch target"
+      }
+    },
     "motion": {
       "transition": {
         "fast": {

@@ -488,7 +488,7 @@
     },
     "borderRadius": {
       "none": {
-        "$value": "0",
+        "$value": "0px",
         "$type": "dimension",
         "$description": "Sharp corners — default"
       },
