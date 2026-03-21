@@ -4,16 +4,20 @@
 
 ## What is this?
 
-A public React component library and design token system. Ships 6 components (Button, Card, Badge, Input, Textarea, ProjectLayout), 2 hooks (useTheme, useReducedMotion), and a cn() utility.
+A public React component library and design token system. Ships 30+ components (Button, Card, Badge, Input, Textarea, Container, Stack, Grid, Icon, Toggle, Select, Dialog, and more), hooks (useTheme, useReducedMotion, useCircadian), and a cn() utility.
+
+Includes the **Biomimetic Adaptive Theme** — a physics-based circadian engine (`nectar-design/circadian`) that computes 49 CSS variables from solar position in real-time, with 60-second GPU-accelerated crossfade transitions.
 
 ## Key facts
 
 - **Build:** tsup (ESM-only) with prebuild token + motion compilation
 - **Tokens:** 5-tier pipeline (primitives → seed → map → semantic → components) → 479 CSS vars
+- **Circadian Engine:** Solar physics → 49 CSS vars (33 color + 10 typography + 3 motion + 3 shadow) with WCAG contrast safety
 - **Motion:** 6 animation patterns → GSAP presets, Framer Motion variants, CSS @keyframes
 - **Styling:** cva + Tailwind v4 — never hardcode colors
+- **Testing:** 353 unit tests (Vitest + React Testing Library), Chromatic visual regression
 - **Package manager:** pnpm only
-- **Exports:** `nectar-design` (JS), `nectar-design/tokens.css`, `nectar-design/theme.css`, `nectar-design/gsap`, `nectar-design/framer`, `nectar-design/animation.css`
+- **Exports:** `nectar-design` (JS), `nectar-design/tokens.css`, `nectar-design/theme.css`, `nectar-design/gsap`, `nectar-design/framer`, `nectar-design/animation.css`, `nectar-design/circadian` (theme engine), `nectar-design/circadian.css` (@property + transitions), `nectar-design/tiptap.css` (rich text theme)
 
 ## Rules
 

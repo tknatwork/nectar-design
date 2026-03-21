@@ -82,14 +82,20 @@ pnpm install
 # Build the library
 pnpm build
 
+# Run tests (353 unit tests)
+pnpm test
+
 # Run linting
 pnpm lint
 
 # Run type checks
 pnpm typecheck
+
+# Launch Storybook
+pnpm storybook
 ```
 
-Always run `pnpm build` and `pnpm lint` before submitting a PR. PRs with lint errors or build failures will not be merged.
+Always run `pnpm build`, `pnpm test`, and `pnpm lint` before submitting a PR. PRs with lint errors, test failures, or build failures will not be merged.
 
 ---
 
@@ -116,7 +122,7 @@ type(scope): description
 
 ### Scope
 
-Use the component or area name, e.g. `button`, `tokens`, `badge`, `build`.
+Use the component or area name, e.g. `button`, `tokens`, `badge`, `build`, `circadian`, `engine`.
 
 ### Examples
 
