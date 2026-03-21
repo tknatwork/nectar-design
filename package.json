@@ -20,7 +20,8 @@
       "import": "./dist/circadian/index.js",
       "types": "./dist/circadian/index.d.ts"
     },
-    "./circadian.css": "./dist/circadian.css"
+    "./circadian.css": "./dist/circadian.css",
+    "./echarts-theme": "./dist/echarts-theme.json"
   },
   "files": [
     "dist",
@@ -30,7 +31,7 @@
   ],
   "scripts": {
     "prebuild": "node scripts/build-tokens-sd.mjs",
-    "build": "tsup && node scripts/build-motion-presets.mjs && cp css/tokens.css dist/tokens.css && cp css/theme.css dist/theme.css && cp css/tiptap-theme.css dist/tiptap-theme.css && cp css/circadian.css dist/circadian.css",
+    "build": "tsup && node scripts/build-tokens-sd.mjs && node scripts/build-motion-presets.mjs && cp css/tokens.css dist/tokens.css && cp css/theme.css dist/theme.css && cp css/tiptap-theme.css dist/tiptap-theme.css && cp css/circadian.css dist/circadian.css",
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",
