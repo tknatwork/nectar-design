@@ -27,11 +27,13 @@ const MUMBAI_CONFIG: CircadianConfig = {
   contrastFloor: 'AA',
 };
 
-/** Generate 24 hourly dates for March equinox 2026 */
+/** Generate 24 hourly dates for March equinox 2026 in IST (UTC+5:30).
+ *  Uses explicit UTC construction so tests pass in any timezone. */
 function get24HourlyDates(): { hour: number; date: Date }[] {
   return Array.from({ length: 24 }, (_, h) => ({
     hour: h,
-    date: new Date(2026, 2, 20, h, 0, 0), // March 20, 2026
+    // IST hour h → UTC hour (h - 5.5). Construct via ISO string to avoid local TZ.
+    date: new Date(`2026-03-20T${String(h).padStart(2, '0')}:00:00+05:30`),
   }));
 }
 
