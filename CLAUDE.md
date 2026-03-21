@@ -36,7 +36,7 @@ import { pageEnter, scrollReveal } from 'nectar-design/framer';
 
 ## Token Architecture (5-Tier Pipeline)
 
-```
+```text
 Tier 1: tokens/core/primitives.json  (134 raw values — hex, px, cubicBezier)
 Tier 2: tokens/core/seed.json        (19 brand decisions — colorPrimary, controlHeight)
 Tier 3: tokens/core/map.json         (96 derived — 50 intent colors via color-mix, neutral alphas, scales)
@@ -97,6 +97,7 @@ pnpm build-storybook  # Build static Storybook
 ```
 
 **Visual regression (Chromatic):**
+
 - Runs automatically on PRs touching `packages/nectar-design/**`
 - CI workflow: `.github/workflows/chromatic.yml`
 - Requires `CHROMATIC_PROJECT_TOKEN` GitHub Actions secret
