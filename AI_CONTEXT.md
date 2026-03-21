@@ -10,14 +10,15 @@ Includes the **Biomimetic Adaptive Theme** — a physics-based circadian engine 
 
 ## Key facts
 
-- **Build:** tsup (ESM-only) with prebuild token + motion compilation
+- **Build:** tsup (ESM-only), then token gen (tokens.css + echarts-theme.json) + motion presets post-tsup
 - **Tokens:** 5-tier pipeline (primitives → seed → map → semantic → components) → 479 CSS vars
 - **Circadian Engine:** Solar physics → 49 CSS vars (33 color + 10 typography + 3 motion + 3 shadow) with WCAG contrast safety
 - **Motion:** 6 animation patterns → GSAP presets, Framer Motion variants, CSS @keyframes
 - **Styling:** cva + Tailwind v4 — never hardcode colors
 - **Testing:** 353 unit tests (Vitest + React Testing Library), Chromatic visual regression
 - **Package manager:** pnpm only
-- **Exports:** `nectar-design` (JS), `nectar-design/tokens.css`, `nectar-design/theme.css`, `nectar-design/gsap`, `nectar-design/framer`, `nectar-design/animation.css`, `nectar-design/circadian` (theme engine), `nectar-design/circadian.css` (@property + transitions), `nectar-design/tiptap.css` (rich text theme)
+- **Exports:** `nectar-design` (JS), `nectar-design/tokens.css`, `nectar-design/theme.css`, `nectar-design/gsap`, `nectar-design/framer`, `nectar-design/animation.css`, `nectar-design/circadian` (theme engine), `nectar-design/circadian.css` (@property + transitions), `nectar-design/tiptap.css` (rich text theme), `nectar-design/echarts-theme` (build-time ECharts theme JSON)
+- **Storybook:** [design.tusharkantnaik.com](https://design.tusharkantnaik.com)
 
 ## Rules
 

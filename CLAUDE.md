@@ -41,6 +41,10 @@ import 'nectar-design/tiptap.css';
 // Animation presets (tree-shakeable)
 import { presets, duration, easing } from 'nectar-design/gsap';
 import { pageEnter, scrollReveal } from 'nectar-design/framer';
+
+// ECharts theme (build-time generated from DTCG tokens)
+import echartsTheme from 'nectar-design/echarts-theme';
+// → { light: EChartsThemeObject, dark: EChartsThemeObject }
 ```
 
 ---
@@ -56,14 +60,16 @@ Tier 5: tokens/components/*.json     (57 tokens — button, card, input, badge)
         tokens/themes/light|dark.json (33 vars each)
 
 Build:  scripts/build-tokens-sd.mjs  → css/tokens.css (479 CSS custom properties)
+                                    → dist/echarts-theme.json (light + dark ECharts themes)
         scripts/build-motion-presets.mjs → dist/gsap/presets.js
                                         → dist/framer/variants.js
                                         → dist/animation-keyframes.css
 
 Runtime: src/engine/circadian-engine.ts → 49 CSS vars from solar physics
+         src/engine/snapshot-generator.ts → regenerates static theme fallbacks (light.json, dark.json)
 ```
 
-- Both build scripts run as `prebuild` before tsup
+- Token + motion scripts run twice: `prebuild` (generates css/) and post-tsup (generates dist/echarts-theme.json)
 - `color-mix(in oklch)` generates 10-state color derivatives per intent
 - Alpha-based neutral text hierarchy (88/65/45/25% opacity)
 - `css/theme.css` maps CSS custom properties to Tailwind utilities via `@theme`
@@ -83,6 +89,7 @@ src/engine/
 ├── motion-deriver.ts      Circadian state → 3 motion adaptation vars
 ├── consistency-layer.ts   Detect/handle/manage color↔typography coherence (max 3 passes)
 ├── tab-leader.ts          BroadcastChannel leader election for multi-tab sync
+├── snapshot-generator.ts  Regenerates light.json/dark.json from engine noon/midnight snapshots
 └── __tests__/             353 tests including 24-hour circadian validation
 ```
 
@@ -131,6 +138,7 @@ The engine test suite validates all 49 CSS variables at 24 hourly snapshots:
 
 Visual component catalog for browsing all components and token documentation.
 
+- **Live:** [design.tusharkantnaik.com](https://design.tusharkantnaik.com)
 - **Config:** `.storybook/`
 - **Stories:** `src/**/*.stories.tsx`
 - **Components:** Button (8 variants), Card (3 sizes), Badge (5 variants), Input, Textarea, ProjectLayout, and more
@@ -155,7 +163,7 @@ pnpm build-storybook  # Build static Storybook
 
 ```bash
 pnpm install          # Install dependencies
-pnpm build            # Build tokens + compile with tsup + copy CSS
+pnpm build            # Build: tsup → token gen (tokens.css + echarts-theme.json) → motion presets → copy CSS
 pnpm dev              # Watch mode (tsup --watch)
 pnpm test             # Vitest unit tests (353 tests)
 pnpm storybook        # Launch Storybook dev server

@@ -34,6 +34,10 @@ import 'nectar-design/tiptap.css';
 // Animation presets (tree-shakeable)
 import { presets, duration, easing } from 'nectar-design/gsap';
 import { pageEnter, scrollReveal } from 'nectar-design/framer';
+
+// ECharts theme (build-time generated from DTCG tokens)
+import echartsTheme from 'nectar-design/echarts-theme';
+// → { light: EChartsThemeObject, dark: EChartsThemeObject }
 ```
 
 ### Circadian Theme (Biomimetic Adaptive Theme)
@@ -68,9 +72,11 @@ Tier 5: tokens/components/*.json     (61 per-component)
         tokens/themes/light|dark.json (33 overrides each — SSR fallbacks)
 
 Build:  scripts/build-tokens-sd.mjs      → css/tokens.css (479 vars)
+                                         → dist/echarts-theme.json (light + dark)
         scripts/build-motion-presets.mjs  → GSAP + Framer + CSS @keyframes
 
 Runtime: src/engine/circadian-engine.ts  → 49 CSS vars computed from solar physics
+         src/engine/snapshot-generator.ts → regenerates static theme fallbacks
 ```
 
 Visual diagram: [`docs/token-pipeline.md`](docs/token-pipeline.md)
@@ -79,7 +85,7 @@ Visual diagram: [`docs/token-pipeline.md`](docs/token-pipeline.md)
 
 ```bash
 pnpm install          # Install dependencies
-pnpm build            # Build tokens + compile with tsup + copy CSS
+pnpm build            # Build: tsup → token gen (+ echarts-theme.json) → motion presets → copy CSS
 pnpm dev              # Watch mode (tsup --watch)
 pnpm test             # Run 353 unit tests (Vitest)
 pnpm storybook        # Launch Storybook dev server (port 6006)
@@ -95,6 +101,7 @@ pnpm build-storybook  # Build static Storybook
 - **Build:** tsup (ESM-only, .d.ts generation)
 - **Testing:** Vitest + React Testing Library (353 tests)
 - **Visual:** Storybook + Chromatic
+- **Storybook:** [design.tusharkantnaik.com](https://design.tusharkantnaik.com)
 
 ## License
 
