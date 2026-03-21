@@ -55,7 +55,7 @@ import echartsTheme from 'nectar-design/echarts-theme';
 Tier 1: tokens/core/primitives.json  (134 raw values — hex, px, cubicBezier)
 Tier 2: tokens/core/seed.json        (19 brand decisions — colorPrimary, controlHeight)
 Tier 3: tokens/core/map.json         (96 derived — 50 intent colors via color-mix, neutral alphas, scales)
-Tier 4: tokens/core/semantic.json    (93 aliases — spacing, typography, grid, motion)
+Tier 4: tokens/core/semantic.json    (97 aliases — spacing, typography, grid, motion, a11y)
 Tier 5: tokens/components/*.json     (57 tokens — button, card, input, badge)
         tokens/themes/light|dark.json (33 vars each)
 

@@ -67,7 +67,7 @@ The circadian engine computes a complete 49-variable theme from solar position:
 Tier 1: tokens/core/primitives.json  (134 raw values)
 Tier 2: tokens/core/seed.json        (20 brand decisions)
 Tier 3: tokens/core/map.json         (96 derived via color-mix)
-Tier 4: tokens/core/semantic.json    (93 aliases)
+Tier 4: tokens/core/semantic.json    (97 aliases)
 Tier 5: tokens/components/*.json     (61 per-component)
         tokens/themes/light|dark.json (33 overrides each — SSR fallbacks)
 
