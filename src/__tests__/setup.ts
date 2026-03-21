@@ -1,16 +1,12 @@
 import '@testing-library/jest-dom/vitest';
+import * as matchers from 'vitest-axe/matchers';
+import { expect } from 'vitest';
+import type { AxeResults } from 'axe-core';
 
-// jsdom doesn't implement matchMedia — mock it globally before any module imports
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: (query: string) => ({
-    matches: false,
-    media: query,
-    addEventListener: () => {},
-    removeEventListener: () => {},
-    addListener: () => {},
-    removeListener: () => {},
-    onchange: null,
-    dispatchEvent: () => false,
-  }),
-});
+expect.extend(matchers);
+
+declare module 'vitest' {
+  interface Assertion<T> {
+    toHaveNoViolations(): T extends AxeResults ? void : never;
+  }
+}
