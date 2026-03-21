@@ -8,6 +8,7 @@ const STORAGE_KEY = 'nectar-theme';
 const VALID_MODES = new Set<ThemeMode>(['light', 'dark', 'high-contrast', 'auto']);
 
 function getSnapshot(): ThemeMode {
+  if (typeof window === 'undefined') return 'light';
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored && VALID_MODES.has(stored as ThemeMode)) return stored as ThemeMode;
   return 'auto';

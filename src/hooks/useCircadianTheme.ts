@@ -96,10 +96,8 @@ export interface CircadianProviderProps {
   longitude?: number;
   /** Full config override (latitude/longitude props take precedence) */
   config?: Partial<CircadianConfig>;
-  /** Force a specific mode — 'static' uses a fixed Kelvin value */
+  /** Force a specific mode — 'static' disables the engine */
   mode?: 'auto' | 'static';
-  /** Fixed Kelvin value for static mode (default: 5500) */
-  kelvin?: number;
 }
 
 export function CircadianProvider({

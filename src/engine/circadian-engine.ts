@@ -43,7 +43,7 @@ export function computeTheme(
   // Step 2: Derive all variable groups in parallel
   const { colors, shadows } = derivePalette(state, cfg);
   const typography = deriveTypography(state);
-  const motion = deriveMotion(state, cfg.motionAdaptation);
+  const motion = deriveMotion(state, cfg.motionAdaptation ?? true);
 
   // Step 3: Validate and correct (max 3 passes)
   const output: CircadianOutput = { colors, typography, motion, shadows };

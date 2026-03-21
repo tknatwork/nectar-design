@@ -154,7 +154,7 @@ export function derivePalette(
   // Card variants
   const cardPrimaryBgHex = fromOklch(primaryL + 0.15, primaryC * 0.15, primaryH);
   const cardAccentBgHex = fromOklch(
-    isNight ? accentHex ? 0.2 : 0.2 : 0.93, primaryC * 0.1, accentH,
+    isNight ? 0.2 : 0.93, primaryC * 0.1, accentH,
   );
 
   // ── Shadows ──────────────────────────────────────────────────

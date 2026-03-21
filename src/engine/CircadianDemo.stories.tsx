@@ -20,7 +20,6 @@ function dateForMinutes(minutes: number): Date {
 
 /* ─── Color Swatch ─── */
 function Swatch({ name, value }: { name: string; value: string }) {
-  const isLight = value.includes('0.9') || value.includes('0.95') || value.includes('0.98');
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
       <div
@@ -33,7 +32,7 @@ function Swatch({ name, value }: { name: string; value: string }) {
           flexShrink: 0,
         }}
       />
-      <div style={{ fontFamily: 'monospace', fontSize: 11, color: isLight ? '#333' : '#ccc' }}>
+      <div style={{ fontFamily: 'monospace', fontSize: 11 }}>
         <div style={{ fontWeight: 600 }}>{name}</div>
         <div style={{ opacity: 0.7 }}>{value}</div>
       </div>
@@ -66,24 +65,24 @@ function SolarInfo({ state }: { state: CircadianState }) {
 /* ─── Typography Panel ─── */
 function TypographyPanel({ output }: { output: CircadianOutput }) {
   const t = output.typography;
-  const rows = [
-    ['Body Weight', t.bodyWeight.toFixed(0)],
-    ['Display Weight', t.displayWeight.toFixed(0)],
-    ['Body Tracking', t.bodyTracking],
-    ['Display Tracking', t.displayTracking],
-    ['Body Leading', t.bodyLeading.toFixed(2)],
-    ['Display Leading', t.displayLeading.toFixed(2)],
-    ['Body Size Adjust', t.bodySizeAdjust.toFixed(3)],
-    ['Display Size Adjust', t.displaySizeAdjust.toFixed(3)],
-    ['Optical Size', t.opticalSize],
-    ['Contrast Ratio', t.contrastRatio.toFixed(2)],
+  const rows: [string, string][] = [
+    ['Body Weight', t['--typo-body-weight']],
+    ['Display Weight', t['--typo-display-weight']],
+    ['Body Tracking', t['--typo-body-tracking']],
+    ['Display Tracking', t['--typo-display-tracking']],
+    ['Body Leading', t['--typo-body-leading']],
+    ['Display Leading', t['--typo-display-leading']],
+    ['Body Size Adjust', t['--typo-body-size-adjust']],
+    ['Display Size Adjust', t['--typo-display-size-adjust']],
+    ['Optical Size', t['--typo-optical-size']],
+    ['Contrast Ratio', t['--typo-contrast-ratio']],
   ];
   return (
     <div>
       <h4 style={{ margin: '0 0 8px', fontSize: 14, fontWeight: 600 }}>Typography Adaptation</h4>
       <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '3px 12px', fontSize: 12, fontFamily: 'monospace' }}>
         {rows.map(([label, val]) => (
-          <div key={label as string} style={{ display: 'contents' }}>
+          <div key={label} style={{ display: 'contents' }}>
             <span style={{ opacity: 0.6 }}>{label}</span>
             <span>{val}</span>
           </div>
@@ -101,12 +100,12 @@ function MotionShadowPanel({ output }: { output: CircadianOutput }) {
     <div>
       <h4 style={{ margin: '0 0 8px', fontSize: 14, fontWeight: 600 }}>Motion & Shadow</h4>
       <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '3px 12px', fontSize: 12, fontFamily: 'monospace' }}>
-        <span style={{ opacity: 0.6 }}>Duration Scale</span><span>{m.durationScale.toFixed(2)}</span>
-        <span style={{ opacity: 0.6 }}>Intensity Scale</span><span>{m.intensityScale.toFixed(2)}</span>
-        <span style={{ opacity: 0.6 }}>Motion Reduced</span><span>{m.reduced}</span>
-        <span style={{ opacity: 0.6 }}>Shadow Opacity</span><span>{s.ambientOpacity.toFixed(2)}</span>
-        <span style={{ opacity: 0.6 }}>Shadow Temp</span><span>{s.colorTemperature}</span>
-        <span style={{ opacity: 0.6 }}>Shadow Spread</span><span>{s.spreadScale.toFixed(2)}</span>
+        <span style={{ opacity: 0.6 }}>Duration Scale</span><span>{m['--motion-duration-scale']}</span>
+        <span style={{ opacity: 0.6 }}>Intensity Scale</span><span>{m['--motion-intensity-scale']}</span>
+        <span style={{ opacity: 0.6 }}>Motion Reduced</span><span>{m['--motion-reduced']}</span>
+        <span style={{ opacity: 0.6 }}>Shadow Opacity</span><span>{s['--shadow-ambient-opacity']}</span>
+        <span style={{ opacity: 0.6 }}>Shadow Temp</span><span>{s['--shadow-color-temperature']}</span>
+        <span style={{ opacity: 0.6 }}>Shadow Spread</span><span>{s['--shadow-spread-scale']}</span>
       </div>
     </div>
   );
@@ -137,9 +136,9 @@ function LivePreview({ vars, output }: { vars: Record<string, string>; output: C
       <h2
         style={{
           fontSize: 28,
-          fontWeight: t.displayWeight,
-          letterSpacing: t.displayTracking,
-          lineHeight: t.displayLeading,
+          fontWeight: Number(t['--typo-display-weight']),
+          letterSpacing: t['--typo-display-tracking'],
+          lineHeight: Number(t['--typo-display-leading']),
           margin: '0 0 8px',
         }}
       >
@@ -148,9 +147,9 @@ function LivePreview({ vars, output }: { vars: Record<string, string>; output: C
       <p
         style={{
           fontSize: 15,
-          fontWeight: t.bodyWeight,
-          letterSpacing: t.bodyTracking,
-          lineHeight: t.bodyLeading,
+          fontWeight: Number(t['--typo-body-weight']),
+          letterSpacing: t['--typo-body-tracking'],
+          lineHeight: Number(t['--typo-body-leading']),
           margin: '0 0 16px',
           color: muted,
         }}
@@ -250,15 +249,15 @@ function CircadianExplorer({
     setMinutes(Number(e.target.value));
   }, []);
 
-  // Group colors for display
+  // Group colors for display (using CSS variable keys)
   const colorGroups = useMemo(() => {
     const c = output.colors;
     return {
-      'Background': { bg: c.bg, surface: c.surface, muted: c.muted, input: c.input },
-      'Foreground': { fg: c.fg, 'surface-fg': c.surfaceFg, 'muted-fg': c.mutedFg },
-      'Brand': { primary: c.primary, 'primary-fg': c.primaryFg, accent: c.accent, ring: c.ring },
-      'Semantic': { destructive: c.destructive, 'destructive-fg': c.destructiveFg, success: c.success, 'success-fg': c.successFg, warning: c.warning, 'warning-fg': c.warningFg },
-      'Chrome': { border: c.border },
+      'Background': { '--bg': c['--bg'], '--surface': c['--surface'], '--muted': c['--muted'], '--input': c['--input'] },
+      'Foreground': { '--fg': c['--fg'], '--surface-fg': c['--surface-fg'], '--muted-fg': c['--muted-fg'] },
+      'Brand': { '--primary': c['--primary'], '--primary-fg': c['--primary-fg'], '--accent': c['--accent'], '--ring': c['--ring'] },
+      'Semantic': { '--destructive': c['--destructive'], '--destructive-fg': c['--destructive-fg'], '--success': c['--success'], '--success-fg': c['--success-fg'], '--warning': c['--warning'], '--warning-fg': c['--warning-fg'] },
+      'Chrome': { '--border': c['--border'] },
     };
   }, [output.colors]);
 
@@ -313,7 +312,7 @@ function CircadianExplorer({
                 {group}
               </div>
               {Object.entries(colors).map(([name, value]) => (
-                <Swatch key={name} name={`--${name}`} value={value as string} />
+                <Swatch key={name} name={name} value={value as string} />
               ))}
             </div>
           ))}
