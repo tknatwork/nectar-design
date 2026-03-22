@@ -315,16 +315,6 @@
 
     /* Tier 3 Semantic */
     /* color */
-    --color-primary: var(--map-color-primary-Base); /* Primary brand color — resolves through map → seed → honey */
-    --color-primary-fg: var(--seed-colorTextBase); /* Text on primary */
-    --color-accent: var(--map-color-accent-Base); /* Accent — resolves through map → seed → skyMid */
-    --color-accent-fg: var(--seed-colorTextBase); /* Text on accent */
-    --color-destructive: var(--map-color-error-Base); /* Error/destructive — resolves through map → seed → terracotta */
-    --color-destructive-fg: var(--seed-colorBgBase); /* Text on destructive */
-    --color-success: var(--map-color-success-Base); /* Success — resolves through map → seed → sage */
-    --color-success-fg: var(--seed-colorBgBase); /* Text on success */
-    --color-warning: var(--map-color-warning-Base); /* Warning — resolves through map → seed → amber */
-    --color-warning-fg: var(--seed-colorTextBase);
     --color-neutral-base: var(--map-color-neutralText-colorTextSecondary); /* Neutral mid — secondary text alpha */
     --color-neutral-light: var(--map-color-neutralFill-colorFillTertiary); /* Neutral light — subtle fill */
     --color-neutral-dark: var(--map-color-neutralText-colorText); /* Neutral dark — primary text alpha */

@@ -1,55 +1,6 @@
 {
   "alias": {
     "color": {
-      "primary": {
-        "$value": "{map.color.primary.Base}",
-        "$type": "color",
-        "$description": "Primary brand color — resolves through map → seed → honey"
-      },
-      "primary-fg": {
-        "$value": "{seed.colorTextBase}",
-        "$type": "color",
-        "$description": "Text on primary"
-      },
-      "accent": {
-        "$value": "{map.color.accent.Base}",
-        "$type": "color",
-        "$description": "Accent — resolves through map → seed → skyMid"
-      },
-      "accent-fg": {
-        "$value": "{seed.colorTextBase}",
-        "$type": "color",
-        "$description": "Text on accent"
-      },
-      "destructive": {
-        "$value": "{map.color.error.Base}",
-        "$type": "color",
-        "$description": "Error/destructive — resolves through map → seed → terracotta"
-      },
-      "destructive-fg": {
-        "$value": "{seed.colorBgBase}",
-        "$type": "color",
-        "$description": "Text on destructive"
-      },
-      "success": {
-        "$value": "{map.color.success.Base}",
-        "$type": "color",
-        "$description": "Success — resolves through map → seed → sage"
-      },
-      "success-fg": {
-        "$value": "{seed.colorBgBase}",
-        "$type": "color",
-        "$description": "Text on success"
-      },
-      "warning": {
-        "$value": "{map.color.warning.Base}",
-        "$type": "color",
-        "$description": "Warning — resolves through map → seed → amber"
-      },
-      "warning-fg": {
-        "$value": "{seed.colorTextBase}",
-        "$type": "color"
-      },
       "neutral-base": {
         "$value": "{map.color.neutralText.colorTextSecondary}",
         "$type": "color",
