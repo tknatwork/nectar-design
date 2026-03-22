@@ -109,7 +109,7 @@
     "node": ">=18"
   },
   "author": "Tushar Kant Naik <hi@tusharkantnaik.com>",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "https://github.com/tknatwork/nectar-design.git"
