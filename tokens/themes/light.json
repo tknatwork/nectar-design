@@ -21,14 +21,14 @@
       "$description": "Graphite text on surface"
     },
     "primary": {
-      "$value": "#FFE082",
+      "$value": "#8C6F00",
       "$type": "color",
-      "$description": "Honey (primary)"
+      "$description": "Dark amber (primary) — 4.70:1 on cream bg"
     },
     "primary-fg": {
-      "$value": "#2D2A32",
+      "$value": "#FFFFFF",
       "$type": "color",
-      "$description": "Dark text on honey"
+      "$description": "White text on dark amber — 4.78:1"
     },
     "accent": {
       "$value": "#B3D4F0",
@@ -66,9 +66,9 @@
       "$description": "Input bg — clean white"
     },
     "ring": {
-      "$value": "#FFE082",
+      "$value": "#8C6F00",
       "$type": "color",
-      "$description": "Focus ring (honey)"
+      "$description": "Focus ring (dark amber) — 4.70:1 on cream bg"
     },
     "destructive": {
       "$value": "#993520",
