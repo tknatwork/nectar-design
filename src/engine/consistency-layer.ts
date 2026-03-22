@@ -45,21 +45,23 @@ function getContrast(fg: string, bg: string): number {
   return chroma.contrast(fgC, bgC);
 }
 
-/** Adjust fg lightness to meet minimum contrast ratio against bg */
+/** Adjust fg lightness to meet minimum contrast ratio against bg.
+ *  Adds 0.15 headroom to absorb oklch→sRGB rounding between chroma-js and axe-core. */
 function fixContrast(fg: string, bg: string, minRatio: number): string {
+  const target = minRatio + 0.15;
   const fgC = parseColor(fg);
   const bgC = parseColor(bg);
   if (!fgC || !bgC) return fg;
 
   let current = fgC;
   let ratio = chroma.contrast(current, bgC);
-  if (ratio >= minRatio) return fg;
+  if (ratio >= target) return fg;
 
   const bgL = bgC.oklch()[0];
   const step = bgL > 0.5 ? -0.03 : 0.03;
   let attempts = 0;
 
-  while (ratio < minRatio && attempts < 30) {
+  while (ratio < target && attempts < 30) {
     const [l, c, h] = current.oklch();
     const newL = Math.max(0, Math.min(1, l + step));
     current = chroma.oklch(newL, c, h || 0);
@@ -85,6 +87,7 @@ function getContrastPairs(floor: 'AA' | 'AAA'): ContrastPair[] {
     { fgKey: '--surface-fg', bgKey: '--surface', minRatio: bodyRatio },
     { fgKey: '--muted-fg', bgKey: '--muted', minRatio: bodyRatio },
     { fgKey: '--muted-fg', bgKey: '--bg', minRatio: bodyRatio },
+    { fgKey: '--primary', bgKey: '--bg', minRatio: bodyRatio },
     { fgKey: '--primary-fg', bgKey: '--primary', minRatio: LARGE_TEXT_RATIO },
     { fgKey: '--accent-fg', bgKey: '--accent', minRatio: LARGE_TEXT_RATIO },
     { fgKey: '--destructive-fg', bgKey: '--destructive', minRatio: LARGE_TEXT_RATIO },

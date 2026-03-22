@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, useMemo, useCallback } from 'react';
 import { computeTheme, computeThemeVars, getState } from './circadian-engine';
 import { DEFAULT_CONFIG } from './types';
-import type { CircadianConfig, CircadianOutput, CircadianState } from './types';
+import type { CircadianConfig, CircadianOutput, CircadianState, CircadianVarMap } from './types';
 
 /* ─── Helpers ─── */
 function timeLabel(minutes: number): string {
@@ -112,7 +112,7 @@ function MotionShadowPanel({ output }: { output: CircadianOutput }) {
 }
 
 /* ─── Live Preview (applies vars to a mini UI) ─── */
-function LivePreview({ vars, output }: { vars: Record<string, string>; output: CircadianOutput }) {
+function LivePreview({ vars, output }: { vars: CircadianVarMap; output: CircadianOutput }) {
   const bg = vars['--bg'] || '#fff';
   const fg = vars['--fg'] || '#000';
   const primary = vars['--primary'] || '#0066cc';

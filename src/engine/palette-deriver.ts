@@ -23,20 +23,22 @@ function oklch(l: number, c: number, h: number): string {
   return `oklch(${l.toFixed(3)} ${c.toFixed(4)} ${h.toFixed(1)})`;
 }
 
-/** Ensure fg has sufficient contrast against bg. Adjusts fg lightness if needed. */
+/** Ensure fg has sufficient contrast against bg. Adjusts fg lightness if needed.
+ *  Adds 0.15 headroom above minRatio to absorb oklch→sRGB rounding between engines. */
 function ensureContrast(fgHex: string, bgHex: string, minRatio: number): string {
+  const target = minRatio + 0.15;
   let fg = chroma(fgHex);
   const bg = chroma(bgHex);
   let ratio = chroma.contrast(fg, bg);
 
-  if (ratio >= minRatio) return fg.css('oklch');
+  if (ratio >= target) return fg.css('oklch');
 
   // Determine direction: if bg is light, darken fg; if bg is dark, lighten fg
   const bgL = bg.oklch()[0];
   const step = bgL > 0.5 ? -0.03 : 0.03;
   let attempts = 0;
 
-  while (ratio < minRatio && attempts < 30) {
+  while (ratio < target && attempts < 30) {
     const [l, c, h] = fg.oklch();
     const newL = Math.max(0, Math.min(1, l + step));
     fg = chroma.oklch(newL, c, h || 0);
@@ -105,7 +107,9 @@ export function derivePalette(
   const primaryH = clampHue(baseH, cfg.brandHue, cfg.brandHueLockRange);
   const primaryL = isNight ? 0.7 : 0.75;
   const primaryC = Math.max(0.08, baseC * 1.5);
-  const primaryHex = fromOklch(primaryL, primaryC, primaryH);
+  const primaryRawHex = fromOklch(primaryL, primaryC, primaryH);
+  // Primary is used as text color on --bg (e.g. text-primary badges), must pass body contrast
+  const primaryHex = chroma(ensureContrast(primaryRawHex, bgHex, minRatio)).hex();
   const primaryFgHex = fromOklch(isNight ? 0.15 : 0.2, 0.02, primaryH);
   const primaryFgSafe = ensureContrast(primaryFgHex, primaryHex, 3);
 
