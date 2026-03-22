@@ -21,9 +21,9 @@
       "$description": "Graphite text on surface"
     },
     "primary": {
-      "$value": "#8C6F00",
+      "$value": "#7A6100",
       "$type": "color",
-      "$description": "Dark amber (primary) — 4.70:1 on cream bg"
+      "$description": "Dark amber (primary) — 5.83:1 on cream bg, 5.25:1 on 10% tint"
     },
     "primary-fg": {
       "$value": "#FFFFFF",
@@ -66,9 +66,9 @@
       "$description": "Input bg — clean white"
     },
     "ring": {
-      "$value": "#8C6F00",
+      "$value": "#7A6100",
       "$type": "color",
-      "$description": "Focus ring (dark amber) — 4.70:1 on cream bg"
+      "$description": "Focus ring (dark amber) — 5.83:1 on cream bg"
     },
     "destructive": {
       "$value": "#993520",

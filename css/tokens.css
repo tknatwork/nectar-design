@@ -492,7 +492,7 @@
     --fg: #3E3A44; /* Graphite — cool dark grey body text */
     --surface: #FFFFFF; /* Card / panel — pure white lifts off cream */
     --surface-fg: #3E3A44; /* Graphite text on surface */
-    --primary: #8C6F00; /* Dark amber (primary) — 4.70:1 on cream bg */
+    --primary: #7A6100; /* Dark amber (primary) — 5.83:1 on cream bg, 5.25:1 on 10% tint */
     --primary-fg: #FFFFFF; /* White text on dark amber — 4.78:1 */
     --accent: #B3D4F0; /* Sky mid (accent) */
     --accent-fg: #2D2A32; /* Dark text on sky mid */
@@ -501,7 +501,7 @@
     --border: #C9C5C2; /* Warm ash border — slightly darker for definition */
     --shadow-color: #D9D5D2; /* Shadow fill — lighter than border for depth */
     --input: #FFFFFF; /* Input bg — clean white */
-    --ring: #8C6F00; /* Focus ring (dark amber) — 4.70:1 on cream bg */
+    --ring: #7A6100; /* Focus ring (dark amber) — 5.83:1 on cream bg */
     --destructive: #993520; /* Dark terracotta — AAA 7.28:1 on white */
     --destructive-fg: #FFFFFF;
     --success: #15603A; /* Deep sage — AAA 7.59:1 on white */
