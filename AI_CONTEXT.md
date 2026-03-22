@@ -4,13 +4,13 @@
 
 ## What is this?
 
-A public React component library and design token system. Ships 30+ components (Button, Card, Badge, Input, Textarea, Container, Stack, Grid, Icon, Toggle, Select, Dialog, and more), hooks (useTheme, useReducedMotion, useCircadian), and a cn() utility.
+A private React component library and design token system. Ships 30+ components (Button, Card, Badge, Input, Textarea, Container, Stack, Grid, Icon, Toggle, Select, Dialog, and more), hooks (useTheme, useReducedMotion, useCircadian), and a cn() utility.
 
 Includes the **Biomimetic Adaptive Theme** — a physics-based circadian engine (`nectar-design/circadian`) that computes 49 CSS variables from solar position in real-time, with 60-second GPU-accelerated crossfade transitions.
 
 ## Key facts
 
-- **Build:** tsup (ESM-only), then token gen (tokens.css + echarts-theme.json) + motion presets post-tsup
+- **Build:** tsup (ESM-only), then token gen (tokens.css + echarts-theme.json) + motion presets + namespace audit post-tsup
 - **Tokens:** 5-tier pipeline (primitives → seed → map → semantic → components) → 479 CSS vars
 - **Circadian Engine:** Solar physics → 49 CSS vars (33 color + 10 typography + 3 motion + 3 shadow) with WCAG contrast safety
 - **Motion:** 6 animation patterns → GSAP presets, Framer Motion variants, CSS @keyframes

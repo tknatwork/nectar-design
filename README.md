@@ -8,8 +8,12 @@ transitions driven by actual light physics.
 
 ## Install
 
+Private package — available via git submodule within the Portfolio workspace.
+
 ```bash
-pnpm add nectar-design
+# In parent workspace (not published to npm)
+git submodule update --init
+pnpm install
 ```
 
 ## Usage
@@ -71,9 +75,11 @@ Tier 4: tokens/core/semantic.json    (97 aliases)
 Tier 5: tokens/components/*.json     (61 per-component)
         tokens/themes/light|dark.json (33 overrides each — SSR fallbacks)
 
-Build:  scripts/build-tokens-sd.mjs      → css/tokens.css (479 vars)
-                                         → dist/echarts-theme.json (light + dark)
-        scripts/build-motion-presets.mjs  → GSAP + Framer + CSS @keyframes
+Build:  scripts/build-tokens-sd.mjs        → css/tokens.css (479 vars)
+                                           → dist/echarts-theme.json (light + dark)
+        scripts/build-motion-presets.mjs   → GSAP + Framer + CSS @keyframes
+        scripts/audit-theme-namespaces.mjs → validates no Tailwind v4 namespace collisions
+        scripts/validate-token-types.mjs   → checks ref integrity + spacing monotonicity
 
 Runtime: src/engine/circadian-engine.ts  → 49 CSS vars computed from solar physics
          src/engine/snapshot-generator.ts → regenerates static theme fallbacks
@@ -85,9 +91,11 @@ Visual diagram: [`docs/token-pipeline.md`](docs/token-pipeline.md)
 
 ```bash
 pnpm install          # Install dependencies
-pnpm build            # Build: tsup → token gen (+ echarts-theme.json) → motion presets → copy CSS
+pnpm build            # Build: tsup → token gen → motion presets → namespace audit → copy CSS
 pnpm dev              # Watch mode (tsup --watch)
 pnpm test             # Run 353 unit tests (Vitest)
+pnpm audit:theme      # Validate no Tailwind v4 namespace collisions in @theme
+pnpm validate:tokens  # Validate token refs, color format, spacing scale ordering
 pnpm storybook        # Launch Storybook dev server (port 6006)
 pnpm build-storybook  # Build static Storybook
 ```
@@ -105,4 +113,4 @@ pnpm build-storybook  # Build static Storybook
 
 ## License
 
-MIT — Tushar Kant Naik
+Proprietary — Tushar Kant Naik. All rights reserved.

@@ -1,6 +1,6 @@
 # Contributing to nectar-design
 
-Thank you for your interest in contributing! nectar-design is an open-source React component library and we welcome contributions of all kinds.
+Thank you for your interest in contributing! nectar-design is a private React component library. Contributions are handled internally.
 
 ---
 
@@ -27,21 +27,20 @@ Please read and follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md). All co
 
 ## Getting Started
 
-1. **Fork** the repository on GitHub.
-2. **Clone** your fork locally:
+1. **Clone** the repository (requires access):
 
    ```bash
-   git clone https://github.com/<your-username>/nectar-design.git
+   git clone git@github.com:tknatwork/nectar-design.git
    cd nectar-design
    ```
 
-3. Install dependencies with **pnpm** (the only supported package manager):
+2. Install dependencies with **pnpm** (the only supported package manager):
 
    ```bash
    pnpm install
    ```
 
-4. Build the project to verify your setup:
+3. Build the project to verify your setup:
 
    ```bash
    pnpm build
@@ -213,10 +212,9 @@ Design tokens are the source of truth for all visual decisions (color, spacing, 
 After editing token JSON files, run:
 
 ```bash
-pnpm build
+pnpm build            # Regenerates tokens.css + validates namespace collisions
+pnpm validate:tokens  # Checks reference integrity and spacing scale ordering
 ```
-
-This regenerates `tokens.css` from the source JSON.
 
 ---
 
@@ -236,7 +234,4 @@ A maintainer will review your PR. Please be patient and responsive to feedback.
 
 Use the GitHub issue templates:
 
-- 🐛 [Bug Report](https://github.com/tknatwork/nectar-design/issues/new?template=bug_report.yml)
-- ✨ [Feature Request](https://github.com/tknatwork/nectar-design/issues/new?template=feature_request.yml)
-
-Please search existing issues before opening a new one.
+File issues directly in the private GitHub repository. Please search existing issues before opening a new one.

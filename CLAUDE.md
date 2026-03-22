@@ -1,6 +1,6 @@
 # CLAUDE.md — nectar-design
 
-> **Public design system package** extracted from the Nectar Portfolio Platform.
+> **Private design system package** extracted from the Nectar Portfolio Platform.
 > All UI components, design tokens, hooks, and utilities for building themed interfaces.
 > Includes the **Biomimetic Adaptive Theme** — a physics-based circadian engine that
 > computes 49 CSS variables from solar position with 60-second GPU-accelerated transitions.
@@ -70,6 +70,8 @@ Runtime: src/engine/circadian-engine.ts → 49 CSS vars from solar physics
 ```
 
 - Token + motion scripts run twice: `prebuild` (generates css/) and post-tsup (generates dist/echarts-theme.json)
+- `audit-theme-namespaces.mjs` validates no `@theme` spacing/max-width collisions after token build
+- `validate-token-types.mjs` checks reference integrity, color format, and spacing scale monotonicity
 - `color-mix(in oklch)` generates 10-state color derivatives per intent
 - Alpha-based neutral text hierarchy (88/65/45/25% opacity)
 - `css/theme.css` maps CSS custom properties to Tailwind utilities via `@theme`
@@ -188,6 +190,8 @@ pnpm build-storybook  # Build static Storybook
 - `tokens/**/*.json` — 5-tier token architecture
 - `scripts/build-tokens-sd.mjs` — token compiler (479 CSS vars)
 - `scripts/build-motion-presets.mjs` — animation preset compiler
+- `scripts/audit-theme-namespaces.mjs` — theme namespace collision detection
+- `scripts/validate-token-types.mjs` — token reference + scale validation
 - `css/theme.css` — Tailwind @theme contract
 - `css/circadian.css` — @property declarations + transition rules
 - `tokens/motion/patterns.json` — animation pattern tokens

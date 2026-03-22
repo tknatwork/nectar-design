@@ -17,4 +17,6 @@
 - [ ] `pnpm test` passes (353 tests)
 - [ ] No breaking changes to existing component APIs
 - [ ] Token changes include updated `tokens.css` (run `pnpm prebuild`)
+- [ ] `pnpm audit:theme` passes (no namespace collisions)
+- [ ] `pnpm validate:tokens` passes (refs, colors, spacing scale)
 - [ ] Engine changes pass 24-hour circadian validation tests

@@ -37,6 +37,8 @@ graph TD
   subgraph "Build"
     BS["build-tokens-sd.mjs"]
     BM["build-motion-presets.mjs"]
+    AU["audit-theme-namespaces.mjs"]
+    VT["validate-token-types.mjs"]
   end
 
   subgraph "Build Output"
@@ -67,6 +69,8 @@ graph TD
   CB & CC & CI & CBa --> BS
   TL & TD --> BS
   BS --> CSS
+  CSS -->|@theme block| AU
+  P & S & M & A -->|DTCG JSON| VT
 
   P -->|motion tokens| BM
   BM --> GSAP & FM & KF
