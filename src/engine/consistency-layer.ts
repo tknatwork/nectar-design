@@ -84,6 +84,7 @@ function getContrastPairs(floor: 'AA' | 'AAA'): ContrastPair[] {
     { fgKey: '--fg', bgKey: '--bg', minRatio: bodyRatio },
     { fgKey: '--surface-fg', bgKey: '--surface', minRatio: bodyRatio },
     { fgKey: '--muted-fg', bgKey: '--muted', minRatio: bodyRatio },
+    { fgKey: '--muted-fg', bgKey: '--bg', minRatio: bodyRatio },
     { fgKey: '--primary-fg', bgKey: '--primary', minRatio: LARGE_TEXT_RATIO },
     { fgKey: '--accent-fg', bgKey: '--accent', minRatio: LARGE_TEXT_RATIO },
     { fgKey: '--destructive-fg', bgKey: '--destructive', minRatio: LARGE_TEXT_RATIO },

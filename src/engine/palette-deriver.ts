@@ -95,7 +95,11 @@ export function derivePalette(
   const surfaceFgSafe = ensureContrast(surfaceFgHex, surfaceHex, minRatio);
 
   const mutedFgHex = fromOklch(isNight ? 0.7 : 0.45, baseC * 0.04, baseH);
-  const mutedFgSafe = ensureContrast(mutedFgHex, mutedHex, minRatio);
+  // Muted-fg must pass contrast against both --muted AND --bg (used on page backgrounds too)
+  const mutedFgVsMuted = ensureContrast(mutedFgHex, mutedHex, minRatio);
+  const mutedFgSafe = ensureContrast(
+    chroma(mutedFgVsMuted).hex(), bgHex, minRatio,
+  );
 
   // ── Brand colors (temperature-shifted) ───────────────────────
   const primaryH = clampHue(baseH, cfg.brandHue, cfg.brandHueLockRange);
