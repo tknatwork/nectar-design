@@ -31,7 +31,9 @@
   ],
   "scripts": {
     "prebuild": "node scripts/build-tokens-sd.mjs",
-    "build": "tsup && node scripts/build-tokens-sd.mjs && node scripts/build-motion-presets.mjs && cp css/tokens.css dist/tokens.css && cp css/theme.css dist/theme.css && cp css/tiptap-theme.css dist/tiptap-theme.css && cp css/circadian.css dist/circadian.css",
+    "build": "tsup && node scripts/build-tokens-sd.mjs && node scripts/build-motion-presets.mjs && node scripts/audit-theme-namespaces.mjs && cp css/tokens.css dist/tokens.css && cp css/theme.css dist/theme.css && cp css/tiptap-theme.css dist/tiptap-theme.css && cp css/circadian.css dist/circadian.css",
+    "audit:theme": "node scripts/audit-theme-namespaces.mjs",
+    "validate:tokens": "node scripts/validate-token-types.mjs",
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",
