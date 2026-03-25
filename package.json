@@ -46,7 +46,7 @@
     "react-dom": "^19.2.0",
     "style-dictionary": "^5.3.3",
     "tsup": "^8.5.0",
-    "typescript": "~5.9.3"
+    "typescript": "~6.0.2"
   },
   "keywords": [
     "design-system",
