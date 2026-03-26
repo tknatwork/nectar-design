@@ -1,6 +1,6 @@
-# Contributing to nectar-ui
+# Contributing to nectar-design
 
-Thank you for your interest in contributing! nectar-ui is an open-source React component library and we welcome contributions of all kinds.
+Thank you for your interest in contributing! nectar-design is a private React component library and design system.
 
 ---
 
@@ -31,8 +31,8 @@ Please read and follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md). All co
 2. **Clone** your fork locally:
 
    ```bash
-   git clone https://github.com/<your-username>/nectar-ui.git
-   cd nectar-ui
+   git clone https://github.com/<your-username>/nectar-design.git
+   cd nectar-design
    ```
 
 3. Install dependencies with **pnpm** (the only supported package manager):
@@ -101,7 +101,7 @@ Always run `pnpm build` and `pnpm lint` before submitting a PR. PRs with lint er
 
 ## Commit Message Format
 
-nectar-ui follows the **Conventional Commits** specification:
+nectar-design follows the **Conventional Commits** specification:
 
 ```text
 type(scope): description
@@ -236,7 +236,7 @@ A maintainer will review your PR. Please be patient and responsive to feedback.
 
 Use the GitHub issue templates:
 
-- 🐛 [Bug Report](https://github.com/tknatwork/nectar-ui/issues/new?template=bug_report.yml)
-- ✨ [Feature Request](https://github.com/tknatwork/nectar-ui/issues/new?template=feature_request.yml)
+- 🐛 [Bug Report](https://github.com/tknatwork/nectar-design/issues/new?template=bug_report.yml)
+- ✨ [Feature Request](https://github.com/tknatwork/nectar-design/issues/new?template=feature_request.yml)
 
 Please search existing issues before opening a new one.
