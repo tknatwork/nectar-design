@@ -1,18 +1,66 @@
 name: Feature Request
-description: Suggest a new component, variant, or token
-labels: ["enhancement"]
+description: Suggest a new feature or improvement for nectar-ui
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+assignees:
+  - tknatwork
+
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea to improve nectar-ui? We'd love to hear it! Please fill out the form below.
+
   - type: textarea
     id: description
     attributes:
-      label: Describe the feature
-      placeholder: What component, variant, or token would you like added?
+      label: Feature Description
+      description: A clear and concise description of the feature or improvement you'd like to see.
+      placeholder: Describe the feature...
     validations:
       required: true
+
   - type: textarea
-    id: use-case
+    id: use_case
     attributes:
-      label: Use case
-      placeholder: How would this be used? Include code examples if possible.
+      label: Use Case
+      description: |
+        Why is this feature needed? What problem does it solve?
+        Describe the context and the user need behind this request.
+      placeholder: |
+        As a developer using nectar-ui, I want to...
+        so that I can...
     validations:
       required: true
+
+  - type: textarea
+    id: proposed_api
+    attributes:
+      label: Proposed API / Solution
+      description: |
+        If you have a proposal for how this could work, share it here.
+        This could be a code snippet, a description of props, or a design mockup.
+      placeholder: |
+        ```tsx
+        <Button loading={true} loadingText="Saving...">
+          Save
+        </Button>
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or workarounds?
+      placeholder: Describe any alternatives you've considered...
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or references here.
+      placeholder: Any additional information...

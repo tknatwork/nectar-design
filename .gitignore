@@ -1,20 +1,41 @@
+# Dependencies
 node_modules/
+
+# Build output
 dist/
-storybook-static/
+
+# TypeScript
 *.tsbuildinfo
-.DS_Store
+
+# Environment variables
 .env
 .env.local
+.env.*.local
 
-# Build test artifacts
-css/test.css
+# Test coverage
+coverage/
 
-# One-time migration scripts (no longer needed)
-scripts/convert-to-dtcg.mjs
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
 
-# Tool export files (belong in .design-workspace/)
-tokens/nectar-tokens-penpot.zip
-tokens/penpot-import/
-tokens/supernova-motion-tokens.json
-build-storybook.log
-test-results/
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Misc
+.cache/
+.turbo/

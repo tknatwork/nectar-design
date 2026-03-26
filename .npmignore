@@ -1,10 +1,36 @@
+# Source files — not needed in the published package
 src/
-tokens/
-scripts/
+
+# GitHub config and templates
+.github/
+
+# Tests
+tests/
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Build configuration
 tsup.config.ts
 tsconfig.json
-.github/
+
+# Git
+.gitignore
+.gitattributes
+
+# Documentation tools / internal docs
+CLAUDE.md
+
+# GitHub Copilot local config
 .gcc/
-*.md
-!README.md
-!LICENSE
+
+# Misc dev files
+.env
+.env.local
+coverage/
+.DS_Store
+*.log
+.turbo/
+.cache/
