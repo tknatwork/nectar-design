@@ -32,15 +32,9 @@ import { DEFAULT_CONFIG } from '../engine/types';
 
 // ── All 49 CSS variable keys for cleanup ─────────────────────────
 
+// Color vars removed — Heat Engine now owns color via --ui-heat → --dynamic-hue.
+// Only typography (10), motion (3), and shadows (3) remain under circadian control.
 const ALL_VAR_KEYS: string[] = [
-  '--bg', '--fg', '--surface', '--surface-fg', '--muted', '--muted-fg',
-  '--primary', '--primary-fg', '--accent', '--accent-fg',
-  '--destructive', '--destructive-fg', '--success', '--success-fg',
-  '--warning', '--warning-fg', '--border', '--input', '--ring',
-  '--shadow-color', '--button-bg', '--button-fg', '--button-border',
-  '--outline-bg', '--outline-fg', '--outline-border',
-  '--th-bg', '--th-fg', '--badge-fg', '--toggle-track', '--toggle-thumb',
-  '--card-primary-bg', '--card-accent-bg',
   '--typo-body-weight', '--typo-display-weight',
   '--typo-body-tracking', '--typo-display-tracking',
   '--typo-body-leading', '--typo-display-leading',

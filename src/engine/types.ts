@@ -133,8 +133,10 @@ export interface CircadianOutput {
   shadows: CircadianShadows;
 }
 
-/** Flat map of all 49 CSS variables for injection */
-export type CircadianVarMap = CircadianColors &
+/** Flat map of CSS variables for injection.
+ * Colors are optional — Heat Engine owns color via --ui-heat → --dynamic-hue.
+ * Circadian retains: typography (10), motion (3), shadows (3). */
+export type CircadianVarMap = Partial<CircadianColors> &
   CircadianTypography &
   CircadianMotion &
   CircadianShadows;

@@ -53,6 +53,9 @@ export function computeTheme(
 /**
  * Compute a complete theme and return as a flat CSS variable map.
  * Ready for direct injection via document.documentElement.style.setProperty().
+ *
+ * Note: Colors are excluded — the Heat Engine now owns color via --dynamic-hue.
+ * Circadian retains: typography (10 vars), motion (3 vars), shadows (3 vars).
  */
 export function computeThemeVars(
   config: CircadianConfig,
@@ -60,7 +63,7 @@ export function computeThemeVars(
 ): CircadianVarMap {
   const output = computeTheme(config, date);
   return {
-    ...output.colors,
+    // Colors intentionally omitted — Heat Engine owns color via --ui-heat → --dynamic-hue
     ...output.typography,
     ...output.motion,
     ...output.shadows,
