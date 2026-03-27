@@ -53,10 +53,10 @@ describe('Circadian Engine', () => {
   const hourlySnapshots = get24HourlyDates();
 
   describe('Output completeness', () => {
-    it('produces all 49 CSS variables', () => {
+    it('produces 16 CSS variables (typography + motion + shadows — colors owned by Heat Engine)', () => {
       const vars = computeThemeVars(MUMBAI_CONFIG, hourlySnapshots[12].date);
       const keys = Object.keys(vars);
-      expect(keys.length).toBe(49);
+      expect(keys.length).toBe(16);
     });
 
     it('all color values are valid CSS colors', () => {
@@ -211,7 +211,7 @@ describe('Circadian Engine', () => {
         { latitude: 19.07, longitude: 72.87 },
         hourlySnapshots[12].date,
       );
-      expect(Object.keys(vars).length).toBe(49);
+      expect(Object.keys(vars).length).toBe(16);
     });
   });
 });
