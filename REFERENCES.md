@@ -10,10 +10,10 @@
 
 ## Relevant links
 
-- Storybook (live): https://design.tusharkantnaik.com
+- Storybook (live): <https://design.tusharkantnaik.com>
 - Chromatic: linked via GitHub PR checks on `packages/nectar-design/**`
-- Repo: https://github.com/tknatwork/nectar-design (private)
-- Parent repo (Portfolio): https://github.com/tknatwork/myportfolio (private)
+- Repo: <https://github.com/tknatwork/nectar-design> (private)
+- Parent repo (Portfolio): <https://github.com/tknatwork/myportfolio> (private)
 - Token pipeline docs: `docs/token-pipeline.md`
 
 ## Notes

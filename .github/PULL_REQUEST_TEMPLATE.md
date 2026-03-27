@@ -10,9 +10,9 @@ Closes #<!-- issue number -->
 
 <!-- List the main changes introduced by this PR. -->
 
-- 
-- 
-- 
+-
+-
+-
 
 ---
 
@@ -35,8 +35,8 @@ Closes #<!-- issue number -->
 
 <!-- Describe how you tested your changes. -->
 
-- 
-- 
+-
+-
 
 ---
 

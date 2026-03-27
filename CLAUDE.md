@@ -1,4 +1,6 @@
-# Identity
+# CLAUDE.md — nectar-design
+
+## Identity
 
 You are helping **Tushar Kant Naik**, a designer learning development, with **nectar-design** — the design system package for the Nectar Portfolio Platform.
 
@@ -22,8 +24,6 @@ This file is the entry point. Read these next for full context:
 All AI models working in this repo should follow CLAUDE.md first.
 
 ---
-
-# CLAUDE.md — nectar-design
 
 > **Private design system package** for the Nectar Portfolio Platform.
 > All UI components, design tokens, hooks, and utilities for building themed interfaces.
