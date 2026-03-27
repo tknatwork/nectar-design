@@ -11,6 +11,7 @@ A private design system package (nectar-design) with a 5-tier token pipeline (47
 - All CSS vars in @layer tokens — never hardcode hex
 - Theme engine tests cover 24-hour cycle with < 1 JND color drift
 - 353+ unit tests pass, Chromatic snapshots match
+- Circadian engine outputs 16 vars (typography + motion + shadows) — colors are owned by Heat Engine in the Portfolio repo
 - Token validation passes: `pnpm validate:tokens`
 - No Tailwind v4 namespace collisions: `pnpm audit:theme`
 

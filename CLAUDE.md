@@ -28,7 +28,7 @@ All AI models working in this repo should follow CLAUDE.md first.
 > **Private design system package** for the Nectar Portfolio Platform.
 > All UI components, design tokens, hooks, and utilities for building themed interfaces.
 > Includes the **Biomimetic Adaptive Theme** — a physics-based circadian engine that
-> computes 49 CSS variables from solar position with 60-second GPU-accelerated transitions.
+> computes 16 CSS variables (typography + motion + shadows; colors owned by Heat Engine) from solar position with 60-second GPU-accelerated transitions.
 
 ---
 
@@ -39,7 +39,7 @@ All AI models working in this repo should follow CLAUDE.md first.
 | Components | React 18+ with cva (class-variance-authority) — 30+ components |
 | Styling | Tailwind v4 (CSS-first `@theme`) + tailwind-merge |
 | Tokens | 5-tier pipeline: primitives → seed → map → semantic → components → tokens.css (479 vars) |
-| Theme Engine | Biomimetic Adaptive Theme (SunCalc + chroma-js + oklch) → 49 CSS vars from solar physics |
+| Theme Engine | Biomimetic Adaptive Theme (SunCalc + chroma-js + oklch) → 16 CSS vars (typo + motion + shadows; colors owned by Heat Engine) from solar physics |
 | Motion | Animation presets: patterns.json → GSAP presets + Framer variants + CSS @keyframes |
 | Build | tsup (ESM-only, .d.ts generation) |
 | Testing | Vitest + React Testing Library (353 tests) + Chromatic visual regression |
@@ -90,7 +90,7 @@ Build:  scripts/build-tokens-sd.mjs  → css/tokens.css (479 CSS custom properti
                                         → dist/framer/variants.js
                                         → dist/animation-keyframes.css
 
-Runtime: src/engine/circadian-engine.ts → 49 CSS vars from solar physics
+Runtime: src/engine/circadian-engine.ts → 16 CSS vars (typo + motion + shadows; colors owned by Heat Engine) from solar physics
          src/engine/snapshot-generator.ts → regenerates static theme fallbacks (light.json, dark.json)
 ```
 
@@ -104,7 +104,7 @@ Runtime: src/engine/circadian-engine.ts → 49 CSS vars from solar physics
 
 ### Biomimetic Adaptive Theme Engine
 
-The circadian engine (`src/engine/`) computes 49 CSS variables from solar position:
+The circadian engine (`src/engine/`) computes 16 CSS variables (typography + motion + shadows; colors owned by Heat Engine) from solar position:
 
 ```text
 src/engine/
@@ -120,7 +120,7 @@ src/engine/
 └── __tests__/             353 tests including 24-hour circadian validation
 ```
 
-Pipeline: `(time, lat, lng) → solar position → CircadianState → palette + typography + motion → consistency validation → 49 CSS variables`
+Pipeline: `(time, lat, lng) → solar position → CircadianState → palette + typography + motion → consistency validation → 16 CSS variables (typography + motion + shadows; colors owned by Heat Engine)`
 
 Theme modes: `light | dark | high-contrast | auto` — auto delegates to circadian engine.
 Static theme files (`light.json`, `dark.json`) remain as SSR/no-JS fallbacks.
@@ -151,7 +151,7 @@ pnpm test -- --watch  # Watch mode
 
 ### Circadian Engine Tests
 
-The engine test suite validates all 49 CSS variables at 24 hourly snapshots:
+The engine test suite validates all 16 CSS variables (typography + motion + shadows; colors owned by Heat Engine) at 24 hourly snapshots:
 
 - WCAG AA contrast on all fg/bg pairs at every hour
 - Color-typography coupling rules hold across the full curve
