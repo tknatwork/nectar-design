@@ -1,4 +1,4 @@
-name: CI — nectar-ui
+name: CI — nectar-design
 
 on:
   pull_request:

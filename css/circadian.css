@@ -1,0 +1,188 @@
+/**
+ * Circadian CSS — @property declarations + transition rules.
+ *
+ * Optional import for consumers using the Biomimetic Adaptive Theme:
+ *   import 'nectar-design/circadian.css';
+ *
+ * @property enables CSS to interpolate custom properties (color, number)
+ * over 60-second transitions — GPU-accelerated, zero JS per frame.
+ */
+
+/* ── Color @property declarations (enables oklch interpolation) ─── */
+
+@property --bg { syntax: '<color>'; inherits: true; initial-value: #fffdf5; }
+@property --fg { syntax: '<color>'; inherits: true; initial-value: #1a1a1a; }
+@property --surface { syntax: '<color>'; inherits: true; initial-value: #f8f6ef; }
+@property --surface-fg { syntax: '<color>'; inherits: true; initial-value: #1a1a1a; }
+@property --muted { syntax: '<color>'; inherits: true; initial-value: #f0ede6; }
+@property --muted-fg { syntax: '<color>'; inherits: true; initial-value: #6b6b6b; }
+@property --primary { syntax: '<color>'; inherits: true; initial-value: #c4956a; }
+@property --primary-fg { syntax: '<color>'; inherits: true; initial-value: #1a1a1a; }
+@property --accent { syntax: '<color>'; inherits: true; initial-value: #6a8fc4; }
+@property --accent-fg { syntax: '<color>'; inherits: true; initial-value: #1a1a1a; }
+@property --destructive { syntax: '<color>'; inherits: true; initial-value: #c44a4a; }
+@property --destructive-fg { syntax: '<color>'; inherits: true; initial-value: #ffffff; }
+@property --success { syntax: '<color>'; inherits: true; initial-value: #4a8c4a; }
+@property --success-fg { syntax: '<color>'; inherits: true; initial-value: #ffffff; }
+@property --warning { syntax: '<color>'; inherits: true; initial-value: #c4a44a; }
+@property --warning-fg { syntax: '<color>'; inherits: true; initial-value: #1a1a1a; }
+@property --border { syntax: '<color>'; inherits: true; initial-value: #e0ddd6; }
+@property --input { syntax: '<color>'; inherits: true; initial-value: #f8f6ef; }
+@property --ring { syntax: '<color>'; inherits: true; initial-value: #c4956a; }
+@property --shadow-color { syntax: '<color>'; inherits: true; initial-value: #3a3530; }
+@property --button-bg { syntax: '<color>'; inherits: true; initial-value: #c4956a; }
+@property --button-fg { syntax: '<color>'; inherits: true; initial-value: #1a1a1a; }
+@property --button-border { syntax: '<color>'; inherits: true; initial-value: #b88a60; }
+@property --outline-fg { syntax: '<color>'; inherits: true; initial-value: #c4956a; }
+@property --outline-border { syntax: '<color>'; inherits: true; initial-value: #e0ddd6; }
+@property --th-bg { syntax: '<color>'; inherits: true; initial-value: #f0ede6; }
+@property --th-fg { syntax: '<color>'; inherits: true; initial-value: #1a1a1a; }
+@property --badge-fg { syntax: '<color>'; inherits: true; initial-value: #1a1a1a; }
+@property --toggle-track { syntax: '<color>'; inherits: true; initial-value: #c8c4bc; }
+@property --toggle-thumb { syntax: '<color>'; inherits: true; initial-value: #faf9f6; }
+@property --card-primary-bg { syntax: '<color>'; inherits: true; initial-value: #f5ede5; }
+@property --card-accent-bg { syntax: '<color>'; inherits: true; initial-value: #edf2f8; }
+@property --shadow-color-temperature { syntax: '<color>'; inherits: true; initial-value: #3a3530; }
+
+/* ── Typography @property declarations (enables numeric interpolation) */
+
+@property --typo-body-weight { syntax: '<number>'; inherits: true; initial-value: 380; }
+@property --typo-display-weight { syntax: '<number>'; inherits: true; initial-value: 700; }
+@property --typo-body-tracking { syntax: '<length>'; inherits: true; initial-value: -0.01em; }
+@property --typo-display-tracking { syntax: '<length>'; inherits: true; initial-value: -0.03em; }
+@property --typo-body-leading { syntax: '<number>'; inherits: true; initial-value: 1.5; }
+@property --typo-display-leading { syntax: '<number>'; inherits: true; initial-value: 1.1; }
+@property --typo-body-size-adjust { syntax: '<number>'; inherits: true; initial-value: 1; }
+@property --typo-display-size-adjust { syntax: '<number>'; inherits: true; initial-value: 1; }
+@property --typo-contrast-ratio { syntax: '<number>'; inherits: true; initial-value: 1; }
+
+/* ── Motion @property declarations ──────────────────────────────── */
+
+@property --motion-duration-scale { syntax: '<number>'; inherits: true; initial-value: 1; }
+@property --motion-intensity-scale { syntax: '<number>'; inherits: true; initial-value: 1; }
+@property --motion-reduced { syntax: '<number>'; inherits: true; initial-value: 0; }
+
+/* ── Shadow @property declarations ──────────────────────────────── */
+
+@property --shadow-ambient-opacity { syntax: '<number>'; inherits: true; initial-value: 0.25; }
+@property --shadow-spread-scale { syntax: '<number>'; inherits: true; initial-value: 0.85; }
+
+/* ── 60-second crossfade transitions ────────────────────────────── */
+
+html {
+  transition:
+    --bg 60s linear,
+    --fg 60s linear,
+    --surface 60s linear,
+    --surface-fg 60s linear,
+    --muted 60s linear,
+    --muted-fg 60s linear,
+    --primary 60s linear,
+    --primary-fg 60s linear,
+    --accent 60s linear,
+    --accent-fg 60s linear,
+    --destructive 60s linear,
+    --destructive-fg 60s linear,
+    --success 60s linear,
+    --success-fg 60s linear,
+    --warning 60s linear,
+    --warning-fg 60s linear,
+    --border 60s linear,
+    --input 60s linear,
+    --ring 60s linear,
+    --shadow-color 60s linear,
+    --button-bg 60s linear,
+    --button-fg 60s linear,
+    --button-border 60s linear,
+    --outline-fg 60s linear,
+    --outline-border 60s linear,
+    --th-bg 60s linear,
+    --th-fg 60s linear,
+    --badge-fg 60s linear,
+    --toggle-track 60s linear,
+    --toggle-thumb 60s linear,
+    --card-primary-bg 60s linear,
+    --card-accent-bg 60s linear,
+    --shadow-color-temperature 60s linear,
+    --typo-body-weight 60s linear,
+    --typo-display-weight 60s linear,
+    --typo-body-leading 60s linear,
+    --typo-display-leading 60s linear,
+    --typo-body-size-adjust 60s linear,
+    --typo-display-size-adjust 60s linear,
+    --typo-contrast-ratio 60s linear,
+    --motion-duration-scale 60s linear,
+    --motion-intensity-scale 60s linear,
+    --shadow-ambient-opacity 60s linear,
+    --shadow-spread-scale 60s linear;
+}
+
+/* ── FOUC prevention (set by useCircadianTheme on first injection) */
+
+html[style*="--circadian-transition: none"] {
+  transition: none !important;
+}
+
+/* ── Reduced motion: disable all transitions ────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    transition: none !important;
+  }
+}
+
+/* ── Print: force high-contrast static values ───────────────────── */
+
+@media print {
+  :root {
+    --bg: #ffffff !important;
+    --fg: #000000 !important;
+    --surface: #ffffff !important;
+    --surface-fg: #000000 !important;
+    --muted: #f5f5f5 !important;
+    --muted-fg: #333333 !important;
+    --primary: #000000 !important;
+    --primary-fg: #ffffff !important;
+    --accent: #000000 !important;
+    --accent-fg: #ffffff !important;
+    --destructive: #cc0000 !important;
+    --destructive-fg: #ffffff !important;
+    --success: #006600 !important;
+    --success-fg: #ffffff !important;
+    --warning: #cc6600 !important;
+    --warning-fg: #000000 !important;
+    --border: #cccccc !important;
+    --input: #ffffff !important;
+    --ring: #000000 !important;
+    --shadow-color: transparent !important;
+    --button-bg: #000000 !important;
+    --button-fg: #ffffff !important;
+    --button-border: #000000 !important;
+    --outline-fg: #000000 !important;
+    --outline-border: #cccccc !important;
+    --th-bg: #f5f5f5 !important;
+    --th-fg: #000000 !important;
+    --badge-fg: #000000 !important;
+    --toggle-track: #cccccc !important;
+    --toggle-thumb: #ffffff !important;
+    --card-primary-bg: #f5f5f5 !important;
+    --card-accent-bg: #f5f5f5 !important;
+    --shadow-color-temperature: transparent !important;
+    --typo-body-weight: 400 !important;
+    --typo-display-weight: 700 !important;
+    --typo-body-leading: 1.5 !important;
+    --typo-display-leading: 1.2 !important;
+    --typo-body-size-adjust: 1 !important;
+    --typo-display-size-adjust: 1 !important;
+    --typo-contrast-ratio: 1 !important;
+    --motion-duration-scale: 0 !important;
+    --motion-intensity-scale: 0 !important;
+    --motion-reduced: 1 !important;
+    --shadow-ambient-opacity: 0 !important;
+    --shadow-spread-scale: 0 !important;
+  }
+
+  html {
+    transition: none !important;
+  }
+}

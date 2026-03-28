@@ -1,0 +1,157 @@
+/**
+ * Token-aware Tiptap editor styles.
+ * Optional import for consumers using @tiptap/react.
+ *
+ * Usage:
+ *   import 'nectar-design/tiptap.css';
+ *
+ * Inherits all theme tokens — auto-updates with data-theme changes.
+ */
+
+/* ── Base editor ────────────────────────────────────────────── */
+
+.tiptap {
+  color: var(--fg);
+  background: var(--surface, var(--bg));
+  font-family: inherit;
+  line-height: 1.7;
+  outline: none;
+}
+
+.tiptap:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: var(--seed-borderRadius-sm, 4px);
+}
+
+/* ── Typography ─────────────────────────────────────────────── */
+
+.tiptap h1,
+.tiptap h2,
+.tiptap h3 {
+  color: var(--fg);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-block: 1.5em 0.5em;
+}
+
+.tiptap h1 { font-size: 1.75em; }
+.tiptap h2 { font-size: 1.375em; }
+.tiptap h3 { font-size: 1.125em; }
+
+.tiptap p {
+  margin-block: 0.75em;
+}
+
+/* ── Links ──────────────────────────────────────────────────── */
+
+.tiptap a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 150ms ease;
+}
+
+.tiptap a:hover {
+  color: var(--accent);
+}
+
+/* ── Code ───────────────────────────────────────────────────── */
+
+.tiptap code {
+  background: var(--muted);
+  color: var(--fg);
+  border-radius: var(--seed-borderRadius-sm, 4px);
+  padding-inline: 0.3em;
+  padding-block: 0.1em;
+  font-size: 0.875em;
+  font-family: var(--font-mono, ui-monospace, monospace);
+}
+
+.tiptap pre {
+  background: var(--muted);
+  color: var(--fg);
+  border-radius: var(--seed-borderRadius-md, 8px);
+  padding: 1em;
+  overflow-x: auto;
+  margin-block: 1em;
+}
+
+.tiptap pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.875em;
+}
+
+/* ── Blockquote ─────────────────────────────────────────────── */
+
+.tiptap blockquote {
+  border-inline-start: 3px solid var(--border);
+  padding-inline-start: 1em;
+  margin-inline: 0;
+  color: var(--muted-fg);
+  font-style: italic;
+}
+
+/* ── Lists ──────────────────────────────────────────────────── */
+
+.tiptap ul,
+.tiptap ol {
+  padding-inline-start: 1.5em;
+  margin-block: 0.75em;
+}
+
+.tiptap li {
+  margin-block: 0.25em;
+}
+
+.tiptap li::marker {
+  color: var(--muted-fg);
+}
+
+/* ── Horizontal rule ────────────────────────────────────────── */
+
+.tiptap hr {
+  border: none;
+  border-block-start: 1px solid var(--border);
+  margin-block: 1.5em;
+}
+
+/* ── Images ─────────────────────────────────────────────────── */
+
+.tiptap img {
+  max-inline-size: 100%;
+  block-size: auto;
+  border-radius: var(--seed-borderRadius-md, 8px);
+}
+
+/* ── Table ──────────────────────────────────────────────────── */
+
+.tiptap table {
+  border-collapse: collapse;
+  inline-size: 100%;
+  margin-block: 1em;
+}
+
+.tiptap th,
+.tiptap td {
+  border: 1px solid var(--border);
+  padding: 0.5em 0.75em;
+  text-align: start;
+}
+
+.tiptap th {
+  background: var(--muted);
+  font-weight: 600;
+}
+
+/* ── Placeholder ────────────────────────────────────────────── */
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: var(--muted-fg);
+  content: attr(data-placeholder);
+  float: inline-start;
+  block-size: 0;
+  pointer-events: none;
+}

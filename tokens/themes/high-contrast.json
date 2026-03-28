@@ -1,0 +1,169 @@
+{
+  "theme": {
+    "bg": {
+      "$value": "#FFFFFF",
+      "$type": "color",
+      "$description": "Pure white background"
+    },
+    "fg": {
+      "$value": "#000000",
+      "$type": "color",
+      "$description": "Pure black text — maximum contrast"
+    },
+    "surface": {
+      "$value": "#FFFFFF",
+      "$type": "color",
+      "$description": "Pure white surface"
+    },
+    "surface-fg": {
+      "$value": "#000000",
+      "$type": "color",
+      "$description": "Pure black text on surface"
+    },
+    "primary": {
+      "$value": "#B8860B",
+      "$type": "color",
+      "$description": "Dark goldenrod — high contrast honey"
+    },
+    "primary-fg": {
+      "$value": "#000000",
+      "$type": "color",
+      "$description": "Black text on primary"
+    },
+    "accent": {
+      "$value": "#1A3A5C",
+      "$type": "color",
+      "$description": "Dark navy — high contrast accent"
+    },
+    "accent-fg": {
+      "$value": "#FFFFFF",
+      "$type": "color",
+      "$description": "White text on dark navy"
+    },
+    "muted": {
+      "$value": "#E0E0E0",
+      "$type": "color",
+      "$description": "Light grey muted bg"
+    },
+    "muted-fg": {
+      "$value": "#1A1A1A",
+      "$type": "color",
+      "$description": "Near-black muted text"
+    },
+    "border": {
+      "$value": "#000000",
+      "$type": "color",
+      "$description": "Black borders — maximum definition"
+    },
+    "shadow-color": {
+      "$value": "#000000",
+      "$type": "color",
+      "$description": "Black shadows"
+    },
+    "input": {
+      "$value": "#FFFFFF",
+      "$type": "color",
+      "$description": "White input bg"
+    },
+    "ring": {
+      "$value": "#0050AA",
+      "$type": "color",
+      "$description": "High contrast blue focus ring"
+    },
+    "destructive": {
+      "$value": "#8B0000",
+      "$type": "color",
+      "$description": "Dark red — high contrast error"
+    },
+    "destructive-fg": {
+      "$value": "#FFFFFF",
+      "$type": "color",
+      "$description": "White on dark red"
+    },
+    "success": {
+      "$value": "#004D1A",
+      "$type": "color",
+      "$description": "Dark green — high contrast success"
+    },
+    "success-fg": {
+      "$value": "#FFFFFF",
+      "$type": "color",
+      "$description": "White on dark green"
+    },
+    "warning": {
+      "$value": "#5C3D00",
+      "$type": "color",
+      "$description": "Dark amber — high contrast warning"
+    },
+    "button-bg": {
+      "$value": "#000000",
+      "$type": "color",
+      "$description": "Black button — maximum contrast"
+    },
+    "button-fg": {
+      "$value": "#FFFFFF",
+      "$type": "color",
+      "$description": "White text on black button"
+    },
+    "button-border": {
+      "$value": "#000000",
+      "$type": "color",
+      "$description": "Black border"
+    },
+    "outline-bg": {
+      "$value": "transparent",
+      "$type": "color",
+      "$description": "Transparent outline bg"
+    },
+    "outline-fg": {
+      "$value": "#000000",
+      "$type": "color",
+      "$description": "Black outline text"
+    },
+    "outline-border": {
+      "$value": "#000000",
+      "$type": "color",
+      "$description": "Black outline border"
+    },
+    "th-bg": {
+      "$value": "#000000",
+      "$type": "color",
+      "$description": "Black table header"
+    },
+    "th-fg": {
+      "$value": "#FFFFFF",
+      "$type": "color",
+      "$description": "White text on black header"
+    },
+    "badge-fg": {
+      "$value": "#000000",
+      "$type": "color",
+      "$description": "Black badge text"
+    },
+    "toggle-track": {
+      "$value": "#B8860B",
+      "$type": "color",
+      "$description": "Dark goldenrod toggle track"
+    },
+    "toggle-thumb": {
+      "$value": "#000000",
+      "$type": "color",
+      "$description": "Black toggle thumb"
+    },
+    "card-primary-bg": {
+      "$value": "#FFF8DC",
+      "$type": "color",
+      "$description": "Cornsilk — light card with high contrast text"
+    },
+    "card-accent-bg": {
+      "$value": "#E8F0FE",
+      "$type": "color",
+      "$description": "Light blue card bg"
+    },
+    "card-text": {
+      "$value": "#1A1A1A",
+      "$type": "color",
+      "$description": "Near-black card text"
+    }
+  }
+}

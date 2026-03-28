@@ -1,6 +1,6 @@
-# Contributing to nectar-ui
+# Contributing to nectar-design
 
-Thank you for your interest in contributing! nectar-ui is an open-source React component library and we welcome contributions of all kinds.
+Thank you for your interest in contributing! nectar-design is a private React component library and design system.
 
 ---
 
@@ -29,15 +29,20 @@ Please read and follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md). All co
 
 1. **Fork** the repository on GitHub.
 2. **Clone** your fork locally:
+
    ```bash
-   git clone https://github.com/<your-username>/nectar-ui.git
-   cd nectar-ui
+   git clone https://github.com/<your-username>/nectar-design.git
+   cd nectar-design
    ```
+
 3. Install dependencies with **pnpm** (the only supported package manager):
+
    ```bash
    pnpm install
    ```
+
 4. Build the project to verify your setup:
+
    ```bash
    pnpm build
    ```
@@ -54,11 +59,13 @@ Please read and follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md). All co
 ### Workflow
 
 1. Create a feature branch off `dev`:
+
    ```bash
    git checkout dev
    git pull origin dev
    git checkout -b feat/my-feature
    ```
+
 2. Make your changes and commit following the [commit message format](#commit-message-format).
 3. Push your branch and open a PR targeting `dev`.
 
@@ -75,11 +82,17 @@ pnpm install
 # Build the library
 pnpm build
 
+# Run tests (353 unit tests)
+pnpm test
+
 # Run linting
 pnpm lint
 
 # Run type checks
 pnpm typecheck
+
+# Launch Storybook
+pnpm storybook
 ```
 
 Always run `pnpm build` and `pnpm lint` before submitting a PR. PRs with lint errors or build failures will not be merged.
@@ -88,9 +101,9 @@ Always run `pnpm build` and `pnpm lint` before submitting a PR. PRs with lint er
 
 ## Commit Message Format
 
-nectar-ui follows the **Conventional Commits** specification:
+nectar-design follows the **Conventional Commits** specification:
 
-```
+```text
 type(scope): description
 ```
 
@@ -113,7 +126,7 @@ Use the component or area name, e.g. `button`, `tokens`, `badge`, `build`.
 
 ### Examples
 
-```
+```text
 feat(button): add loading state variant
 fix(badge): correct pill border-radius token
 docs(contributing): update branch strategy
@@ -223,7 +236,7 @@ A maintainer will review your PR. Please be patient and responsive to feedback.
 
 Use the GitHub issue templates:
 
-- 🐛 [Bug Report](https://github.com/tknatwork/nectar-ui/issues/new?template=bug_report.yml)
-- ✨ [Feature Request](https://github.com/tknatwork/nectar-ui/issues/new?template=feature_request.yml)
+- 🐛 [Bug Report](https://github.com/tknatwork/nectar-design/issues/new?template=bug_report.yml)
+- ✨ [Feature Request](https://github.com/tknatwork/nectar-design/issues/new?template=feature_request.yml)
 
 Please search existing issues before opening a new one.

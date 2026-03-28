@@ -1,55 +1,6 @@
 {
   "alias": {
     "color": {
-      "primary": {
-        "$value": "{map.color.primary.Base}",
-        "$type": "color",
-        "$description": "Primary brand color — resolves through map → seed → honey"
-      },
-      "primary-fg": {
-        "$value": "{seed.colorTextBase}",
-        "$type": "color",
-        "$description": "Text on primary"
-      },
-      "accent": {
-        "$value": "{map.color.accent.Base}",
-        "$type": "color",
-        "$description": "Accent — resolves through map → seed → skyMid"
-      },
-      "accent-fg": {
-        "$value": "{seed.colorTextBase}",
-        "$type": "color",
-        "$description": "Text on accent"
-      },
-      "destructive": {
-        "$value": "{map.color.error.Base}",
-        "$type": "color",
-        "$description": "Error/destructive — resolves through map → seed → terracotta"
-      },
-      "destructive-fg": {
-        "$value": "{seed.colorBgBase}",
-        "$type": "color",
-        "$description": "Text on destructive"
-      },
-      "success": {
-        "$value": "{map.color.success.Base}",
-        "$type": "color",
-        "$description": "Success — resolves through map → seed → sage"
-      },
-      "success-fg": {
-        "$value": "{seed.colorBgBase}",
-        "$type": "color",
-        "$description": "Text on success"
-      },
-      "warning": {
-        "$value": "{map.color.warning.Base}",
-        "$type": "color",
-        "$description": "Warning — resolves through map → seed → amber"
-      },
-      "warning-fg": {
-        "$value": "{seed.colorTextBase}",
-        "$type": "color"
-      },
       "neutral-base": {
         "$value": "{map.color.neutralText.colorTextSecondary}",
         "$type": "color",
@@ -440,6 +391,28 @@
         "$value": "{seed.shadow.md}",
         "$type": "shadow",
         "$description": "Default hard shadow"
+      }
+    },
+    "a11y": {
+      "focus-ring-width": {
+        "$value": "3px",
+        "$type": "dimension",
+        "$description": "AAA visible focus indicator width"
+      },
+      "focus-ring-offset": {
+        "$value": "2px",
+        "$type": "dimension",
+        "$description": "Gap between element and focus ring"
+      },
+      "min-touch-target": {
+        "$value": "44px",
+        "$type": "dimension",
+        "$description": "WCAG 2.5.5 minimum touch target"
+      },
+      "min-touch-target-enhanced": {
+        "$value": "48px",
+        "$type": "dimension",
+        "$description": "AAA enhanced touch target"
       }
     },
     "motion": {

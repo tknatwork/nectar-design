@@ -21,14 +21,14 @@
       "$description": "Graphite text on surface"
     },
     "primary": {
-      "$value": "#FFE082",
+      "$value": "#7A6100",
       "$type": "color",
-      "$description": "Honey (primary)"
+      "$description": "Dark amber (primary) — 5.83:1 on cream bg, 5.25:1 on 10% tint"
     },
     "primary-fg": {
-      "$value": "#2D2A32",
+      "$value": "#FFFFFF",
       "$type": "color",
-      "$description": "Dark text on honey"
+      "$description": "White text on dark amber — 4.78:1"
     },
     "accent": {
       "$value": "#B3D4F0",
@@ -46,9 +46,9 @@
       "$description": "Fog — subtle grey"
     },
     "muted-fg": {
-      "$value": "#8B8589",
+      "$value": "#504B55",
       "$type": "color",
-      "$description": "Slate text"
+      "$description": "Deep slate — AAA 7.28:1 on muted bg"
     },
     "border": {
       "$value": "#C9C5C2",
@@ -66,23 +66,23 @@
       "$description": "Input bg — clean white"
     },
     "ring": {
-      "$value": "#FFE082",
+      "$value": "#7A6100",
       "$type": "color",
-      "$description": "Focus ring (honey)"
+      "$description": "Focus ring (dark amber) — 5.83:1 on cream bg"
     },
     "destructive": {
-      "$value": "#C0503E",
+      "$value": "#993520",
       "$type": "color",
-      "$description": "Deep terracotta — richer error, matches link/highlight tone"
+      "$description": "Dark terracotta — AAA 7.28:1 on white"
     },
     "destructive-fg": {
       "$value": "#FFFFFF",
       "$type": "color"
     },
     "success": {
-      "$value": "#5BAD7A",
+      "$value": "#15603A",
       "$type": "color",
-      "$description": "Muted sage — softer success"
+      "$description": "Deep sage — AAA 7.59:1 on white"
     },
     "success-fg": {
       "$value": "#FFFFFF",
@@ -90,23 +90,24 @@
       "$description": "White text on darker sage"
     },
     "warning": {
-      "$value": "#F39C12",
-      "$type": "color"
+      "$value": "#6B4700",
+      "$type": "color",
+      "$description": "Deep amber — AAA 8.16:1 on bg"
     },
     "button-bg": {
-      "$value": "#8B8589",
+      "$value": "#504B55",
       "$type": "color",
-      "$description": "Default button — slate fill (matches border)"
+      "$description": "Deep slate button — AAA 8.47:1 with white"
     },
     "button-fg": {
       "$value": "#FFFFFF",
       "$type": "color",
-      "$description": "Default button text — white on slate"
+      "$description": "White text on deep slate"
     },
     "button-border": {
-      "$value": "#8B8589",
+      "$value": "#504B55",
       "$type": "color",
-      "$description": "Slate — visible contrast against shadow"
+      "$description": "Deep slate — matches button-bg"
     },
     "outline-bg": {
       "$value": "transparent",
@@ -119,9 +120,9 @@
       "$description": "Outline variant text — dark"
     },
     "outline-border": {
-      "$value": "#8B8589",
+      "$value": "#504B55",
       "$type": "color",
-      "$description": "Outline variant border — slate, visible on transparent"
+      "$description": "Deep slate — AAA visible on transparent"
     },
     "th-bg": {
       "$value": "#8B8589",
@@ -159,9 +160,9 @@
       "$description": "Sky light — cool seed accent card bg"
     },
     "card-text": {
-      "$value": "#5E5965",
+      "$value": "#4A4550",
       "$type": "color",
-      "$description": "Muted text for card descriptions — softer than fg"
+      "$description": "Deep muted — AAA 8.68:1 on card bgs"
     }
   }
 }

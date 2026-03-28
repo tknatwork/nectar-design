@@ -26,11 +26,21 @@ const textareaVariants = cva(
 type TextareaProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> &
   VariantProps<typeof textareaVariants>;
 
+/**
+ * Multi-line text input with size and error variants, forwards ref for form integration.
+ *
+ * @example
+ * ```tsx
+ * <Textarea placeholder="Write a message..." rows={4} />
+ * ```
+ */
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, size, variant, ...props }, ref) => {
+    const isError = variant === 'error';
     return (
       <textarea
         ref={ref}
+        {...(isError && { 'aria-invalid': 'true' })}
         className={cn(textareaVariants({ size, variant }), className)}
         {...props}
       />

@@ -1,7 +1,8 @@
-# Default owner for all files
+# Global owner — tknatwork reviews all changes
 * @tknatwork
 
-# Token pipeline — protected (weeks of design work)
-/tokens/ @tknatwork
-/scripts/ @tknatwork
-/css/ @tknatwork
+# Design tokens require explicit review
+tokens/ @tknatwork
+
+# Core component source requires explicit review
+src/components/ @tknatwork

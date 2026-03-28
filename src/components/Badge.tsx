@@ -30,6 +30,14 @@ const badgeVariants = cva(
 type BadgeProps = HTMLAttributes<HTMLSpanElement> &
   VariantProps<typeof badgeVariants>;
 
+/**
+ * Inline status label with intent-based color variants.
+ *
+ * @example
+ * ```tsx
+ * <Badge intent="success" size="sm">Active</Badge>
+ * ```
+ */
 export function Badge({ className, intent, size, ...props }: BadgeProps) {
   return (
     <span

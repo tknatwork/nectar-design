@@ -28,9 +28,19 @@ const cardVariants = cva(
 type CardProps = HTMLAttributes<HTMLDivElement> &
   VariantProps<typeof cardVariants>;
 
+/**
+ * Themed card container with optional interactive and elevated variants.
+ *
+ * @example
+ * ```tsx
+ * <Card variant="elevated" padding="lg">Card content here</Card>
+ * ```
+ */
 export function Card({ className, variant, padding, ...props }: CardProps) {
+  const isInteractive = variant === 'interactive';
   return (
     <div
+      {...(isInteractive && { role: 'button', tabIndex: 0 })}
       className={cn(cardVariants({ variant, padding }), className)}
       {...props}
     />

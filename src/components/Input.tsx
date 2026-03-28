@@ -26,11 +26,21 @@ const inputVariants = cva(
 type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> &
   VariantProps<typeof inputVariants>;
 
+/**
+ * Text input with size and error variants, forwards ref for form integration.
+ *
+ * @example
+ * ```tsx
+ * <Input placeholder="Email" size="md" variant="default" />
+ * ```
+ */
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, size, variant, ...props }, ref) => {
+    const isError = variant === 'error';
     return (
       <input
         ref={ref}
+        {...(isError && { 'aria-invalid': 'true' })}
         className={cn(inputVariants({ size, variant }), className)}
         {...props}
       />
