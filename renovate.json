@@ -1,0 +1,58 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":separateMajorReleases"
+  ],
+  "baseBranches": ["dev"],
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 3,
+  "packageRules": [
+    {
+      "description": "Group minor + patch updates weekly",
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "minor-patch",
+      "schedule": ["before 9am on Monday"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    },
+    {
+      "description": "Major updates monthly — require manual review",
+      "matchUpdateTypes": ["major"],
+      "groupName": "major",
+      "schedule": ["before 9am on the first day of the month"],
+      "automerge": false
+    },
+    {
+      "description": "Group Storybook packages together",
+      "matchPackagePatterns": ["^@storybook/", "^storybook$", "^@chromatic-com/"],
+      "groupName": "storybook"
+    },
+    {
+      "description": "Group testing packages",
+      "matchPackagePatterns": ["^vitest", "^@testing-library/", "^vitest-axe$"],
+      "groupName": "testing"
+    },
+    {
+      "description": "Group React packages",
+      "matchPackagePatterns": ["^react$", "^react-dom$", "^@types/react"],
+      "groupName": "react"
+    },
+    {
+      "description": "Group build tools",
+      "matchPackagePatterns": ["^tsup$", "^typescript$", "^style-dictionary$"],
+      "groupName": "build-tools"
+    },
+    {
+      "description": "Auto-merge type definition updates",
+      "matchPackagePatterns": ["^@types/"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    }
+  ],
+  "postUpdateOptions": ["pnpmDedupe"]
+}
