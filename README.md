@@ -2,6 +2,10 @@
 
 Private design system for the Nectar Portfolio Platform.
 5-tier token pipeline generating 473 CSS custom properties.
+Includes a **Biomimetic Adaptive Theme** — a circadian engine that computes
+16 CSS variables (typography, motion, shadows) from solar physics.
+
+- **Storybook:** [design.tusharkantnaik.com](https://design.tusharkantnaik.com)
 
 > **For AI agents:** Read [`CLAUDE.md`](CLAUDE.md) for design system instructions.
 
