@@ -4,7 +4,9 @@
     "config:recommended",
     ":separateMajorReleases"
   ],
-  "baseBranches": ["dev"],
+  "baseBranchPatterns": [
+    "dev"
+  ],
   "labels": ["dependencies"],
   "rangeStrategy": "bump",
   "prHourlyLimit": 2,
@@ -28,30 +30,48 @@
     },
     {
       "description": "Group Storybook packages together",
-      "matchPackagePatterns": ["^@storybook/", "^storybook$", "^@chromatic-com/"],
-      "groupName": "storybook"
+      "groupName": "storybook",
+      "matchPackageNames": [
+        "/^@storybook//",
+        "/^storybook$/",
+        "/^@chromatic-com//"
+      ]
     },
     {
       "description": "Group testing packages",
-      "matchPackagePatterns": ["^vitest", "^@testing-library/", "^vitest-axe$"],
-      "groupName": "testing"
+      "groupName": "testing",
+      "matchPackageNames": [
+        "/^vitest/",
+        "/^@testing-library//",
+        "/^vitest-axe$/"
+      ]
     },
     {
       "description": "Group React packages",
-      "matchPackagePatterns": ["^react$", "^react-dom$", "^@types/react"],
-      "groupName": "react"
+      "groupName": "react",
+      "matchPackageNames": [
+        "/^react$/",
+        "/^react-dom$/",
+        "/^@types/react/"
+      ]
     },
     {
       "description": "Group build tools",
-      "matchPackagePatterns": ["^tsup$", "^typescript$", "^style-dictionary$"],
-      "groupName": "build-tools"
+      "groupName": "build-tools",
+      "matchPackageNames": [
+        "/^tsup$/",
+        "/^typescript$/",
+        "/^style-dictionary$/"
+      ]
     },
     {
       "description": "Auto-merge type definition updates",
-      "matchPackagePatterns": ["^@types/"],
       "automerge": true,
       "automergeType": "pr",
-      "platformAutomerge": true
+      "platformAutomerge": true,
+      "matchPackageNames": [
+        "/^@types//"
+      ]
     }
   ],
   "postUpdateOptions": ["pnpmDedupe"]
