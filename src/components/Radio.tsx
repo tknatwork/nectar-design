@@ -1,5 +1,5 @@
-import { RadioGroup as BaseRadioGroup } from '@base-ui-components/react/radio-group';
-import { Radio as BaseRadio } from '@base-ui-components/react/radio';
+import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
+import { Radio as BaseRadio } from '@base-ui/react/radio';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../cn';
 
