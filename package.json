@@ -106,7 +106,7 @@
     }
   ],
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "author": "Tushar Kant Naik <hi@tusharkantnaik.com>",
   "license": "UNLICENSED",
