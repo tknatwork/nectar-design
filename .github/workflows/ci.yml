@@ -67,3 +67,9 @@ jobs:
             exit 1
           fi
           echo "All required dist files present."
+
+      - name: Check bundle size limits
+        run: pnpm exec size-limit
+
+      - name: Unit tests
+        run: pnpm test

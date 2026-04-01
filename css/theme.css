@@ -30,9 +30,10 @@
   --color-success-fg: var(--success-fg);
   --color-warning: var(--warning);
 
-  /* ── Font families — seed tier ── */
+  /* ── Font families — seed tier (5 variable fonts) ── */
   --font-sans: var(--seed-typography-fontFamily-sans);
   --font-display: var(--seed-typography-fontFamily-display);
+  --font-serif: var(--seed-typography-fontFamily-serif);
   --font-caption: var(--seed-typography-fontFamily-caption);
   --font-mono: var(--seed-typography-fontFamily-mono);
 
