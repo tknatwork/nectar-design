@@ -97,10 +97,11 @@
     --seed-container-xl: 1400px; /* Wide container max-width */
 
     /* typography */
-    --seed-typography-fontFamily-sans: 'Switzer', sans-serif; /* Primary — geometric sans */
-    --seed-typography-fontFamily-mono: 'Roboto Mono', monospace; /* Code blocks */
-    --seed-typography-fontFamily-caption: 'Merriweather', serif; /* Captions & pull quotes */
-    --seed-typography-fontFamily-display: 'Libre Baskerville', serif; /* Serif display — all headings */
+    --seed-typography-fontFamily-sans: 'Plus Jakarta Sans', sans-serif; /* Body — variable geometric sans (wght 200-800) */
+    --seed-typography-fontFamily-mono: 'Monaspace Neon', monospace; /* Code — variable mono (wght, wdth) */
+    --seed-typography-fontFamily-caption: 'Crimson Pro', serif; /* Captions — variable serif (wght 200-900) */
+    --seed-typography-fontFamily-display: 'Google Sans Flex', sans-serif; /* Display headings — 6-axis variable (wght, wdth, opsz, slnt, GRAD, ROND) */
+    --seed-typography-fontFamily-serif: 'Playfair Display', serif; /* Editorial serif — variable (wght, ital) */
     --seed-typography-fontSize-xs: 0.64rem; /* ~10px — fine print */
     --seed-typography-fontSize-sm: 0.8rem; /* ~13px — small / caption */
     --seed-typography-fontSize-base: 1rem; /* 16px — body */

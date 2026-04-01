@@ -359,24 +359,29 @@
     "typography": {
       "fontFamily": {
         "sans": {
-          "$value": "'Switzer', sans-serif",
+          "$value": "'Plus Jakarta Sans', sans-serif",
           "$type": "fontFamily",
-          "$description": "Primary — geometric sans"
+          "$description": "Body — variable geometric sans (wght 200-800)"
         },
         "mono": {
-          "$value": "'Roboto Mono', monospace",
+          "$value": "'Monaspace Neon', monospace",
           "$type": "fontFamily",
-          "$description": "Code blocks"
+          "$description": "Code — variable mono (wght, wdth)"
         },
         "caption": {
-          "$value": "'Merriweather', serif",
+          "$value": "'Crimson Pro', serif",
           "$type": "fontFamily",
-          "$description": "Captions & pull quotes"
+          "$description": "Captions — variable serif (wght 200-900)"
         },
         "display": {
-          "$value": "'Libre Baskerville', serif",
+          "$value": "'Google Sans Flex', sans-serif",
           "$type": "fontFamily",
-          "$description": "Serif display — all headings"
+          "$description": "Display headings — 6-axis variable (wght, wdth, opsz, slnt, GRAD, ROND)"
+        },
+        "serif": {
+          "$value": "'Playfair Display', serif",
+          "$type": "fontFamily",
+          "$description": "Editorial serif — variable (wght, ital)"
         }
       },
       "fontSize": {
