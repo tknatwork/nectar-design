@@ -105,6 +105,11 @@
       "limit": "15 kB"
     }
   ],
+  "pnpm": {
+    "overrides": {
+      "lodash-es": ">=4.18.0"
+    }
+  },
   "engines": {
     "node": ">=24.14.1"
   },
