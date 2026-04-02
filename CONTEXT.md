@@ -2,7 +2,7 @@
 
 ## What we are building
 
-A private design system package (nectar-design) with a 5-tier token pipeline (479 CSS vars), 30+ cva components, a biomimetic adaptive theme engine (solar-driven circadian colors), and motion presets for GSAP + Framer Motion. Used as a git submodule in the Portfolio platform.
+A private design system package (nectar-design) with a 5-tier token pipeline (479 CSS vars), 32 cva components, a biomimetic adaptive theme engine (solar-driven circadian colors), and motion presets for GSAP + Framer Motion. Used as a git submodule in the Portfolio platform.
 
 ## What good looks like
 
@@ -32,7 +32,7 @@ When asking an AI model to work on this package:
 2. **Reference entry files:** `tokens/core/*.json` for tokens, `src/components/` for components, `src/engine/` for theme engine
 3. **After token changes:** `pnpm build` → verify `css/tokens.css` output
 4. **After component changes:** `pnpm test` → `pnpm storybook` to verify visually
-5. **After engine changes:** `pnpm test` — the 24-hour circadian test suite validates all 49 CSS vars
+5. **After engine changes:** `pnpm test` — the 24-hour circadian test suite validates all 16 circadian CSS vars
 
 Example prompt:
 

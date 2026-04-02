@@ -1,7 +1,7 @@
 # nectar-design
 
 Private design system for the Nectar Portfolio Platform.
-5-tier token pipeline generating 473 CSS custom properties.
+5-tier token pipeline generating 479 CSS custom properties.
 
 > **For AI agents:** Read [`CLAUDE.md`](CLAUDE.md) for design system instructions.
 
@@ -17,17 +17,17 @@ pnpm storybook  # Launch Storybook dev server
 
 ```text
 primitives.json → seed.json → map.json → semantic.json → components/*.json
-  → build-tokens-sd.mjs → tokens.css (473 CSS vars)
+  → build-tokens-sd.mjs → tokens.css (479 CSS vars)
   → build-motion-presets.mjs → GSAP presets + Framer variants + CSS @keyframes
 ```
 
 | Tier | Count | Purpose |
 | ---- | ----- | ------- |
-| Primitives | 134 | Raw values (hex, px, cubic-bezier) |
-| Seed | 20 | Brand decisions (colorPrimary, controlHeight) |
+| Primitives | 135 | Raw values (hex, px, cubic-bezier) |
+| Seed | 19 | Brand decisions (colorPrimary, controlHeight) |
 | Map | 96 | Derived via color-mix(in oklch) |
-| Semantic | 93 | Aliases (spacing, typography, grid) |
-| Components + Themes | 61 + 33 | Per-component tokens + light/dark |
+| Semantic | 87 | Aliases (spacing, typography, grid, motion, a11y) |
+| Components + Themes | 57 + 33 | Per-component tokens + light/dark |
 
 ## Component Conventions
 
