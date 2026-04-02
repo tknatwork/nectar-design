@@ -45,9 +45,9 @@
     "build-storybook": "storybook build"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-dom": ">=19",
-    "tailwindcss": ">=4.2"
+    "react": ">=19.2.4",
+    "react-dom": ">=19.2.4",
+    "tailwindcss": ">=4.2.2"
   },
   "dependencies": {
     "@base-ui/react": "1.3.0",
@@ -105,8 +105,13 @@
       "limit": "15 kB"
     }
   ],
+  "pnpm": {
+    "overrides": {
+      "lodash-es": ">=4.18.0"
+    }
+  },
   "engines": {
-    "node": ">=24"
+    "node": ">=24.14.1"
   },
   "author": "Tushar Kant Naik <hi@tusharkantnaik.com>",
   "license": "UNLICENSED",
