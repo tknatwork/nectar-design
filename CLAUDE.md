@@ -229,4 +229,4 @@ pnpm build-storybook  # Build static Storybook
 
 ## Contributing
 
-See `.github/CONTRIBUTING.md`. All changes go through PRs to `main`. CODEOWNERS requires review from @tknatwork.
+See `.github/CONTRIBUTING.md`. All changes go through PRs to `dev` (staging gate), then `dev` merges to `main`. CODEOWNERS requires review from @tknatwork.
