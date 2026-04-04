@@ -36,7 +36,7 @@ All AI models working in this repo should follow CLAUDE.md first.
 
 | Layer | Technology |
 |-------|-----------|
-| Components | React 18+ with cva (class-variance-authority) — 30+ components |
+| Components | React 18+ with cva (class-variance-authority) — 32 components |
 | Styling | Tailwind v4 (CSS-first `@theme`) + tailwind-merge |
 | Tokens | 5-tier pipeline: primitives → seed → map → semantic → components → tokens.css (479 vars) |
 | Theme Engine | Biomimetic Adaptive Theme (SunCalc + chroma-js + oklch) → 16 CSS vars (typo + motion + shadows; colors owned by Heat Engine) from solar physics |
@@ -77,10 +77,10 @@ import echartsTheme from 'nectar-design/echarts-theme';
 ## Token Architecture (5-Tier Pipeline)
 
 ```text
-Tier 1: tokens/core/primitives.json  (134 raw values — hex, px, cubicBezier)
+Tier 1: tokens/core/primitives.json  (135 raw values — hex, px, cubicBezier)
 Tier 2: tokens/core/seed.json        (19 brand decisions — colorPrimary, controlHeight)
 Tier 3: tokens/core/map.json         (96 derived — 50 intent colors via color-mix, neutral alphas, scales)
-Tier 4: tokens/core/semantic.json    (97 aliases — spacing, typography, grid, motion, a11y)
+Tier 4: tokens/core/semantic.json    (87 aliases — spacing, typography, grid, motion, a11y)
 Tier 5: tokens/components/*.json     (57 tokens — button, card, input, badge)
         tokens/themes/light|dark.json (33 vars each)
 
@@ -227,6 +227,19 @@ pnpm build-storybook  # Build static Storybook
 
 ---
 
+## Git Hooks
+
+After cloning, activate the hooks:
+
+```bash
+git config core.hooksPath .githooks
+chmod +x .githooks/*
+```
+
+**Pre-commit hook** (`.githooks/pre-commit`):
+- Blocks direct commits to `main` and `dev` branches
+- Auto-regenerates `pnpm-lock.yaml` when `package.json` is staged (prevents CI `ERR_PNPM_OUTDATED_LOCKFILE`)
+
 ## Contributing
 
-See `.github/CONTRIBUTING.md`. All changes go through PRs to `main`. CODEOWNERS requires review from @tknatwork.
+See `.github/CONTRIBUTING.md`. All changes go through PRs to `dev` (staging gate), then `dev` merges to `main`. CODEOWNERS requires review from @tknatwork.
