@@ -237,6 +237,7 @@ chmod +x .githooks/*
 ```
 
 **Pre-commit hook** (`.githooks/pre-commit`):
+
 - Blocks direct commits to `main` and `dev` branches
 - Auto-regenerates `pnpm-lock.yaml` when `package.json` is staged (prevents CI `ERR_PNPM_OUTDATED_LOCKFILE`)
 
