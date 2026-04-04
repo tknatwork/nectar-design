@@ -35,13 +35,20 @@ Please read and follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md). All co
    cd nectar-design
    ```
 
-3. Install dependencies with **pnpm** (the only supported package manager):
+3. Activate git hooks (lockfile auto-sync + branch protection):
+
+   ```bash
+   git config core.hooksPath .githooks
+   chmod +x .githooks/*
+   ```
+
+4. Install dependencies with **pnpm** (the only supported package manager):
 
    ```bash
    pnpm install
    ```
 
-4. Build the project to verify your setup:
+5. Build the project to verify your setup:
 
    ```bash
    pnpm build

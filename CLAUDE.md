@@ -227,6 +227,19 @@ pnpm build-storybook  # Build static Storybook
 
 ---
 
+## Git Hooks
+
+After cloning, activate the hooks:
+
+```bash
+git config core.hooksPath .githooks
+chmod +x .githooks/*
+```
+
+**Pre-commit hook** (`.githooks/pre-commit`):
+- Blocks direct commits to `main` and `dev` branches
+- Auto-regenerates `pnpm-lock.yaml` when `package.json` is staged (prevents CI `ERR_PNPM_OUTDATED_LOCKFILE`)
+
 ## Contributing
 
 See `.github/CONTRIBUTING.md`. All changes go through PRs to `dev` (staging gate), then `dev` merges to `main`. CODEOWNERS requires review from @tknatwork.
