@@ -42,3 +42,4 @@ storybook-static/
 # Misc
 .cache/
 .turbo/
+build-storybook.log
