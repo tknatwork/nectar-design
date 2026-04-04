@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Pre-commit: branch protection + lockfile auto-sync
+# Install: git config core.hooksPath .githooks
+# Bypass (emergency only): git commit --no-verify
+set -e
+
+# ── 1. Branch Protection ────────────────────────────────────────────────────
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+if [[ "$branch" == "main" || "$branch" == "dev" ]]; then
+  if git rev-parse MERGE_HEAD >/dev/null 2>&1; then
+    exit 0
+  fi
+  echo ""
+  echo "ERROR: Direct commits to '$branch' are blocked."
+  echo "  Create a feature branch: git checkout -b feature/your-change"
+  echo ""
+  exit 1
+fi
+
+# ── 2. Lockfile Auto-Sync ───────────────────────────────────────────────────
+
+STAGED=$(git diff --staged --name-only)
+
+if echo "$STAGED" | grep -q "package.json"; then
+  echo "📦 package.json changed — regenerating pnpm-lock.yaml..."
+  pnpm install --no-frozen-lockfile 2>/dev/null || true
+  git add pnpm-lock.yaml 2>/dev/null || true
+  echo "✅ Lockfile synced and staged"
+fi
