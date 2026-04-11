@@ -25,9 +25,6 @@ jobs:
           node-version: '24.14.1'
           cache: 'pnpm'
 
-      - name: Approve build scripts
-        run: pnpm config set only-built-dependencies '["esbuild"]'
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
