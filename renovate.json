@@ -72,6 +72,12 @@
       "matchPackageNames": [
         "/^@types//"
       ]
+    },
+    {
+      "description": "Ignore pnpm/action-setup v6 — causes ERR_PNPM_LOCKFILE_CONFIG_MISMATCH",
+      "matchPackageNames": ["pnpm/action-setup"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     }
   ],
   "postUpdateOptions": ["pnpmDedupe"]
