@@ -105,7 +105,11 @@
       "limit": "15 kB"
     }
   ],
-  "pnpm": {},
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
   "engines": {
     "node": ">=24.14.1"
   },
