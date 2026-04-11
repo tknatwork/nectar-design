@@ -239,7 +239,14 @@ chmod +x .githooks/*
 **Pre-commit hook** (`.githooks/pre-commit`):
 
 - Blocks direct commits to `main` and `dev` branches
-- Auto-regenerates `pnpm-lock.yaml` when `package.json` is staged (prevents CI `ERR_PNPM_OUTDATED_LOCKFILE`)
+- Auto-regenerates `pnpm-lock.yaml` when `package.json` is staged (uses `--ignore-workspace` for standalone lockfile — prevents CI `ERR_PNPM_OUTDATED_LOCKFILE`)
+
+**CI config files:**
+
+- `.npmrc` — `only-built-dependencies[]=esbuild` (approves esbuild build scripts for standalone install)
+- `pnpm-workspace.yaml` — `onlyBuiltDependencies: [esbuild]` (pnpm reads this for build approval)
+- CI uses `pnpm install --frozen-lockfile --ignore-scripts` to avoid `ERR_PNPM_IGNORED_BUILDS`
+- `vitest.config.ts` — `define: {'process.env.NODE_ENV': '"development"'}` (React 19.2.5 removed `act()` from production bundle)
 
 ## Contributing
 
