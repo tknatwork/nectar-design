@@ -24,7 +24,7 @@ STAGED=$(git diff --staged --name-only)
 
 if echo "$STAGED" | grep -q "package.json"; then
   echo "📦 package.json changed — regenerating pnpm-lock.yaml..."
-  pnpm install --no-frozen-lockfile 2>/dev/null || true
+  pnpm install --no-frozen-lockfile --ignore-workspace 2>/dev/null || true
   git add pnpm-lock.yaml 2>/dev/null || true
   echo "✅ Lockfile synced and staged"
 fi
