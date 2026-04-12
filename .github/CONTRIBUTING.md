@@ -21,7 +21,7 @@ Thank you for your interest in contributing! nectar-design is a private React co
 
 ## Code of Conduct
 
-Please read and follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md). All contributors are expected to uphold these standards.
+Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md). All contributors are expected to uphold these standards.
 
 ---
 
@@ -231,7 +231,7 @@ This regenerates `tokens.css` from the source JSON.
 
 1. Ensure your branch is up to date with `dev`.
 2. Run `pnpm build` and `pnpm lint` — both must pass.
-3. Open a PR against `dev` using the [PR template](.github/PULL_REQUEST_TEMPLATE.md).
+3. Open a PR against `dev` using the [PR template](PULL_REQUEST_TEMPLATE.md).
 4. Fill out all checklist items in the PR template.
 5. Link any related issues using `Closes #<issue-number>`.
 
