@@ -165,8 +165,8 @@ The engine test suite validates all 16 CSS variables (typography + motion + shad
 
 Visual component catalog for browsing all components and token documentation.
 
-- **Live:** [design.tusharkantnaik.com](https://design.tusharkantnaik.com)
-- **Config:** `.storybook/`
+- **Live:** [design.tusharkantnaik.com](https://design.tusharkantnaik.com) — Vercel project `nectar-design-storybook`, deploys directly from this repo (not via portfolio submodule)
+- **Config:** `.storybook/` + `vercel.json` (static build config at repo root)
 - **Stories:** `src/**/*.stories.tsx`
 - **Components:** Button (8 variants), Card (3 sizes), Badge (5 variants), Input, Textarea, ProjectLayout, and more
 - **Circadian Explorer:** Interactive story with time slider (0–1439 min), live preview panel, 24-hour color strip, solar info, typography/motion/shadow panels — 4 presets (Mumbai, Helsinki, HighContrast, CoolBrand)
@@ -174,15 +174,23 @@ Visual component catalog for browsing all components and token documentation.
 
 ```bash
 pnpm storybook        # Launch dev server (default port 6006)
-pnpm build-storybook  # Build static Storybook
+pnpm build-storybook  # Build static Storybook → storybook-static/
 ```
+
+**Vercel deploy flow:**
+
+- Every PR to this repo gets a Storybook preview URL automatically (Vercel git integration)
+- `main` branch deploys to production at design.tusharkantnaik.com
+- Build: `pnpm install --frozen-lockfile --ignore-scripts && pnpm build && pnpm build-storybook`
+- Output: `storybook-static/`
+- Config: `vercel.json` at repo root
 
 **Visual regression (Chromatic):**
 
-- Runs automatically on PRs touching `packages/nectar-design/**`
-- CI workflow: `.github/workflows/chromatic.yml`
+- Runs in THIS repo (not portfolio) — `.github/workflows/chromatic.yml`
+- Trigger: PRs to main/dev + push to main
 - Requires `CHROMATIC_PROJECT_TOKEN` GitHub Actions secret
-- Review visual diffs in the Chromatic dashboard — no code review needed for visual changes
+- Review visual diffs in the Chromatic dashboard — matches Vercel Storybook deploy state
 
 ---
 
