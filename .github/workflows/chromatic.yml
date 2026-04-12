@@ -1,0 +1,45 @@
+name: Chromatic — Visual Regression
+
+on:
+  pull_request:
+    branches: [main, dev]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  chromatic:
+    name: Visual Diff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10.24.0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24.14.1'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Build design system
+        run: pnpm build
+
+      - name: Run Chromatic
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          exitZeroOnChanges: true
+          exitOnceUploaded: true
