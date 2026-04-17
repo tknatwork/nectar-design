@@ -12,6 +12,9 @@ const config: StorybookConfig = {
     "@storybook/addon-docs",
     "@storybook/addon-onboarding"
   ],
-  "framework": "@storybook/react-vite"
+  "framework": "@storybook/react-vite",
+  // Serve ../public as static assets so design.tusharkantnaik.com can
+  // expose /.well-known/security.txt (RFC 9116) from the Storybook build.
+  "staticDirs": ["../public"]
 };
 export default config;

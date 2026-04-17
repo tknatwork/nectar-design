@@ -1,0 +1,7 @@
+Contact: mailto:hi@tusharkantnaik.com
+Contact: mailto:zohomail.tkn@gmail.com
+Expires: 2027-04-17T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://design.tusharkantnaik.com/.well-known/security.txt
+Policy: https://tusharkantnaik.com/privacy
+Acknowledgments: https://github.com/tknatwork/nectar-design/security/advisories
