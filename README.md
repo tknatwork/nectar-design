@@ -64,5 +64,5 @@ primitives.json → seed.json → map.json → semantic.json → components/*.js
 | [Portfolio README](../../README.md) | Everyone | Project overview |
 | [Portfolio CLAUDE.md](../../CLAUDE.md) | AI + developers | Complete project guide |
 | [System Overview](../../docs/guidelines/system-overview.md) | Humans | Visual system guide |
-| [Token Pipeline](../../docs/diagrams/token-pipeline.md) | Everyone | Visual token flow |
+| [Token Pipeline](docs/token-pipeline.md) | Everyone | Visual token flow |
 | [Architecture Data](../../docs/architecture.yaml) | AI agents | Structured YAML |
