@@ -38,7 +38,7 @@ All AI models working in this repo should follow CLAUDE.md first.
 |-------|-----------|
 | Components | React 18+ with cva (class-variance-authority) — 32 components |
 | Styling | Tailwind v4 (CSS-first `@theme`) + tailwind-merge |
-| Tokens | 5-tier pipeline: primitives → seed → map → semantic → components → tokens.css (479 vars) |
+| Tokens | 5-tier pipeline: primitives → seed → map → semantic → components → tokens.css (474 vars) |
 | Theme Engine | Biomimetic Adaptive Theme (SunCalc + chroma-js + oklch) → 16 CSS vars (typo + motion + shadows; colors owned by Heat Engine) from solar physics |
 | Motion | Animation presets: patterns.json → GSAP presets + Framer variants + CSS @keyframes |
 | Build | tsup (ESM-only, .d.ts generation) |
@@ -52,7 +52,7 @@ All AI models working in this repo should follow CLAUDE.md first.
 ```ts
 import { Button, Card, Badge, Input, Textarea, Container, Stack, Grid, Icon } from 'nectar-design';
 import { useTheme, useReducedMotion, cn } from 'nectar-design';
-import 'nectar-design/tokens.css';   // 479 CSS custom properties
+import 'nectar-design/tokens.css';   // 474 CSS custom properties
 import 'nectar-design/theme.css';    // Tailwind @theme mapping
 import 'nectar-design/animation.css'; // CSS @keyframes + utility classes
 
@@ -84,7 +84,8 @@ Tier 4: tokens/core/semantic.json    (87 aliases — spacing, typography, grid, 
 Tier 5: tokens/components/*.json     (57 tokens — button, card, input, badge)
         tokens/themes/light|dark.json (33 vars each)
 
-Build:  scripts/build-tokens-sd.mjs  → css/tokens.css (479 CSS custom properties)
+Build:  scripts/build-tokens-sd.mjs  → css/tokens.css (474 CSS custom properties)
+
                                     → dist/echarts-theme.json (light + dark ECharts themes)
         scripts/build-motion-presets.mjs → dist/gsap/presets.js
                                         → dist/framer/variants.js
@@ -221,7 +222,7 @@ pnpm build-storybook  # Build static Storybook
 ## Protected Files
 
 - `tokens/**/*.json` — 5-tier token architecture
-- `scripts/build-tokens-sd.mjs` — token compiler (479 CSS vars)
+- `scripts/build-tokens-sd.mjs` — token compiler (474 CSS vars)
 - `scripts/build-motion-presets.mjs` — animation preset compiler
 - `scripts/audit-theme-namespaces.mjs` — theme namespace collision detection
 - `scripts/validate-token-types.mjs` — token reference + scale validation
