@@ -20,6 +20,8 @@ This file is the entry point. Read these next for full context:
 
 - **[CONTEXT.md](CONTEXT.md)** — What we're building, what good looks like, what to avoid, how to prompt
 - **[REFERENCES.md](REFERENCES.md)** — Examples of good work, relevant links, notes
+- **[design/STATE.md](design/STATE.md)** — current system snapshot (Shipped / Provisional / Experimental). Read before designing UI.
+- **[design/OPEN.md](design/OPEN.md)** — open questions, gaps, decisions worth challenging. Read alongside STATE.md — items here are *explicitly* questionable.
 
 All AI models working in this repo should follow CLAUDE.md first.
 
