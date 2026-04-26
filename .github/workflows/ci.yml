@@ -1,39 +1,56 @@
 name: CI — nectar-design
-
-on:
+"on":
   pull_request:
-    branches: [main, dev]
+    branches:
+      - main
+      - dev
   push:
-    branches: [dev]
-
+    branches:
+      - dev
 permissions:
   contents: read
-
 jobs:
+  determine-runner:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+    outputs:
+      runner: ${{ steps.pick.outputs.runner }}
+    steps:
+      - id: pick
+        env:
+          GH_TOKEN: ${{ secrets.RUNNER_CHECK_TOKEN }}
+        run: |-
+          #!/bin/bash
+          set -e
+          AVAILABLE=$(gh api "repos/${{ github.repository }}/actions/runners" --jq '[.runners[] | select(.status=="online" and .busy==false and (.labels | map(.name) | contains(["self-hosted", "Linux"])))] | length' 2>/dev/null || echo 0)
+          if [ "$AVAILABLE" -gt 0 ]; then
+            echo 'runner=["self-hosted","Linux","X64"]' >> $GITHUB_OUTPUT
+            echo "Selected: self-hosted (${AVAILABLE} runner(s) available)"
+          else
+            echo 'runner="ubuntu-latest"' >> $GITHUB_OUTPUT
+            echo "Selected: ubuntu-latest (no self-hosted available)"
+          fi
   build:
     name: Build + Type Check
-    runs-on: ubuntu-latest
+    needs: determine-runner
+    runs-on: ${{ fromJSON(needs.determine-runner.outputs.runner) }}
     steps:
       - uses: actions/checkout@v6
-
       - uses: pnpm/action-setup@v6
         with:
           version: 10.33.2
 
       - uses: actions/setup-node@v6
         with:
-          node-version: '24.15.0'
-          cache: 'pnpm'
-
+          node-version: 24.15.0
+          cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
-
       - name: Type check
         run: pnpm lint
-
       - name: Build
         run: pnpm build
-
       - name: Verify token generation
         run: |
           if [ ! -f "css/tokens.css" ]; then
@@ -46,7 +63,6 @@ jobs:
             exit 1
           fi
           echo "Token CSS: $LINE_COUNT lines — pipeline intact."
-
       - name: Verify dist output
         run: |
           REQUIRED=(
@@ -67,9 +83,7 @@ jobs:
             exit 1
           fi
           echo "All required dist files present."
-
       - name: Check bundle size limits
         run: pnpm exec size-limit
-
       - name: Unit tests
         run: pnpm test
