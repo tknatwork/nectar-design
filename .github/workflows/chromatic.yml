@@ -1,12 +1,46 @@
 name: Chromatic — Visual Regression
+
+# Runs visual regression checks via Chromatic on PRs to main/dev and pushes
+# to main/dev. Visual changes are NOT a hard CI gate (exitZeroOnChanges:
+# true) — the Chromatic dashboard is where you accept/reject diffs. The
+# GHA job's job is just to upload the build and report results back to
+# GitHub.
+#
+# Skipped via paths filter on doc-only / non-source changes — anything
+# that can't change a story's rendered output. Cuts CI noise for README/
+# CLAUDE.md edits and similar.
 "on":
   pull_request:
     branches:
       - main
       - dev
+    paths:
+      # Anything that could change a story's rendered output.
+      - 'src/**'
+      - 'tokens/**'
+      - 'css/**'
+      - '.storybook/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsup.config.ts'
+      # And the workflow itself, so config changes are validated.
+      - '.github/workflows/chromatic.yml'
+      - '.github/actions/setup-toolchain/**'
   push:
     branches:
       - main
+      - dev
+    paths:
+      - 'src/**'
+      - 'tokens/**'
+      - 'css/**'
+      - '.storybook/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsup.config.ts'
+      - '.github/workflows/chromatic.yml'
+      - '.github/actions/setup-toolchain/**'
+  workflow_dispatch: null
 permissions:
   contents: read
   pull-requests: write
@@ -63,5 +97,14 @@ jobs:
         uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          # Visual changes don't fail CI — they need accept/reject in the
+          # Chromatic dashboard. CI's job is just to upload + report.
           exitZeroOnChanges: true
           exitOnceUploaded: true
+          # Auto-accept baselines on dev push only. Dev is the staging
+          # branch — visual changes on dev have either been reviewed in
+          # the originating PR (via Chromatic's UI Review step) or are
+          # build-environment artifacts (corepack vs nvm rendering, font
+          # subset variations, etc.) that aren't worth a manual approval
+          # gate. PRs to dev still go through normal review.
+          autoAcceptChanges: dev
