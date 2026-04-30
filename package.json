@@ -106,10 +106,17 @@
       "limit": "15 kB"
     }
   ],
-  "pnpm": {},
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "unrs-resolver"
+    ]
+  },
   "engines": {
     "node": ">=24.15.0"
   },
+  "packageManager": "pnpm@10.33.2",
   "author": "Tushar Kant Naik <hi@tusharkantnaik.com>",
   "license": "UNLICENSED",
   "repository": {
