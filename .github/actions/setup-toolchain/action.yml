@@ -1,0 +1,96 @@
+name: Setup toolchain (nectar-design)
+description: |
+  Activates pnpm via corepack into a user-writable directory and sets up
+  Node, with a runner.environment-aware cache strategy for the pnpm-store.
+
+  Why this composite exists:
+  - nectar-design used to use `pnpm/action-setup@v5`, which writes to
+    /home/runner/setup-pnpm/. On self-hosted runners that path persists
+    across jobs and accumulated stale ownership before the warm-cron
+    `umask 002` change. The action's self-installer then trips on
+    `EPERM: operation not permitted, chmod` because it can't fix the
+    permissions of files inside a directory it didn't own.
+  - corepack writes into $HOME/.local/bin (per-job, user-writable) and
+    sidesteps that path entirely.
+
+  Cache strategy (mirror of myportfolio's setup-toolchain):
+  - GitHub-hosted: setup-node@v6 restores pnpm-store from Azure Blob via
+    `cache: pnpm`. mkdir pre-create avoids tar exit-2 on the cross
+    runner-type cache key.
+  - Self-hosted (nest-nd-1): host already has a warm
+    /var/cache/pnpm-store populated by the daily cron, and
+    /home/runner/.config/pnpm/rc points pnpm at it. Skipping
+    setup-node's Azure Blob restore avoids ~10-15 min of wasted
+    bandwidth and closes the SAS-window expiry flake.
+
+  See myportfolio's docs/system/runner-specs.md "Cache topology" for the
+  authoritative layout of host-local vs Azure Blob caches.
+
+inputs:
+  node-version:
+    description: Node.js version to install. Must match engines.node in package.json (>=24.15.0).
+    required: false
+    default: 24.15.0
+  pnpm-version:
+    description: pnpm version to activate via corepack. Must match the packageManager field in package.json.
+    required: false
+    default: 10.33.2
+  cache-dependency-path:
+    description: pnpm-lock.yaml path used as the setup-node cache key (GitHub-hosted only).
+    required: false
+    default: pnpm-lock.yaml
+
+runs:
+  using: composite
+  steps:
+    # Composite-action inputs are routed through env: per CWE-78
+    # mitigation (don't interpolate inputs/contexts directly into a run:
+    # body; use process env so the value can't escape its quoting context).
+    - name: Setup pnpm via corepack
+      shell: bash
+      env:
+        PNPM_VERSION: ${{ inputs.pnpm-version }}
+      run: |
+        if ! command -v pnpm >/dev/null 2>&1; then
+          echo "pnpm not on PATH; activating via corepack into user-writable dir"
+          mkdir -p "$HOME/.local/bin"
+          corepack enable --install-directory "$HOME/.local/bin"
+          corepack prepare "pnpm@${PNPM_VERSION}" --activate
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.local/bin:$PATH"
+        fi
+        pnpm --version
+        which pnpm
+
+    # Pre-create the pnpm-store target directory on github-hosted before
+    # setup-node@v6 attempts a `cache: pnpm` restore. Without this, the
+    # cache.tzst archive (which contains paths like
+    # `~/.local/share/pnpm/store/v10/...`) fails to extract because
+    # `~/.local/share/` doesn't exist on a fresh github-hosted runner.
+    # tar logs `Cannot mkdir: No such file or directory` and exits 2,
+    # actions/cache reports "Failed to restore", and the run continues
+    # without the cache benefit. This mkdir eliminates the warning and
+    # lets the restore succeed cleanly. (myportfolio PR #411 precedent.)
+    - name: Pre-create pnpm-store dir (GitHub-hosted only)
+      if: runner.environment == 'github-hosted'
+      shell: bash
+      run: |
+        mkdir -p "$HOME/.local/share/pnpm/store"
+
+    - name: Setup Node + pnpm-store cache (GitHub-hosted)
+      if: runner.environment == 'github-hosted'
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: pnpm
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+
+    - name: Setup Node (self-hosted, no Azure Blob cache)
+      if: runner.environment != 'github-hosted'
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ inputs.node-version }}
+        # No `cache:` — host-local /var/cache/pnpm-store is already warm
+        # via cron, and /home/runner/.config/pnpm/rc directs pnpm there.
+        # Closes the Azure Blob SAS-window expiry flake (myportfolio PR
+        # #408 precedent).
