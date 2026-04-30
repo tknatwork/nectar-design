@@ -94,3 +94,28 @@ runs:
         # via cron, and /home/runner/.config/pnpm/rc directs pnpm there.
         # Closes the Azure Blob SAS-window expiry flake (myportfolio PR
         # #408 precedent).
+
+    # DEFENSIVE WORKAROUND (self-hosted only): force pnpm to copy files
+    # from the host-local store instead of hardlinking. Why this is
+    # needed today: /var/cache/pnpm-store/ files are owned by the warm
+    # cron's user (root or UID 1000), with chmod g+rwX granting group
+    # rights to UID 1001 (runner). pnpm hardlinks share inodes — and
+    # chmod requires OWNERSHIP, not group write. So when pnpm tries to
+    # set the executable bit on bin scripts in node_modules (e.g.,
+    # esprima/bin/esparse.js), it gets EPERM. With copy import, each
+    # file in node_modules is a fresh inode owned by the runner, so
+    # chmod works.
+    #
+    # Permanent fix lives server-side: chown -R runner:runner
+    # /var/cache/pnpm-store/ (and have the warm cron run as the runner
+    # user so ownership stays correct). After that, this env var can
+    # be removed in a follow-up.
+    #
+    # Cost: copy is slightly slower than hardlink (more inodes, more
+    # disk usage), but the cache hit on the host store is preserved —
+    # we still avoid Azure Blob and we still avoid network downloads.
+    - name: Force pnpm copy import (self-hosted only — defensive vs store ownership)
+      if: runner.environment != 'github-hosted'
+      shell: bash
+      run: |
+        echo "npm_config_package_import_method=copy" >> "$GITHUB_ENV"
