@@ -1,17 +1,56 @@
 name: Chromatic — Visual Regression
+
+# Runs visual regression checks via Chromatic on PRs to main/dev and pushes
+# to main. Visual changes are NOT a hard CI gate (exitZeroOnChanges: true) —
+# the Chromatic dashboard is where you accept/reject diffs. The GHA job's
+# job is just to upload the build and report results back to GitHub.
+#
+# What this does NOT run on:
+#   • Dependabot PRs — they can't read repo secrets (CHROMATIC_PROJECT_TOKEN
+#     is empty), so the action errors with "Missing project token" before
+#     uploading anything. Skipping is cleaner than failing every dep bump.
+#     If you need to verify a dep bump's visual impact, manually re-run the
+#     job after the PR is merged or use workflow_dispatch.
+#   • Doc-only or non-source changes — the path filter below skips when
+#     only configs/markdown changed.
+
 "on":
   pull_request:
     branches:
       - main
       - dev
+    paths:
+      # Anything that could change a story's rendered output.
+      - 'src/**'
+      - 'tokens/**'
+      - 'css/**'
+      - '.storybook/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsup.config.ts'
+      # And the workflow itself, so config changes are validated.
+      - '.github/workflows/chromatic.yml'
   push:
     branches:
       - main
+    paths:
+      - 'src/**'
+      - 'tokens/**'
+      - 'css/**'
+      - '.storybook/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsup.config.ts'
+      - '.github/workflows/chromatic.yml'
+  workflow_dispatch: null
+
 permissions:
   contents: read
   pull-requests: write
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   determine-runner:
     runs-on: ubuntu-latest
@@ -23,40 +62,65 @@ jobs:
       - id: pick
         env:
           GH_TOKEN: ${{ secrets.RUNNER_CHECK_TOKEN }}
+          REPO: ${{ github.repository }}
         run: |-
           #!/bin/bash
           set -e
-          AVAILABLE=$(gh api "repos/${{ github.repository }}/actions/runners" --jq '[.runners[] | select(.status=="online" and .busy==false and (.labels | map(.name) | contains(["self-hosted", "Linux"])))] | length' 2>/dev/null || echo 0)
+          AVAILABLE=$(gh api "repos/${REPO}/actions/runners" --jq '[.runners[] | select(.status=="online" and .busy==false and (.labels | map(.name) | contains(["self-hosted", "Linux"])))] | length' 2>/dev/null || echo 0)
           if [ "$AVAILABLE" -gt 0 ]; then
-            echo 'runner=["self-hosted","Linux","X64"]' >> $GITHUB_OUTPUT
+            echo 'runner=["self-hosted","Linux","X64"]' >> "$GITHUB_OUTPUT"
             echo "Selected: self-hosted (${AVAILABLE} runner(s) available)"
           else
-            echo 'runner="ubuntu-latest"' >> $GITHUB_OUTPUT
+            echo 'runner="ubuntu-latest"' >> "$GITHUB_OUTPUT"
             echo "Selected: ubuntu-latest (no self-hosted available)"
           fi
+
   chromatic:
     name: Visual Diff
     needs: determine-runner
     runs-on: ${{ fromJSON(needs.determine-runner.outputs.runner) }}
+    # Dependabot PRs can't access secrets.CHROMATIC_PROJECT_TOKEN by GHA
+    # design — running would just produce a "Missing project token" failure
+    # on every dep bump. Skip cleanly. Visual regressions on a dep bump are
+    # rare; if you want to verify one, run workflow_dispatch manually.
+    if: github.actor != 'dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'skip-chromatic')
     steps:
       - uses: actions/checkout@v6
         with:
+          # Chromatic needs full git history for baseline comparison.
           fetch-depth: 0
-      - uses: pnpm/action-setup@v5
-        with:
-          version: 10.33.2
+
+      # Aligned with the rest of the toolchain: corepack-installed pnpm@10.33.0.
+      # The previous workflow used pnpm/action-setup@v5 with version 10.33.2
+      # which created a small drift from packageManager in package.json.
+      - name: Setup pnpm (corepack)
+        run: |
+          if ! command -v pnpm >/dev/null 2>&1; then
+            mkdir -p "$HOME/.local/bin"
+            corepack enable --install-directory "$HOME/.local/bin"
+            corepack prepare pnpm@10.33.0 --activate
+            echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+            export PATH="$HOME/.local/bin:$PATH"
+          fi
+          pnpm --version
+          which pnpm
 
       - uses: actions/setup-node@v6
         with:
           node-version: 24.15.0
           cache: pnpm
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
+
       - name: Build design system
         run: pnpm build
+
       - name: Run Chromatic
         uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          # Visual changes don't fail CI — they need accept/reject in the
+          # Chromatic dashboard. CI's job is just to upload + report.
           exitZeroOnChanges: true
           exitOnceUploaded: true
