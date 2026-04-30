@@ -9,9 +9,13 @@ name: CI — nectar-design
       - dev
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   determine-runner:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       actions: read
     outputs:
@@ -35,6 +39,7 @@ jobs:
     name: Build + Type Check
     needs: determine-runner
     runs-on: ${{ fromJSON(needs.determine-runner.outputs.runner) }}
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
       # Centralizes pnpm + Node setup. Replaces pnpm/action-setup@v5
