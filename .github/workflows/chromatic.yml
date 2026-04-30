@@ -10,11 +10,15 @@ name: Chromatic — Visual Regression
 permissions:
   contents: read
   pull-requests: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
   determine-runner:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       actions: read
     outputs:
@@ -38,6 +42,7 @@ jobs:
     name: Visual Diff
     needs: determine-runner
     runs-on: ${{ fromJSON(needs.determine-runner.outputs.runner) }}
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
         with:
