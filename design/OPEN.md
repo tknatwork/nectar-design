@@ -1,3 +1,12 @@
+<!-- === SYSTEM PAIRING ===
+Consumed by: AI sessions when designing — read alongside design/STATE.md
+Updated by: manual
+Pairs with: design/STATE.md, CLAUDE.md, docs/SYSTEM-INDEX.md
+Update trigger: new open question OR resolved question moves to STATE.md
+Last verified: 2026-05-01
+Index: docs/SYSTEM-INDEX.md
+=== END PAIRING === -->
+
 # Nectar — Open Questions
 
 > **What this is:** unresolved design questions, gaps, and decisions worth challenging.
@@ -88,6 +97,7 @@ When you (or an agent) hit something unclear:
 4. Don't propose the answer here — that's the work's job
 
 Items get removed when:
+
 - Decided → move to STATE.md or write an ADR
 - Stop mattering → delete with a one-line "why this no longer matters"
 

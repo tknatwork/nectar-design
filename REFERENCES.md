@@ -1,3 +1,12 @@
+<!-- === SYSTEM PAIRING ===
+Consumed by: AI sessions for examples + canonical links
+Updated by: manual
+Pairs with: CONTEXT.md, CLAUDE.md, docs/SYSTEM-INDEX.md
+Update trigger: new exemplar shipped OR canonical link added
+Last verified: 2026-05-01
+Index: docs/SYSTEM-INDEX.md
+=== END PAIRING === -->
+
 # References
 
 ## Examples of good work

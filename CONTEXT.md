@@ -1,3 +1,12 @@
+<!-- === SYSTEM PAIRING ===
+Consumed by: AI sessions for what-we-are-building reference in nd
+Updated by: manual
+Pairs with: CLAUDE.md, REFERENCES.md, docs/SYSTEM-INDEX.md
+Update trigger: product direction shift OR new what-good-looks-like criteria
+Last verified: 2026-05-01
+Index: docs/SYSTEM-INDEX.md
+=== END PAIRING === -->
+
 # Current Project
 
 ## What we are building
