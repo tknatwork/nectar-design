@@ -1,3 +1,12 @@
+<!-- === SYSTEM PAIRING ===
+Consumed by: every AI session at boot in the nd repo
+Updated by: manual
+Pairs with: CONTEXT.md, REFERENCES.md, design/STATE.md, design/OPEN.md, docs/SYSTEM-INDEX.md
+Update trigger: new system file class added OR new architectural rule OR new dependency-management protocol
+Last verified: 2026-05-01
+Index: docs/SYSTEM-INDEX.md
+=== END PAIRING === -->
+
 # CLAUDE.md — nectar-design
 
 ## Identity
@@ -258,6 +267,66 @@ chmod +x .githooks/*
 - `pnpm-workspace.yaml` — `onlyBuiltDependencies: [esbuild]` (pnpm reads this for build approval)
 - CI uses `pnpm install --frozen-lockfile --ignore-scripts` to avoid `ERR_PNPM_IGNORED_BUILDS`
 - `vitest.config.ts` — `define: {'process.env.NODE_ENV': '"development"'}` (React 19.2.5 removed `act()` from production bundle)
+
+## Dependency Management
+
+nd's dependencies are managed by **Renovate** (not Dependabot). Coordination with portfolio is constrained by a compatibility matrix.
+
+### Renovate config
+
+`renovate.json` at the repo root defines the policy:
+
+- **Schedule**: weekly grouped PRs (minor + patch); majors come as individual PRs
+- **Auto-merge**: patch-level dep bumps are merged automatically after CI passes
+- **Group rules**: `minor-patch` is one group; `react`, `storybook`, `chromatic`, `tailwind`, `vite` are split out for review-friendly PRs
+- **Ignore**: Ubuntu apt packages and a few manual-pin packages (see the `packageRules` denylist)
+
+### Cross-repo compatibility (`config/integration-compat.yaml` in portfolio)
+
+nd's `package.json` versions are constrained by the parent portfolio's compatibility matrix:
+
+```yaml
+# Portfolio/config/integration-compat.yaml (partial)
+react:           "^19.x"      # nd peer dep must accept this
+tailwind:        "^4.x"       # nd's @theme contract pins to v4
+typescript:      "^6.x"       # tsup target + .d.ts emission
+chromatic:       "^5.x"       # nd's visual regression pinned here
+```
+
+When a Renovate PR opens for one of these critical deps, the AI session should:
+
+1. Check `Portfolio/config/integration-compat.yaml` for the `current` and `pin` fields
+2. If the bump exceeds `current`, update the matrix in portfolio FIRST (or block the bump)
+3. After the matrix is updated, merge the nd-side bump
+4. Submodule pointer bump in portfolio comes last (PR 4 of any toolchain cascade)
+
+### pnpm lockfile
+
+- nd uses a standalone lockfile (no workspace inheritance) for `pnpm install --frozen-lockfile` in CI
+- The pre-commit hook auto-regenerates `pnpm-lock.yaml` when `package.json` is staged (uses `--ignore-workspace`)
+- The portfolio's `pnpm-workspace.yaml` does NOT propagate to nd — they are independent install graphs
+
+### Coordinated bumps (4-branch protocol)
+
+Bumping a dependency that affects both repos follows the protocol from [`Portfolio/docs/system/submodule.md`](https://github.com/tknatwork/myportfolio/blob/main/docs/system/submodule.md):
+
+1. Open Renovate PR on nd → merge to `nd-dev`
+2. Test on `nd-dev` (Chromatic + Storybook preview)
+3. Merge `nd-dev` → `nd-main`
+4. Bump submodule pointer in portfolio + regenerate `pnpm-lock.yaml`
+5. PR portfolio change → portfolio-dev → portfolio-main
+
+Skipping any step risks `ERR_PNPM_OUTDATED_LOCKFILE` in portfolio CI.
+
+### When dependencies break the build
+
+Most nd-side breakages get triaged via the parent portfolio's runbook system at [`Portfolio/docs/runbooks/dependency-upgrade.md`](https://github.com/tknatwork/myportfolio/blob/main/docs/runbooks/dependency-upgrade.md). Specifically:
+
+- **`ERR_PNPM_OUTDATED_LOCKFILE`** → submodule pointer bumped without lockfile regen → fix per the runbook
+- **`ERR_PNPM_LOCKFILE_CONFIG_MISMATCH`** → pnpm version drift between nd's `packageManager` field and what ran → align both repos
+- **Chromatic regression failures on nd** → review the Chromatic dashboard; not blocking unless intentional visual change
+
+---
 
 ## Contributing
 
