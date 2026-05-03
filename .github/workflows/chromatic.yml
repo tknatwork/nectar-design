@@ -78,7 +78,7 @@ jobs:
     runs-on: ${{ fromJSON(needs.determine-runner.outputs.runner) }}
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
       # Centralizes pnpm + Node setup. Replaces pnpm/action-setup@v5
@@ -94,7 +94,7 @@ jobs:
       - name: Build design system
         run: pnpm build
       - name: Run Chromatic
-        uses: chromaui/action@latest
+        uses: chromaui/action@42839e8c28caf61a16433fa96a03b312bbc47ab5 # latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           # Visual changes don't fail CI — they need accept/reject in the
