@@ -63,10 +63,38 @@ function animateDepth(root: HTMLElement, from: number, to: number) {
 }
 
 // Module-scoped state — Storybook re-runs decorators on every render but we
-// only want to animate when `depth` actually changes (toolbar toggle), not
-// on every story navigation. lastDepth + cleanup keep the animation idempotent.
+// only want to animate when `depth` / `heat` actually changes (toolbar toggle),
+// not on every story navigation. lastDepth/lastHeat + cleanups keep the
+// animations idempotent.
 let lastDepth: number | null = null;
-let pendingCleanup: (() => void) | null = null;
+let lastHeat: number | null = null;
+let pendingDepthCleanup: (() => void) | null = null;
+let pendingHeatCleanup: (() => void) | null = null;
+
+/** Set --ui-heat on the root. Heat doesn't need a multi-var setter the way
+ *  depth does (depth feeds the L-anchors + golden-hour hue/chroma boost);
+ *  heat is just a single scalar that --dynamic-hue calc reads directly. */
+function setHeat(root: HTMLElement, v: number) {
+  const h = Math.max(0, Math.min(100, v));
+  root.style.setProperty('--ui-heat', h.toFixed(2));
+}
+
+/** Animate heat over the same 450ms ease-in-out timing as depth. */
+function animateHeat(root: HTMLElement, from: number, to: number) {
+  if (typeof window === 'undefined') return () => {};
+  const start = performance.now();
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const duration = prefersReduced ? 0 : TRANSITION_DURATION_MS;
+  let raf = 0;
+  const step = (now: number) => {
+    const t = duration > 0 ? Math.min(1, (now - start) / duration) : 1;
+    const eased = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
+    setHeat(root, from + (to - from) * eased);
+    if (t < 1) raf = requestAnimationFrame(step);
+  };
+  raf = requestAnimationFrame(step);
+  return () => cancelAnimationFrame(raf);
+}
 
 const preview: Preview = {
   /* ─── Toolbar globals ───────────────────────────────────────
@@ -78,8 +106,10 @@ const preview: Preview = {
      ───────────────────────────────────────────────────────── */
   initialGlobals: {
     depth: 100,
+    heat: 0,
   },
   globalTypes: {
+    /* Depth axis: light ↔ dark sweep (450ms with golden-hour hue burst) */
     depth: {
       description: 'Heat × Depth axis — light ↔ dark engine sweep (450ms gradual)',
       toolbar: {
@@ -92,20 +122,44 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    /* Heat axis: cool ↔ warm hue sweep. Live site drives heat via
+       scroll/drag/idle; in Storybook it's an explicit 3-position
+       control. Cool=0 (default 250° blue-violet), Mid=50 (~145°
+       teal-green), Warm=100 (~40° amber). */
+    heat: {
+      description: 'Heat × Depth axis — cool ↔ warm hue sweep',
+      toolbar: {
+        title: 'Heat',
+        icon: 'lightning',
+        items: [
+          { value: 0,   title: 'Cool', icon: 'circle' },
+          { value: 50,  title: 'Mid',  icon: 'circlehollow' },
+          { value: 100, title: 'Warm', icon: 'starhollow' },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   decorators: [
     (Story, context) => {
-      const next = (context.globals.depth as number | undefined) ?? 100;
+      const nextDepth = (context.globals.depth as number | undefined) ?? 100;
+      const nextHeat  = (context.globals.heat  as number | undefined) ?? 0;
       // Only animate on actual change. Storybook re-runs decorators on
       // every render (story switch, controls update, etc.), but the
-      // depth animation should only fire when the toolbar value flips.
-      if (typeof window !== 'undefined' && lastDepth !== next) {
-        if (pendingCleanup) pendingCleanup();
-        // First-mount: snap to the value (no animation from null).
-        // Subsequent changes: animate from previous value.
-        const from = lastDepth ?? next;
-        pendingCleanup = animateDepth(document.documentElement, from, next);
-        lastDepth = next;
+      // engine animations should only fire when toolbar values flip.
+      if (typeof window !== 'undefined') {
+        if (lastDepth !== nextDepth) {
+          if (pendingDepthCleanup) pendingDepthCleanup();
+          const from = lastDepth ?? nextDepth;
+          pendingDepthCleanup = animateDepth(document.documentElement, from, nextDepth);
+          lastDepth = nextDepth;
+        }
+        if (lastHeat !== nextHeat) {
+          if (pendingHeatCleanup) pendingHeatCleanup();
+          const from = lastHeat ?? nextHeat;
+          pendingHeatCleanup = animateHeat(document.documentElement, from, nextHeat);
+          lastHeat = nextHeat;
+        }
       }
       return Story();
     },
