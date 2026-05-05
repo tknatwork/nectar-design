@@ -40,6 +40,60 @@ components, or the CSS var (`var(--dur-base)`) in inline styles and
 | `slower` | 0.5s | `--dur-slower` | `duration-slower` | Page-level transitions |
 | `theme-fade` | 0.8s | `--dur-theme-fade` | `duration-theme-fade` | **Engine cross-fade for Heat × Depth toggle** |
 
+### Duration ball specimen
+
+Each ball traverses the same 200px track, but at its token's duration.
+The longer the duration, the more time the ball spends in flight — read
+side-by-side, the durations become tactile.
+
+<style>{`
+  @keyframes nd-bounce-track {
+    0%   { transform: translateX(0); }
+    50%  { transform: translateX(180px); }
+    100% { transform: translateX(0); }
+  }
+  .nd-bounce-track {
+    position: relative;
+    height: 24px;
+    width: 200px;
+    border-radius: 999px;
+    background: oklch(var(--L-surface) 0.04 var(--dynamic-hue) / 0.5);
+    overflow: hidden;
+  }
+  .nd-bounce-ball {
+    position: absolute;
+    top: 4px; left: 4px;
+    height: 16px; width: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-name: nd-bounce-track;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nd-bounce-ball { animation: none; }
+  }
+`}</style>
+
+<div style={{ display: 'grid', gap: 10, margin: '12px 0 24px' }}>
+  {[
+    { name: 'instant',    dur: '0.1s' },
+    { name: 'fast',       dur: '0.24s' },
+    { name: 'base',       dur: '0.4s' },
+    { name: 'slow',       dur: '0.6s' },
+    { name: 'slower',     dur: '1.0s' },
+    { name: 'theme-fade', dur: '1.6s' },
+  ].map((d) => (
+    <div key={d.name} style={{ display: 'grid', gridTemplateColumns: '110px 1fr 60px', alignItems: 'center', gap: 14 }}>
+      <code style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>{d.name}</code>
+      <div className="nd-bounce-track">
+        <div className="nd-bounce-ball" style={{ animationDuration: d.dur }} />
+      </div>
+      <code style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>{d.dur}</code>
+    </div>
+  ))}
+</div>
+
 ## Easing Curves
 
 Cubic-beziers exposed via `app/tokens/motion-tokens.ts`. Two curves coexist
@@ -68,6 +122,61 @@ CARD/BUTTON/NAV springs for backward compat with existing import sites.
 | `BUTTON_SPRING` | stiffness 500, damping 25 | Snappy commit on tap; critically damped |
 | `NAV_SPRING` | stiffness 200, damping 30 | Glide for nav layoutId active-link slide |
 | `SIDEBAR_SPRING` | stiffness 280, damping 28 | Assertive slide-in for design-system sidebar |
+
+### Spring tile specimen
+
+Hover any tile to feel its character: `BUTTON_SPRING` is critically
+damped (commits and stops); `CARD_SPRING` softly overshoots; `NAV_SPRING`
+glides; `SIDEBAR_SPRING` asserts. CSS approximations of the spring
+curves below — the live components use motion.dev with the actual
+stiffness / damping configs.
+
+<style>{`
+  .nd-spring-tile {
+    height: 96px;
+    border-radius: 14px;
+    background: oklch(var(--L-surface) 0.04 var(--dynamic-hue) / 0.6);
+    border: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.12);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .nd-spring-tile.button { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 140ms; }
+  .nd-spring-tile.card   { transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); transition-duration: 280ms; }
+  .nd-spring-tile.nav    { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); transition-duration: 380ms; }
+  .nd-spring-tile.side   { transition-timing-function: cubic-bezier(0.32, 1.4, 0.5, 1); transition-duration: 320ms; }
+  .nd-spring-tile:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 10px 28px oklch(0 0 0 / 0.18);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nd-spring-tile { transition: none; }
+    .nd-spring-tile:hover { transform: none; box-shadow: none; }
+  }
+`}</style>
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 12, margin: '12px 0 24px' }}>
+  {[
+    { className: 'card',   name: 'CARD_SPRING',    desc: 'Soft overshoot · 280ms' },
+    { className: 'button', name: 'BUTTON_SPRING',  desc: 'Critically damped · 140ms' },
+    { className: 'nav',    name: 'NAV_SPRING',     desc: 'Smooth glide · 380ms' },
+    { className: 'side',   name: 'SIDEBAR_SPRING', desc: 'Assertive arrive · 320ms' },
+  ].map((s) => (
+    <div key={s.name} className={`nd-spring-tile ${s.className}`}>
+      <div style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.14em', color: 'var(--accent)' }}>
+        spring
+      </div>
+      <div>
+        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, color: 'oklch(var(--L-heading) 0.02 var(--dynamic-hue))' }}>{s.name}</div>
+        <div style={{ fontSize: 11, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))', marginTop: 4 }}>{s.desc}</div>
+      </div>
+    </div>
+  ))}
+</div>
 
 ## Animation Stack
 
