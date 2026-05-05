@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Type — Nectar Design System</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="stylesheet" href="_foundation.css" />
+<style>
+  body { padding: 48px; max-width: 1100px; margin: 0 auto; }
+  .card { padding: 32px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); margin-bottom: 24px; }
+  .row { display: grid; grid-template-columns: 140px 1fr; gap: 24px; align-items: baseline; padding: 12px 0; border-bottom: 1px dashed var(--border); }
+  .row:last-child { border-bottom: 0; }
+  .meta { color: var(--muted-fg); font-size: var(--fs-sm); font-family: var(--font-mono); }
+  .specimen { font-feature-settings: "ss01"; }
+  h1.page { margin: 0 0 8px; }
+  .lede { color: var(--muted-fg); margin: 0 0 32px; max-width: 60ch; }
+  section + section { margin-top: 24px; }
+  .family-card h3 { margin: 0 0 4px; }
+  .family-card .meta { margin-bottom: 16px; }
+  .sample { font-size: var(--fs-2xl); line-height: 1.15; }
+  .pangram { font-size: var(--fs-md); margin-top: 8px; color: var(--muted-fg); }
+  .weights { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px; font-size: var(--fs-md); }
+  .weights span { display: inline-flex; flex-direction: column; }
+  .weights small { font-family: var(--font-mono); font-size: 11px; color: var(--muted-fg); }
+</style>
+</head>
+<body>
+  <h1 class="page">Type</h1>
+  <p class="lede">Five families. Plus Jakarta Sans is the workhorse; Google Sans Flex carries display; Playfair handles editorial moments; Crimson Pro for captions; Monaspace Neon for code.</p>
+
+  <div class="card family-card">
+    <h3 style="font-family: var(--font-sans);">Plus Jakarta Sans</h3>
+    <div class="meta">--font-sans · variable 200–800 · UI body</div>
+    <div class="sample" style="font-family: var(--font-sans);">Designers who learn to ship.</div>
+    <div class="pangram" style="font-family: var(--font-sans);">The quick brown fox jumps over the lazy dog. 0123456789</div>
+    <div class="weights" style="font-family: var(--font-sans);">
+      <span style="font-weight:200">Aa<small>200 ExtraLight</small></span>
+      <span style="font-weight:300">Aa<small>300 Light</small></span>
+      <span style="font-weight:400">Aa<small>400 Regular</small></span>
+      <span style="font-weight:500">Aa<small>500 Medium</small></span>
+      <span style="font-weight:600">Aa<small>600 SemiBold</small></span>
+      <span style="font-weight:700">Aa<small>700 Bold</small></span>
+      <span style="font-weight:800">Aa<small>800 ExtraBold</small></span>
+    </div>
+  </div>
+
+  <div class="card family-card">
+    <h3 style="font-family: var(--font-display);">Google Sans Flex</h3>
+    <div class="meta">--font-display · variable 1–1000 · headlines &amp; numerals</div>
+    <div class="sample" style="font-family: var(--font-display); font-weight: 900; letter-spacing: -0.02em;">Compute the color, don't pick it.</div>
+    <div class="pangram" style="font-family: var(--font-display);">5-tier token pipeline. 135 primitives. 479 CSS variables.</div>
+  </div>
+
+  <div class="card family-card">
+    <h3 style="font-family: var(--font-serif);">Playfair Display</h3>
+    <div class="meta">--font-serif · variable 400–900 · editorial pull-quotes</div>
+    <div class="sample" style="font-family: var(--font-serif); font-style: italic; font-weight: 500;">A designer learning development, in public.</div>
+  </div>
+
+  <div class="card family-card">
+    <h3 style="font-family: var(--font-caption);">Crimson Pro</h3>
+    <div class="meta">--font-caption · variable 200–900 · captions, footnotes</div>
+    <div class="sample" style="font-family: var(--font-caption); font-style: italic; font-size: var(--fs-md);">Photo: Bandra reclamation, monsoon, 2024.</div>
+  </div>
+
+  <div class="card family-card">
+    <h3 style="font-family: var(--font-mono);">Monaspace Neon</h3>
+    <div class="meta">--font-mono · variable 200–900 · code &amp; tokens</div>
+    <div class="sample" style="font-family: var(--font-mono); font-size: var(--fs-md);">--dynamic-hue: calc(250 - (var(--ui-heat) * 2.1));</div>
+  </div>
+
+  <h2 style="margin-top: 48px;">Type scale</h2>
+  <div class="card">
+    <div class="row"><div class="meta">--fs-4xl · 61px</div><h1 style="margin:0; font-size: var(--fs-4xl);">Display headline</h1></div>
+    <div class="row"><div class="meta">--fs-3xl · 49px</div><h2 style="margin:0; font-size: var(--fs-3xl);">Section opener</h2></div>
+    <div class="row"><div class="meta">--fs-2xl · 39px</div><h3 style="margin:0; font-size: var(--fs-2xl);">Subsection</h3></div>
+    <div class="row"><div class="meta">--fs-xl · 31px</div><h4 style="margin:0; font-size: var(--fs-xl);">Card title</h4></div>
+    <div class="row"><div class="meta">--fs-lg · 25px</div><h5 style="margin:0; font-size: var(--fs-lg);">Group heading</h5></div>
+    <div class="row"><div class="meta">--fs-md · 20px</div><p style="margin:0; font-size: var(--fs-md);">Lead paragraph or pull quote</p></div>
+    <div class="row"><div class="meta">--fs-base · 16px</div><p style="margin:0;">Body text — the default reading size</p></div>
+    <div class="row"><div class="meta">--fs-sm · 13px</div><p style="margin:0; font-size: var(--fs-sm);">Caption, helper text, metadata</p></div>
+    <div class="row"><div class="meta">--fs-xs · 10px</div><p style="margin:0; font-size: var(--fs-xs);">Eyebrow, footnote</p></div>
+  </div>
+
+  <h2 style="margin-top: 48px;">Semantic classes</h2>
+  <div class="card">
+    <div class="eyebrow">Eyebrow · 11px / .14em tracking</div>
+    <p class="caption" style="margin: 8px 0 0;">A caption, set in Crimson Pro italic.</p>
+    <p class="body-lg" style="margin: 16px 0 0; max-width: 60ch;">A larger body paragraph for lede copy. Notice the relaxed line-height and the slightly larger size — this is .body-lg, intended for the first paragraph of an article.</p>
+    <p class="body-base" style="margin: 16px 0 0; max-width: 60ch;">Default body — the size you read most of. Sentences ≤ 20 words, one idea per sentence.</p>
+    <p class="body-sm" style="margin: 16px 0 0; max-width: 60ch;">Body small. For metadata, helper text under inputs, and footnotes. Color is normally <code>--muted-fg</code>.</p>
+  </div>
+</body>
+</html>
