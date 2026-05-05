@@ -1,0 +1,105 @@
+/*
+ * nectar-design / engine.css — Heat × Depth runtime engine.
+ *
+ * Opt-in dual-axis oklch theme engine. Consumers that want the
+ * adaptive, interaction-driven theme behaviour ship by this package
+ * import this AFTER tokens.css + theme.css:
+ *
+ *   @import "tailwindcss";
+ *   @import "nectar-design/tokens.css" layer(tokens);
+ *   @import "nectar-design/theme.css";
+ *   @import "nectar-design/engine.css";          // ← this file
+ *   @import "nectar-design/circadian.css" layer(circadian);
+ *
+ * Two axes:
+ *   --ui-heat   0–100   (interaction → hue: cold blue → hot amber)
+ *   --ui-depth  0–100   (toggle      → lightness: 0 = light, 100 = dark)
+ *
+ * Default ships at depth=100 (dark) to match the consuming app's
+ * FOUC-prevention script. The bridge at the bottom overrides the
+ * semantic color tokens (--bg, --fg, --primary, --surface, --muted-fg,
+ * --border, --ring, --input, --shadow-color) with engine-driven oklch
+ * values so every Tailwind utility (bg-bg, text-fg, border-border, etc.)
+ * automatically responds to heat + depth on glass and non-glass pages
+ * alike.
+ *
+ * If your app overrides the engine variables itself (myportfolio does
+ * this in app/globals.css), this file is a no-op duplicate — keep it
+ * in package consumers that want the engine without copy-pasting.
+ */
+
+:root {
+  --ui-heat: 0;
+  --ui-depth: 100;
+  --golden-hue-shift: 0;          /* circadian module sets this */
+  --golden-chroma-boost: 0;       /* circadian module sets this */
+  --dynamic-hue: calc(250 - (var(--ui-heat) * 2.1) + var(--golden-hue-shift));
+
+  /* Lightness anchors — interpolate light → dark as depth 0 → 100 */
+  --L-bg:      calc(0.96 - (var(--ui-depth) / 100) * 0.81);  /* 0.96 → 0.15 */
+  --L-heading: calc(0.20 + (var(--ui-depth) / 100) * 0.75);  /* 0.20 → 0.95 */
+  --L-body:    calc(0.35 + (var(--ui-depth) / 100) * 0.33);  /* 0.35 → 0.68 */
+  --L-muted:   calc(0.50 + (var(--ui-depth) / 100) * 0.10);  /* 0.50 → 0.60 */
+  --L-accent:  calc(0.50 + (var(--ui-depth) / 100) * 0.22);  /* 0.50 → 0.72 */
+  --L-btn-bg:  calc(0.45 + (var(--ui-depth) / 100) * 0.33);  /* 0.45 → 0.78 */
+  --L-btn-fg:  calc(0.98 - (var(--ui-depth) / 100) * 0.83);  /* 0.98 → 0.15 */
+  --L-surface: calc(0.98 - (var(--ui-depth) / 100) * 0.80);  /* 0.98 → 0.18 */
+
+  /* Chroma — subtle in light, vivid in dark, plus golden-hour boost.
+     Taper at the warm end (heat > 60) so sand tones don't bloom orange. */
+  --C-bg:     calc(0.02 + (var(--ui-depth) / 100) * 0.06 + var(--golden-chroma-boost));
+  --C-accent: calc(0.18 - (var(--ui-depth) / 100) * 0.04
+                   - max(0, (var(--ui-heat) - 60)) * 0.0015
+                   + var(--golden-chroma-boost));
+
+  /* Glass borders — depth-responsive (dark edges in light, white edges in dark) */
+  --glass-border-top:    oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.04 + var(--ui-depth) / 100 * 0.16));
+  --glass-border-left:   oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.02 + var(--ui-depth) / 100 * 0.08));
+  --glass-border-right:  oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.01 + var(--ui-depth) / 100 * 0.03));
+  --glass-border-bottom: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.005 + var(--ui-depth) / 100 * 0.015));
+  --glass-specular:      oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.02 + var(--ui-depth) / 100 * 0.06));
+
+  /* Bridge — override the semantic token tier so Tailwind utilities
+     resolve to engine values across the whole app. */
+  --bg:           oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue));
+  --fg:           oklch(var(--L-body) 0.03 var(--dynamic-hue));
+  --surface:      oklch(var(--L-surface) 0.02 var(--dynamic-hue));
+  --surface-fg:   oklch(var(--L-heading) 0.01 var(--dynamic-hue));
+  --muted:        oklch(var(--L-surface) 0.01 var(--dynamic-hue));
+  --muted-fg:     oklch(var(--L-muted) 0.03 var(--dynamic-hue));
+  --primary:      oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+  --primary-fg:   oklch(var(--L-btn-fg) 0.02 var(--dynamic-hue));
+  --border:       oklch(var(--L-muted) 0.02 var(--dynamic-hue) / 0.3);
+  --ring:         oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+  --input:        oklch(var(--L-surface) 0.02 var(--dynamic-hue));
+  --shadow-color: oklch(var(--L-bg) 0.04 var(--dynamic-hue) / 0.3);
+}
+
+/* Light-mode shorthand — same engine, depth=0 */
+[data-theme="light"], :root[data-theme="light"] { --ui-depth: 0; }
+
+/* Body-level cross-fade so theme + heat changes feel like the page is
+   breathing, not snapping. Consumers can override duration via
+   --dur-cross (defined in motion.css). */
+body {
+  background-color: oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue));
+  color:            oklch(var(--L-body) 0.03 var(--dynamic-hue));
+  transition:
+    background-color var(--dur-cross, 800ms) ease-out,
+    color            var(--dur-cross, 800ms) ease-out;
+}
+
+/* Engine-driven utility classes — mirror what consumers will reach for.
+   Naming follows the two semantic axes: text-* + bg-*. */
+.text-accent      { color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue)); transition: color var(--dur-cross, 800ms) ease-out; }
+.text-heading     { color: oklch(var(--L-heading) 0.01 var(--dynamic-hue));            transition: color var(--dur-cross, 800ms) ease-out; }
+.text-body        { color: oklch(var(--L-body) 0.03 var(--dynamic-hue));               transition: color var(--dur-cross, 800ms) ease-out; }
+.text-muted       { color: oklch(var(--L-muted) 0.03 var(--dynamic-hue));              transition: color var(--dur-cross, 800ms) ease-out; }
+.text-action      { color: oklch(var(--L-btn-fg) 0.02 var(--dynamic-hue));             transition: color var(--dur-cross, 800ms) ease-out; }
+.bg-action        { background-color: oklch(var(--L-btn-bg) 0.16 var(--dynamic-hue));  transition: background-color var(--dur-cross, 800ms) ease-out; }
+
+/* Reduced motion — kill the cross-fade entirely. */
+@media (prefers-reduced-motion: reduce) {
+  body, .text-accent, .text-heading, .text-body, .text-muted,
+  .text-action, .bg-action { transition: none; }
+}
