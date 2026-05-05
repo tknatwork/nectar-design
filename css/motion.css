@@ -1,0 +1,48 @@
+/*
+ * nectar-design / motion.css — motion tokens.
+ *
+ * Centralises the motion vocabulary that components currently inline.
+ * Imported alongside theme.css; safe to drop in any consumer.
+ *
+ *   @import "nectar-design/motion.css";
+ */
+
+:root {
+  /* Duration scale ------------------------------------------------- */
+  --dur-fast:  120ms;   /* hover, focus */
+  --dur-base:  200ms;   /* buttons, tabs, default UI */
+  --dur-slow:  300ms;   /* card lift, modal open */
+  --dur-cross: 800ms;   /* theme + heat colour cross-fade */
+
+  /* Easing --------------------------------------------------------- */
+  --ease-out:      cubic-bezier(0.215, 0.61, 0.355, 1);   /* default */
+  --ease-out-circ: cubic-bezier(0.08,  0.82, 0.17,  1);   /* hero-scale */
+  --ease-in-out:   cubic-bezier(0.65,  0,    0.35,  1);
+
+  /* Spring approximations — cubic-bezier matches the Framer Motion
+     springs (stiffness/damping) used in production to within a few ms. */
+  --spring-card:    cubic-bezier(0.34, 1.56, 0.64, 1);   /* k=300, d=20  */
+  --spring-button:  cubic-bezier(0.34, 1.80, 0.64, 1);   /* k=500, d=25  */
+  --spring-nav:     cubic-bezier(0.45, 1.20, 0.40, 1);   /* k=200, d=30  */
+
+  /* Composite transitions — drop in via `transition: var(--tx-*)` */
+  --tx-color:  color     var(--dur-cross) ease-out,
+               background-color var(--dur-cross) ease-out,
+               border-color var(--dur-cross) ease-out;
+  --tx-ui:     transform var(--dur-base) var(--ease-out),
+               opacity   var(--dur-base) var(--ease-out);
+  --tx-lift:   transform var(--dur-slow) var(--spring-card),
+               box-shadow var(--dur-slow) var(--ease-out);
+}
+
+/* Reduced motion — drop everything to a near-instant tick so layout
+   transitions still complete (avoids broken view-transitions) but
+   nothing visibly animates. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast:  0.01ms;
+    --dur-base:  0.01ms;
+    --dur-slow:  0.01ms;
+    --dur-cross: 0.01ms;
+  }
+}
