@@ -1,0 +1,80 @@
+<!--
+  preview-head.html — injected into the <head> of the story canvas
+  iframe. The canvas is where component stories actually render — it's
+  separate from the manager UI (themed by manager.ts). Anything in here
+  becomes part of the rendering environment for every story.
+
+  We inject:
+
+  1. The engine's CSS variables (Heat × Depth) so component stories see
+     the same backdrop the live site does. Without this, stories would
+     render against Storybook's default white/dark canvas, missing the
+     atmospheric color the components are designed to sit on.
+
+  2. A subtle dotted-grid background on `body` (matches the kit's
+     `.canvas-stage` aesthetic — see kits/storybook.html). The grid
+     reads as "Storybook canvas" rather than "real page background"
+     so visitors see the staging context instantly.
+
+  3. Font preloads for the five families the design system ships
+     (Plus Jakarta Sans, Google Sans Flex, Playfair Display, Crimson
+     Pro, Monaspace Neon). Stories can reference them via the same
+     CSS variables as the live site.
+
+  Wave 2 of the Nectar Design System integration push (Storybook chrome
+  redesign — kits/storybook.html ground truth).
+-->
+
+<style>
+  /* Engine default state — heat=0, depth=100. Matches the static theme
+     in .storybook/theme.ts so manager + canvas chrome read as one. */
+  :root {
+    --ui-heat: 0;
+    --ui-depth: 100;
+    --golden-hue-shift: 0;
+    --golden-chroma-boost: 0;
+
+    --dynamic-hue: calc(250 - (var(--ui-heat) * 2.1) + var(--golden-hue-shift));
+
+    --L-bg:      calc(0.96 - (var(--ui-depth) / 100) * 0.81);
+    --L-heading: calc(0.20 + (var(--ui-depth) / 100) * 0.75);
+    --L-body:    calc(0.35 + (var(--ui-depth) / 100) * 0.33);
+    --L-muted:   calc(0.50 + (var(--ui-depth) / 100) * 0.10);
+    --L-accent:  calc(0.50 + (var(--ui-depth) / 100) * 0.22);
+    --L-surface: calc(0.98 - (var(--ui-depth) / 100) * 0.80);
+
+    --C-bg:     calc(0.02 + (var(--ui-depth) / 100) * 0.06 + var(--golden-chroma-boost));
+    --C-accent: calc(0.18 - (var(--ui-depth) / 100) * 0.04 + var(--golden-chroma-boost));
+  }
+
+  /* Canvas stage — dotted grid, mirrors kits/storybook.html .canvas-stage.
+     The pattern reads as "design surface" (intentionally not a real page).
+     The center of the dot is the engine's heading color at very low alpha
+     so it stays subtle but visible across Heat × Depth shifts. */
+  body {
+    background-color: oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue));
+    background-image:
+      radial-gradient(
+        oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08) 1px,
+        transparent 1px
+      );
+    background-size: 16px 16px;
+    color: oklch(var(--L-body) 0.03 var(--dynamic-hue));
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    /* Generous padding so stories center in a generous canvas, like the
+       kit's .canvas-stage (padding: 64px 48px). */
+    padding: 48px;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+
+  /* Heading + accent classes the design system uses internally. Mirrors
+     the manual classes in app/globals.css so docs MDX (which has no
+     access to the app's class definitions) can use text-accent /
+     text-heading naturally. */
+  .text-accent  { color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue)); }
+  .text-heading { color: oklch(var(--L-heading) 0.01 var(--dynamic-hue)); }
+  .text-body    { color: oklch(var(--L-body) 0.03 var(--dynamic-hue)); }
+  .text-muted   { color: oklch(var(--L-muted) 0.03 var(--dynamic-hue)); }
+</style>
