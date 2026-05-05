@@ -27,6 +27,34 @@ All five are self-hosted as woff2 under `app/fonts/`. The seed table in
 / Merriweather / Roboto Mono) for downstream consumers — not what's loaded
 in the live site.
 
+### Family specimens
+
+<div style={{ display: 'grid', gap: 12, margin: '12px 0 24px' }}>
+  {[
+    { slot: 'font-display', name: 'Google Sans Flex', sample: 'A designer learning to ship', css: { fontFamily: 'var(--font-display, ui-sans-serif)', fontWeight: 800, fontSize: 28, letterSpacing: '-0.02em' } },
+    { slot: 'font-sans',    name: 'Plus Jakarta Sans', sample: 'Body, UI, default — the workhorse of the system.', css: { fontFamily: 'var(--font-sans, ui-sans-serif)', fontWeight: 400, fontSize: 15, lineHeight: 1.55 } },
+    { slot: 'font-serif',   name: 'Playfair Display',  sample: 'Learning the engineering', css: { fontFamily: 'var(--font-serif, ui-serif)', fontStyle: 'italic', fontWeight: 500, fontSize: 26 } },
+    { slot: 'font-caption', name: 'Crimson Pro',       sample: '"A pull quote, an aside, a moment."', css: { fontFamily: 'var(--font-caption, ui-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 18, lineHeight: 1.4 } },
+    { slot: 'font-mono',    name: 'Monaspace Neon',    sample: 'const heat = useHeatEngine();', css: { fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 14, letterSpacing: '0.02em' } },
+  ].map((f) => (
+    <div
+      key={f.slot}
+      style={{
+        padding: '14px 16px',
+        borderRadius: 12,
+        background: 'oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.4)',
+        border: '1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08)',
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>
+        <code>{f.slot}</code>
+        <span>{f.name}</span>
+      </div>
+      <div style={{ ...f.css, color: 'oklch(var(--L-heading) 0.02 var(--dynamic-hue))' }}>{f.sample}</div>
+    </div>
+  ))}
+</div>
+
 ## Type Scale
 
 Major third scale (1.25 ratio). Sizes reference seed tokens via CSS custom
@@ -43,6 +71,40 @@ properties.
 | `base` | 16px | Body |
 | `sm` | ~13px | Small |
 | `xs` | ~10px | Fine |
+
+### Scale ladder
+
+<div
+  style={{
+    display: 'grid',
+    gridTemplateColumns: 'auto 1fr',
+    columnGap: 24,
+    rowGap: 14,
+    alignItems: 'baseline',
+    margin: '16px 0 24px',
+    padding: '20px 24px',
+    borderRadius: 12,
+    background: 'oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.4)',
+    border: '1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08)',
+  }}
+>
+  {[
+    { token: '4xl', px: 61, label: 'H1',     css: { fontFamily: 'var(--font-display)', fontWeight: 900, letterSpacing: '-0.02em', fontSize: 61 } },
+    { token: '3xl', px: 49, label: 'H2',     css: { fontFamily: 'var(--font-display)', fontWeight: 800, letterSpacing: '-0.02em', fontSize: 49 } },
+    { token: '2xl', px: 39, label: 'H3',     css: { fontFamily: 'var(--font-display)', fontWeight: 700, letterSpacing: '-0.015em', fontSize: 39 } },
+    { token: 'xl',  px: 31, label: 'H4',     css: { fontFamily: 'var(--font-sans)', fontWeight: 700, fontSize: 31 } },
+    { token: 'lg',  px: 25, label: 'H5',     css: { fontFamily: 'var(--font-sans)', fontWeight: 600, fontSize: 25 } },
+    { token: 'md',  px: 20, label: 'H6',     css: { fontFamily: 'var(--font-sans)', fontWeight: 600, fontSize: 20 } },
+    { token: 'base', px: 16, label: 'Body',  css: { fontFamily: 'var(--font-sans)', fontWeight: 400, fontSize: 16, lineHeight: 1.55 } },
+    { token: 'sm',  px: 13, label: 'Small',  css: { fontFamily: 'var(--font-sans)', fontWeight: 400, fontSize: 13 } },
+    { token: 'xs',  px: 10, label: 'Fine',   css: { fontFamily: 'var(--font-mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.14em' } },
+  ].flatMap((row) => [
+    <code key={`${row.token}-tag`} style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))', whiteSpace: 'nowrap' }}>
+      {row.token} · {row.px}px
+    </code>,
+    <div key={`${row.token}-sample`} style={{ ...row.css, color: 'oklch(var(--L-heading) 0.02 var(--dynamic-hue))' }}>{row.label}</div>,
+  ])}
+</div>
 
 Plus three fluid sizes for marketing copy: `text-fluid-hero`,
 `text-fluid-h1`, `text-fluid-h2` — clamp-based, no media queries.

@@ -45,6 +45,33 @@
 
     --C-bg:     calc(0.02 + (var(--ui-depth) / 100) * 0.06 + var(--golden-chroma-boost));
     --C-accent: calc(0.18 - (var(--ui-depth) / 100) * 0.04 + var(--golden-chroma-boost));
+
+    /* Semantic var overrides — verbatim from myportfolio/app/globals.css.
+       Without these, var(--bg) / var(--accent) / etc. would resolve to the
+       static dark theme values in tokens.css and not breathe with Heat ×
+       Depth. With them, every swatch in foundations docs MDX repaints on
+       every toolbar flip. */
+    --bg:       oklch(var(--L-bg)      var(--C-bg)     var(--dynamic-hue));
+    --fg:       oklch(var(--L-body)    0.03            var(--dynamic-hue));
+    --surface:  oklch(var(--L-surface) 0.02            var(--dynamic-hue));
+    --muted:    oklch(var(--L-surface) 0.01            var(--dynamic-hue));
+    --muted-fg: oklch(var(--L-muted)   0.03            var(--dynamic-hue));
+    --primary:  oklch(var(--L-accent)  var(--C-accent) var(--dynamic-hue));
+    --accent:   oklch(var(--L-accent)  var(--C-accent) var(--dynamic-hue));
+    --border:   oklch(var(--L-muted)   0.02            var(--dynamic-hue) / 0.3);
+    --ring:     oklch(var(--L-accent)  var(--C-accent) var(--dynamic-hue));
+
+    /* Foreground vars for accent / primary swatches — bone on dark, ink on light. */
+    --primary-foreground: oklch(calc(0.98 - (var(--ui-depth) / 100) * 0.92) 0.01 var(--dynamic-hue));
+    --accent-foreground:  oklch(calc(0.98 - (var(--ui-depth) / 100) * 0.92) 0.01 var(--dynamic-hue));
+
+    /* Glass surface — same Wave C source-of-truth value myportfolio uses. */
+    --glass-bg: oklch(var(--L-surface) 0.04 var(--dynamic-hue) / 0.65);
+    --glass-radius: 24px;
+  }
+
+  @media (min-width: 768px) {
+    :root { --glass-radius: 36px; }
   }
 
   /* Canvas stage — dotted grid, mirrors kits/storybook.html .canvas-stage.
