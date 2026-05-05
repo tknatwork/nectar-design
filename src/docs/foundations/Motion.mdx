@@ -1,0 +1,100 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Motion" />
+
+# Motion
+
+Animation principles, easing curves, and duration tokens that bring the
+interface to life — or gracefully step aside when reduced motion is
+preferred. Migrated from `myportfolio/app/app/design-system/motion/page.tsx`
+(Wave J, May 2026).
+
+## Principles
+
+**Natural** — Animations follow physics-based easing. Nothing moves
+linearly. Spring physics for interactive elements, smooth deceleration
+for reveals.
+
+**Meaningful** — Every animation serves a purpose: guiding attention,
+confirming actions, or showing spatial relationships. No animation for
+decoration alone.
+
+**Respectful** — All decorative motion disables when the OS prefers
+reduced motion. Essential transitions collapse to instant. The
+`useReducedMotion` hook enforces this globally.
+
+## Duration Tokens
+
+Wave E (atomic-element consolidation) bridged these to CSS vars and
+Tailwind utilities. Use the Tailwind utility (e.g. `duration-base`) in
+components, or the CSS var (`var(--dur-base)`) in inline styles and
+`globals.css` rules. JS animations import via `motion.duration.base` from
+`app/tokens/motion-tokens.ts`.
+
+| Name | Value | CSS var | Tailwind utility | Use for |
+| --- | --- | --- | --- | --- |
+| `instant` | 0.05s | `--dur-instant` | `duration-instant` | Button press, micro-interactions |
+| `fast` | 0.12s | `--dur-fast` | `duration-fast` | Hover, toggle, quick feedback |
+| `base` | 0.2s | `--dur-base` | `duration-base` | Standard transitions |
+| `slow` | 0.3s | `--dur-slow` | `duration-slow` | Expand, slide, complex transitions |
+| `slower` | 0.5s | `--dur-slower` | `duration-slower` | Page-level transitions |
+| `theme-fade` | 0.8s | `--dur-theme-fade` | `duration-theme-fade` | **Engine cross-fade for Heat × Depth toggle** |
+
+## Easing Curves
+
+Cubic-beziers exposed via `app/tokens/motion-tokens.ts`. Two curves coexist
+by design: CSS keyword `ease-out` (smooth deceleration, used for ambient
+transitions) and the curated cubic-bezier values below (used for explicit
+JS animations).
+
+| Name | Value | Description |
+| --- | --- | --- |
+| `easeOut` | `cubic-bezier(0.215, 0.61, 0.355, 1)` | Default exit — smooth deceleration |
+| `easeInOut` | `cubic-bezier(0.645, 0.045, 0.355, 1)` | Symmetric enter + exit |
+| `easeOutCirc` | `cubic-bezier(0.08, 0.82, 0.17, 1)` | Snappy exit — organic feel |
+| `easeOutBack` | `cubic-bezier(0.12, 0.4, 0.29, 1.46)` | Bouncy overshoot — playful |
+| `easeOutQuint` | `cubic-bezier(0.23, 1, 0.32, 1)` | Aggressive deceleration |
+
+## Springs
+
+Framer-motion spring transitions live at `app/lib/springs.ts` (Wave H).
+Each spring encodes a specific surface intent — cards lift softly,
+buttons snap, nav glides, sidebars assert. `GlassCard.tsx` re-exports
+CARD/BUTTON/NAV springs for backward compat with existing import sites.
+
+| Name | Config | Use |
+| --- | --- | --- |
+| `CARD_SPRING` | stiffness 300, damping 20 | Soft hover lift on glass cards (~280ms settle) |
+| `BUTTON_SPRING` | stiffness 500, damping 25 | Snappy commit on tap; critically damped |
+| `NAV_SPRING` | stiffness 200, damping 30 | Glide for nav layoutId active-link slide |
+| `SIDEBAR_SPRING` | stiffness 280, damping 28 | Assertive slide-in for design-system sidebar |
+
+## Animation Stack
+
+| Type | Tool | Token Source |
+| --- | --- | --- |
+| Hover, focus, color | Tailwind CSS transitions | `globals.css` `--dur-*` + Tailwind `duration-*` utilities (Wave E) |
+| Mount/unmount, gestures | Framer Motion | `motion-tokens.ts` (durations + easings) + `lib/springs.ts` (springs) |
+| Scroll-driven, timelines | GSAP + ScrollTrigger | `motion-tokens.ts` + `getComputedStyle()` |
+| 3D scenes (future) | Three.js | `motion-tokens.ts` + `color-utils.ts` |
+
+## Reduce motion
+
+System-level `prefers-reduced-motion: reduce` collapses every transition
+to 0ms. The pattern, used everywhere:
+
+```tsx
+// React
+transition={reducedMotion ? { duration: 0 } : { duration: motionDur.base }}
+
+// CSS
+.text-accent {
+  transition: color var(--dur-theme-fade) ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-accent { transition: none; }
+}
+```
+
+The `useReducedMotion` hook (in `app/hooks/`) reads the system preference
+once and exposes a boolean for components to gate animations.

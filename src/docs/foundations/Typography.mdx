@@ -1,0 +1,112 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Typography" />
+
+# Typography
+
+Five font families, a modular scale, and six heading levels create clear
+hierarchy. Migrated from `myportfolio/app/app/design-system/typography/page.tsx`
+(Wave J, May 2026).
+
+## Font Families
+
+Loaded via `next/font/local` in `app/layout.tsx`. The seed token tier in
+`nectar-design` declares portable fallbacks for downstream consumers —
+those aren't what's on screen. The override is the source of truth.
+
+| Slot | Family | Role |
+| --- | --- | --- |
+| `font-display` | **Google Sans Flex** (1–1000 wght) | Hero headings, big numbers |
+| `font-sans` | **Plus Jakarta Sans** (200–800, italic) | Body, UI, default |
+| `font-serif` | **Playfair Display** (400–900, italic) | Display serif, accents (e.g. hero italic emphasis) |
+| `font-caption` | **Crimson Pro** (200–900, italic) | Pull quotes, captions, asides |
+| `font-mono` | **Monaspace Neon** | Code, technical labels |
+
+All five are self-hosted as woff2 under `app/fonts/`. The seed table in
+`nectar-design/tokens` lists fallback families (Switzer / Libre Baskerville
+/ Merriweather / Roboto Mono) for downstream consumers — not what's loaded
+in the live site.
+
+## Type Scale
+
+Major third scale (1.25 ratio). Sizes reference seed tokens via CSS custom
+properties.
+
+| Token | Pixel | Role |
+| --- | --- | --- |
+| `4xl` | ~61px | H1 |
+| `3xl` | ~49px | H2 |
+| `2xl` | ~39px | H3 |
+| `xl` | ~31px | H4 |
+| `lg` | ~25px | H5 |
+| `md` | ~20px | H6 |
+| `base` | 16px | Body |
+| `sm` | ~13px | Small |
+| `xs` | ~10px | Fine |
+
+Plus three fluid sizes for marketing copy: `text-fluid-hero`,
+`text-fluid-h1`, `text-fluid-h2` — clamp-based, no media queries.
+
+## Font Weights
+
+| Name | Weight |
+| --- | --- |
+| Normal | 400 |
+| Medium | 500 |
+| Semibold | 600 |
+| Bold | 700 |
+| Black | 900 |
+
+## Line Heights
+
+| Name | Value |
+| --- | --- |
+| `tight` | 1.25 |
+| `normal` | 1.5 |
+| `relaxed` | 1.75 |
+
+## Eyebrow component
+
+The recurring all-caps section label pattern (formerly inlined as
+`text-[11px] font-semibold uppercase tracking-[0.14em] text-accent` across
+4 sites in the live app) is now centralized in
+`app/components/ui/Eyebrow.tsx` (Wave G).
+
+Visual spec:
+
+- 11px font-size
+- 600 font-weight (semibold)
+- uppercase
+- 0.14em letter-spacing
+- `text-accent` color (engine-driven oklch via Wave B's `--accent` override)
+- inherits the depth-fade transition from `.text-accent`
+
+```tsx
+import { Eyebrow } from '@/components/ui/Eyebrow';
+
+<Eyebrow>Selected Work</Eyebrow>
+```
+
+For animated eyebrow entrances (HeroSection), wrap the component in a
+`motion.div` rather than reaching for `motion.p` directly — keeps the
+typography pattern centralized and the motion concern layered on top.
+
+## Hero italic accent pattern
+
+The Nectar hero pattern (post-PR #506) uses a Playfair italic emphasis
+span inside a Google Sans Flex Black headline:
+
+> A designer. *Learning the engineering* that ships design.
+
+The italic span:
+
+```tsx
+<span className="font-serif italic font-medium text-accent">
+  Learning the engineering
+</span>
+```
+
+`font-serif` resolves to Playfair Display via the `@theme` mapping;
+`text-accent` paints from the engine's `--accent` oklch (Heat × Depth
+reactive). Use the same pattern when a marketing surface needs an
+emphasis word.

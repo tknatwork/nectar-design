@@ -1,0 +1,83 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Colors" />
+
+# Colors
+
+A warm, pastel-forward palette built from seed primitives through semantic
+aliases to theme-mapped values. Migrated from `myportfolio/app/app/design-system/colors/page.tsx` (Wave J, May 2026) — this Storybook is the source of truth.
+
+## Semantic Palette
+
+These are the mapped tokens — the CSS custom properties components consume.
+They change between light and dark mode (and breathe with the engine when
+the value is engine-driven).
+
+| Name | Tailwind utility | Source |
+| --- | --- | --- |
+| Primary | `bg-primary` | Engine oklch (Heat × Depth) |
+| Accent | `bg-accent` | Engine oklch (Wave B unified — was static, now engine-driven) |
+| Destructive | `bg-destructive` | Terracotta — static brand status |
+| Success | `bg-success` | Sage green — static brand status |
+| Warning | `bg-warning` | Amber — static brand status |
+| Muted | `bg-muted` | Engine oklch surface tint |
+| Surface | `bg-surface` | Card / panel (engine) |
+| Background | `bg-bg` | Page background (engine) |
+| Border | `bg-border` | Warm ash (engine) |
+| Glass | `bg-glass` | Honey-tinted glass surface (Wave C) |
+
+The **engine-driven** entries respond to Heat × Depth — they recompute on every
+slider tick. The **static** entries (destructive / success / warning) stay
+brand-curated; they're for in-flow UI like form errors and destructive
+buttons across 12+ sites in the live app.
+
+## Brand Identity
+
+Three static brand constants (Wave G consolidation) that don't shift with
+Heat × Depth like the engine semantic vars do. Used by Ink Routes (E.A.S.T
+case study), OG / Apple Touch Icon contexts where Satori needs static hex,
+and project-specific identity tints.
+
+| Name | Hex | Tailwind utility | Used by |
+| --- | --- | --- | --- |
+| Ink bone | `#F4ECE0` | `bg-ink-bone` | Ink Route bone-colored text + accent strips on OG/icon |
+| Ink deep | `#0A0A0D` | `bg-ink-deep` | Ink Route opaque background (E.A.S.T case study) |
+| Brand red | `#E4342C` | `bg-brand-red` | AMBIGUITY case-study identity hue |
+
+## Toast colors
+
+Toast notification colors are scoped to `GlassToast` only (not bridged to
+Tailwind utilities). Distinct from the static brand status colors above —
+toasts want attention-grabbing brightness for ephemeral notifications.
+
+```css
+--toast-default: oklch(var(--L-accent) 0.12 var(--dynamic-hue));
+--toast-success: oklch(0.72 0.16 145);
+--toast-error:   oklch(0.65 0.20 25);
+--toast-warning: oklch(0.75 0.16 80);
+```
+
+## Pastel Seeds
+
+Raw primitive colors — the building blocks. Named for what they look like,
+not what they mean. Live as `--seed-color-*` in the Style Dictionary
+pipeline (Tier 2). Examples: `lavender`, `mint`, `peach`, `coral`, `sage`,
+`blush`, `sky`, `lemon`, `butter`, `honey`, `cream`, `fog`, `ash`, `cloud`,
+`wisteria`, `azure`, `spring`, `lichen`.
+
+## Neutral Scale
+
+11 steps from `50` (near-white `#FAFAF9`) to `950` (near-black `#0C0A09`).
+Tailwind's neutral palette is preserved 1:1 — components reach for these
+when they need a flat backdrop unrelated to Heat × Depth.
+
+## How Colors Flow
+
+Seed defines the raw value (e.g. `honey = #FFE082`). Alias gives it
+meaning (`primary → honey`). Mapped resolves per theme (light primary =
+honey, dark primary = deep honey `#D4A843`). Components reference mapped
+tokens via CSS custom properties — they never see raw hex.
+
+The runtime **Heat × Depth engine** then overrides the mapped tier for
+every paint-relevant token at `:root` in `app/globals.css`. See
+`Foundations/Theming` for the full engine docs.
