@@ -94,7 +94,7 @@ jobs:
       - name: Build design system
         run: pnpm build
       - name: Run Chromatic
-        uses: chromaui/action@fd9f0848927ca40d7157227eb3a7f771827652bc # latest
+        uses: chromaui/action@a200f3ba3ff81232c47ac7942347fb212b1a67dc # latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           # Visual changes don't fail CI — they need accept/reject in the
