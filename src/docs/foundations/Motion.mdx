@@ -1,0 +1,209 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Motion" />
+
+# Motion
+
+Animation principles, easing curves, and duration tokens that bring the
+interface to life — or gracefully step aside when reduced motion is
+preferred. Migrated from `myportfolio/app/app/design-system/motion/page.tsx`
+(Wave J, May 2026).
+
+## Principles
+
+**Natural** — Animations follow physics-based easing. Nothing moves
+linearly. Spring physics for interactive elements, smooth deceleration
+for reveals.
+
+**Meaningful** — Every animation serves a purpose: guiding attention,
+confirming actions, or showing spatial relationships. No animation for
+decoration alone.
+
+**Respectful** — All decorative motion disables when the OS prefers
+reduced motion. Essential transitions collapse to instant. The
+`useReducedMotion` hook enforces this globally.
+
+## Duration Tokens
+
+Wave E (atomic-element consolidation) bridged these to CSS vars and
+Tailwind utilities. Use the Tailwind utility (e.g. `duration-base`) in
+components, or the CSS var (`var(--dur-base)`) in inline styles and
+`globals.css` rules. JS animations import via `motion.duration.base` from
+`app/tokens/motion-tokens.ts`.
+
+| Name | Value | CSS var | Tailwind utility | Use for |
+| --- | --- | --- | --- | --- |
+| `instant` | 0.05s | `--dur-instant` | `duration-instant` | Button press, micro-interactions |
+| `fast` | 0.12s | `--dur-fast` | `duration-fast` | Hover, toggle, quick feedback |
+| `base` | 0.2s | `--dur-base` | `duration-base` | Standard transitions |
+| `slow` | 0.3s | `--dur-slow` | `duration-slow` | Expand, slide, complex transitions |
+| `slower` | 0.5s | `--dur-slower` | `duration-slower` | Page-level transitions |
+| `theme-fade` | 0.8s | `--dur-theme-fade` | `duration-theme-fade` | **Engine cross-fade for Heat × Depth toggle** |
+
+### Duration ball specimen
+
+Each ball traverses the same 200px track, but at its token's duration.
+The longer the duration, the more time the ball spends in flight — read
+side-by-side, the durations become tactile.
+
+<style>{`
+  @keyframes nd-bounce-track {
+    0%   { transform: translateX(0); }
+    50%  { transform: translateX(180px); }
+    100% { transform: translateX(0); }
+  }
+  .nd-bounce-track {
+    position: relative;
+    height: 24px;
+    width: 200px;
+    border-radius: 999px;
+    background: oklch(var(--L-surface) 0.04 var(--dynamic-hue) / 0.5);
+    overflow: hidden;
+  }
+  .nd-bounce-ball {
+    position: absolute;
+    top: 4px; left: 4px;
+    height: 16px; width: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-name: nd-bounce-track;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nd-bounce-ball { animation: none; }
+  }
+`}</style>
+
+<div style={{ display: 'grid', gap: 10, margin: '12px 0 24px' }}>
+  {[
+    { name: 'instant',    dur: '0.1s' },
+    { name: 'fast',       dur: '0.24s' },
+    { name: 'base',       dur: '0.4s' },
+    { name: 'slow',       dur: '0.6s' },
+    { name: 'slower',     dur: '1.0s' },
+    { name: 'theme-fade', dur: '1.6s' },
+  ].map((d) => (
+    <div key={d.name} style={{ display: 'grid', gridTemplateColumns: '110px 1fr 60px', alignItems: 'center', gap: 14 }}>
+      <code style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>{d.name}</code>
+      <div className="nd-bounce-track">
+        <div className="nd-bounce-ball" style={{ animationDuration: d.dur }} />
+      </div>
+      <code style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>{d.dur}</code>
+    </div>
+  ))}
+</div>
+
+## Easing Curves
+
+Cubic-beziers exposed via `app/tokens/motion-tokens.ts`. Two curves coexist
+by design: CSS keyword `ease-out` (smooth deceleration, used for ambient
+transitions) and the curated cubic-bezier values below (used for explicit
+JS animations).
+
+| Name | Value | Description |
+| --- | --- | --- |
+| `easeOut` | `cubic-bezier(0.215, 0.61, 0.355, 1)` | Default exit — smooth deceleration |
+| `easeInOut` | `cubic-bezier(0.645, 0.045, 0.355, 1)` | Symmetric enter + exit |
+| `easeOutCirc` | `cubic-bezier(0.08, 0.82, 0.17, 1)` | Snappy exit — organic feel |
+| `easeOutBack` | `cubic-bezier(0.12, 0.4, 0.29, 1.46)` | Bouncy overshoot — playful |
+| `easeOutQuint` | `cubic-bezier(0.23, 1, 0.32, 1)` | Aggressive deceleration |
+
+## Springs
+
+Framer-motion spring transitions live at `app/lib/springs.ts` (Wave H).
+Each spring encodes a specific surface intent — cards lift softly,
+buttons snap, nav glides, sidebars assert. `GlassCard.tsx` re-exports
+CARD/BUTTON/NAV springs for backward compat with existing import sites.
+
+| Name | Config | Use |
+| --- | --- | --- |
+| `CARD_SPRING` | stiffness 300, damping 20 | Soft hover lift on glass cards (~280ms settle) |
+| `BUTTON_SPRING` | stiffness 500, damping 25 | Snappy commit on tap; critically damped |
+| `NAV_SPRING` | stiffness 200, damping 30 | Glide for nav layoutId active-link slide |
+| `SIDEBAR_SPRING` | stiffness 280, damping 28 | Assertive slide-in for design-system sidebar |
+
+### Spring tile specimen
+
+Hover any tile to feel its character: `BUTTON_SPRING` is critically
+damped (commits and stops); `CARD_SPRING` softly overshoots; `NAV_SPRING`
+glides; `SIDEBAR_SPRING` asserts. CSS approximations of the spring
+curves below — the live components use motion.dev with the actual
+stiffness / damping configs.
+
+<style>{`
+  .nd-spring-tile {
+    height: 96px;
+    border-radius: 14px;
+    background: oklch(var(--L-surface) 0.04 var(--dynamic-hue) / 0.6);
+    border: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.12);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .nd-spring-tile.button { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 140ms; }
+  .nd-spring-tile.card   { transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); transition-duration: 280ms; }
+  .nd-spring-tile.nav    { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); transition-duration: 380ms; }
+  .nd-spring-tile.side   { transition-timing-function: cubic-bezier(0.32, 1.4, 0.5, 1); transition-duration: 320ms; }
+  .nd-spring-tile:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 10px 28px oklch(0 0 0 / 0.18);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nd-spring-tile { transition: none; }
+    .nd-spring-tile:hover { transform: none; box-shadow: none; }
+  }
+`}</style>
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 12, margin: '12px 0 24px' }}>
+  {[
+    { className: 'card',   name: 'CARD_SPRING',    desc: 'Soft overshoot · 280ms' },
+    { className: 'button', name: 'BUTTON_SPRING',  desc: 'Critically damped · 140ms' },
+    { className: 'nav',    name: 'NAV_SPRING',     desc: 'Smooth glide · 380ms' },
+    { className: 'side',   name: 'SIDEBAR_SPRING', desc: 'Assertive arrive · 320ms' },
+  ].map((s) => (
+    <div key={s.name} className={`nd-spring-tile ${s.className}`}>
+      <div style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.14em', color: 'var(--accent)' }}>
+        spring
+      </div>
+      <div>
+        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, color: 'oklch(var(--L-heading) 0.02 var(--dynamic-hue))' }}>{s.name}</div>
+        <div style={{ fontSize: 11, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))', marginTop: 4 }}>{s.desc}</div>
+      </div>
+    </div>
+  ))}
+</div>
+
+## Animation Stack
+
+| Type | Tool | Token Source |
+| --- | --- | --- |
+| Hover, focus, color | Tailwind CSS transitions | `globals.css` `--dur-*` + Tailwind `duration-*` utilities (Wave E) |
+| Mount/unmount, gestures | Framer Motion | `motion-tokens.ts` (durations + easings) + `lib/springs.ts` (springs) |
+| Scroll-driven, timelines | GSAP + ScrollTrigger | `motion-tokens.ts` + `getComputedStyle()` |
+| 3D scenes (future) | Three.js | `motion-tokens.ts` + `color-utils.ts` |
+
+## Reduce motion
+
+System-level `prefers-reduced-motion: reduce` collapses every transition
+to 0ms. The pattern, used everywhere:
+
+```tsx
+// React
+transition={reducedMotion ? { duration: 0 } : { duration: motionDur.base }}
+
+// CSS
+.text-accent {
+  transition: color var(--dur-theme-fade) ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-accent { transition: none; }
+}
+```
+
+The `useReducedMotion` hook (in `app/hooks/`) reads the system preference
+once and exposes a boolean for components to gate animations.

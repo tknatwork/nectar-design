@@ -1,0 +1,135 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Patterns/Overview" />
+
+# Patterns
+
+Composite patterns documented here live in the **myportfolio app**, not
+in this design system package. They're surfaces composed from nd
+primitives (GlassCard, Button, Icon) plus app-specific logic (NDA
+auth, route detection, tinting maps). Documenting them here keeps the
+"what surfaces does the live site use?" answer in one place — even
+when the implementation lives in a different repo.
+
+If you need to **build** one of these, the implementation lives at
+`myportfolio/app/components/<Name>.tsx`. If you need to **understand**
+one, this page is the brief.
+
+## GlassNav
+
+Floating pill nav at the top-center on desktop, bottom tab bar on
+phone. Uses chrome-tier glass (`--glass-blur-chrome` = `blur(16px)
+saturate(1.6)`) — softer than card surfaces because chrome wants
+overlay feel, not first-class surface.
+
+```tsx
+// myportfolio/app/components/GlassNav.tsx
+const NAV_LINKS = [
+  { href: '/', label: 'Home', icon: HomeIcon },
+  { href: '/projects', label: 'Work', icon: WorkIcon },
+  { href: 'https://design.tusharkantnaik.com', label: 'Design System',
+    icon: SystemIcon, external: true },
+  { href: '/contact', label: 'Contact', icon: ContactIcon },
+];
+```
+
+**Anatomy:**
+
+- Floating pill (top-center) on desktop — `topGlass` style with all four glass borders
+- Bottom tab bar on phone — `bottomGlass` with only `borderTop`
+- Active item: pill background via framer's `layoutId` (smooth slide between siblings)
+- Touch targets: `min-h-touch min-w-touch` (44×44px WCAG 2.5.5 minimum)
+
+**Springs (from `app/lib/springs.ts`):**
+
+- `BUTTON_SPRING` — for icon swap animations (sun/moon depth toggle)
+- `NAV_SPRING` — for layoutId active-link transitions (200/30 stiffness/damping; glide feel)
+
+## CaseStudyTile
+
+Tiles in the home work-grid. Each tile is a `GlassCard size="md"
+depth="raised"` with a project-specific cover gradient on top. The
+tint is `color-mix(in oklch, $identity-hue, var(--dynamic-hue))` so
+the project colors *breathe* with the Heat axis instead of looking
+fixed.
+
+```ts
+// myportfolio/app/components/CaseStudyGrid.tsx
+const WORK_SECTION_OVERRIDES: Record<string, {
+  renderTitle?: (title: string) => React.ReactNode;
+  renderRole?: (role: string) => React.ReactNode;
+  renderDescription?: (description: string) => React.ReactNode;
+  renderTag?: (tag: string) => React.ReactNode;
+  glassStyle?: React.CSSProperties;
+  hoverLift?: boolean;
+}> = {
+  'systems-thinking-experiments': {
+    renderTitle: () => <AmbiguityWordmark text="AMBIGUITY" />,
+    glassStyle: {
+      background:
+        'color-mix(in oklch, oklch(0.50 0.06 65 / 0.30) 65%, oklch(0.40 0.08 var(--dynamic-hue) / 0.20) 35%)',
+    },
+    hoverLift: false, // wordmark has its own continuous motion
+  },
+};
+```
+
+**Override map shape:** six render-prop fields + `glassStyle` +
+`hoverLift`. Adding a new tinted project = one entry; no component fork.
+
+**Full reference:** `myportfolio/app/components/CaseStudyGrid.README.md`.
+
+## AccessGate
+
+Server-rendered terms-acceptance overlay. Every route except `/privacy`
+and `/admin/*` sits behind it until the visitor sets the
+`portfolio-terms-accepted` cookie. The gate is what crawlers see by
+default — SSR only emits gate markup unless the cookie is present.
+
+This is one of the **three escape hatches** documented in
+`Foundations/Theming` § Per-section overrides. The other two are
+**Ink Routes** (next section) and `WORK_SECTION_OVERRIDES` (above).
+
+**Why it exists:** the portfolio includes private case studies (NDA),
+unfinished prototypes, and admin tooling. The gate is a soft entry
+agreement — visitors confirm they're not screenshot-scraping for
+unauthorized redistribution before content loads. The legal weight is
+small; the polite signal is large.
+
+## Ink Routes
+
+The opt-out from glass + Heat. Routes that pass `isInkRoute(pathname)`
+in `app/lib/ink-routes.ts` render on opaque `#0A0A0D` ink with
+`#F4ECE0` bone-colored text — full art direction, no engine
+participation. Today only the E.A.S.T. case study at
+`/projects/systems-thinking-experiments` opts in.
+
+**When to add a new ink route:**
+
+- The case study has its own typography system that fights the engine's
+- It's a long-read, not a portfolio surface (different reading pace)
+- The art direction needs full bleed without the glass treatment
+
+`myportfolio/app/lib/ink-routes.ts`:
+
+```ts
+const INK_ROUTES = new Set<string>([
+  '/projects/systems-thinking-experiments',
+]);
+
+export function isInkRoute(pathname: string): boolean {
+  return INK_ROUTES.has(pathname);
+}
+```
+
+When `isInkRoute` returns true at the layout level, the app suppresses
+`GlassNav` + `HeatLayer` and lets the route render its own chrome.
+
+## See also
+
+- `Foundations/Theming` § Per-section overrides — the broader escape-
+  hatch philosophy
+- `Foundations/Colors` § Brand Identity — `--ink-bone`, `--ink-deep`,
+  `--brand-red` constants used by these patterns
+- `myportfolio/docs/audit/INCONSISTENCIES.md` § 4 — the historical
+  audit explaining why these patterns exist as escape hatches

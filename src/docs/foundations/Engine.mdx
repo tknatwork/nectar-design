@@ -1,0 +1,116 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Engine" />
+
+# Engine — Heat × Depth in real time
+
+This page is painted by the runtime engine that drives the live portfolio
+at tusharkantnaik.com. Two CSS variables, `--ui-heat` and `--ui-depth`,
+feed an oklch expression that recomputes every paint-relevant token
+(`--bg`, `--fg`, `--primary`, `--surface`, `--muted-fg`, `--border`,
+`--ring`) on every frame.
+
+**Try it:** use the **Heat** and **Depth** toolbar dropdowns above to
+sweep the engine. Both axes update through a 450ms ease-in-out
+animation; depth additionally fires a Gaussian-shaped golden-hour hue
+burst (peaks at depth=40), echoing the live site's theme transition.
+
+## Resolved engine variables (live)
+
+The values below are read off `:root` at render time — what the engine
+is actually computing right now, given the current toolbar state. Open
+your browser devtools and inspect any element to verify; they're not
+mock values.
+
+<div
+  style={{
+    display: 'grid',
+    gridTemplateColumns: 'auto 1fr auto',
+    gap: '12px 16px',
+    fontFamily: 'var(--font-mono, ui-monospace, monospace)',
+    fontSize: 12,
+    padding: 16,
+    borderRadius: 12,
+    background: 'oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.4)',
+    border: '1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08)',
+  }}
+>
+  <span style={{ width: 16, height: 16, borderRadius: 4, background: 'var(--bg)', border: '1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.16)' }} />
+  <code>--bg</code>
+  <code style={{ color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>page background</code>
+
+  <span style={{ width: 16, height: 16, borderRadius: 4, background: 'var(--surface)', border: '1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.16)' }} />
+  <code>--surface</code>
+  <code style={{ color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>card / panel</code>
+
+  <span style={{ width: 16, height: 16, borderRadius: 4, background: 'var(--fg)', border: '1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.16)' }} />
+  <code>--fg</code>
+  <code style={{ color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>body text</code>
+
+  <span style={{ width: 16, height: 16, borderRadius: 4, background: 'var(--primary)', border: '1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.16)' }} />
+  <code>--primary</code>
+  <code style={{ color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>action color</code>
+
+  <span style={{ width: 16, height: 16, borderRadius: 4, background: 'var(--accent)', border: '1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.16)' }} />
+  <code>--accent</code>
+  <code style={{ color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>accent (Wave B unified)</code>
+
+  <span style={{ width: 16, height: 16, borderRadius: 4, background: 'var(--muted-fg)', border: '1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.16)' }} />
+  <code>--muted-fg</code>
+  <code style={{ color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>muted text</code>
+</div>
+
+## How the formula works
+
+```css
+:root {
+  --ui-heat: 0;     /* 0–100 → hue (cool blue → warm amber) */
+  --ui-depth: 100;  /* 0–100 → lightness (light → dark) */
+
+  /* The lynchpin scalar — every oklch in the system reads this hue */
+  --dynamic-hue: calc(250 - (var(--ui-heat) * 2.1) + var(--golden-hue-shift));
+
+  /* Lightness anchors interpolate by depth */
+  --L-bg:      calc(0.96 - (var(--ui-depth) / 100) * 0.81);
+  --L-heading: calc(0.20 + (var(--ui-depth) / 100) * 0.75);
+  --L-body:    calc(0.35 + (var(--ui-depth) / 100) * 0.33);
+  --L-muted:   calc(0.50 + (var(--ui-depth) / 100) * 0.10);
+  --L-accent:  calc(0.50 + (var(--ui-depth) / 100) * 0.22);
+  --L-surface: calc(0.98 - (var(--ui-depth) / 100) * 0.80);
+
+  /* Chroma is depth-interpolated + transient golden-hour boost */
+  --C-bg:     calc(0.02 + (var(--ui-depth) / 100) * 0.06 + var(--golden-chroma-boost));
+  --C-accent: calc(0.18 - (var(--ui-depth) / 100) * 0.04 + var(--golden-chroma-boost));
+
+  /* Every semantic var is `oklch(L C H)` of the above */
+  --bg:      oklch(var(--L-bg)      var(--C-bg)     var(--dynamic-hue));
+  --fg:      oklch(var(--L-body)    0.03            var(--dynamic-hue));
+  --surface: oklch(var(--L-surface) 0.02            var(--dynamic-hue));
+  --primary: oklch(var(--L-accent)  var(--C-accent) var(--dynamic-hue));
+  /* …and so on */
+}
+```
+
+## The golden-hour transition
+
+When you flip Depth (light ↔ dark), the engine doesn't just interpolate
+luminance — it sweeps through a warm-amber midpoint, mimicking the way
+real light shifts at sunrise/sunset. Implementation:
+
+```ts
+const goldenStrength = Math.exp(-((depth - 40) ** 2) / (2 * 20 ** 2)); // gaussian, σ=20
+root.style.setProperty('--golden-hue-shift', goldenStrength * -180);   // shift hue toward warm
+root.style.setProperty('--golden-chroma-boost', goldenStrength * 0.12); // saturate during peak
+```
+
+The bell curve peaks at depth=40 and fades to ~0 at the extremes —
+visitors see a *sunset* between light and dark, not just a luminance ramp.
+
+## Source of truth
+
+- **Engine vars + formulas:** `myportfolio/app/globals.css` `:root` block.
+- **JS-side animation logic:** `myportfolio/app/hooks/useDepthEngine.ts`.
+- **This Storybook's port:** `nectar-design/.storybook/preview.ts`
+  decorator. Uses the same constants (450ms duration, σ=20 gaussian,
+  GOLDEN_HOUR_PEAK=40) verbatim — the only difference is the trigger
+  (toolbar dropdown vs DepthToggle button on the live site).

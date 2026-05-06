@@ -1,0 +1,217 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Spacing" />
+
+# Spacing
+
+A 4px base unit scale with semantic aliases for consistent rhythm across
+every component and layout. Migrated from
+`myportfolio/app/app/design-system/spacing/page.tsx` (Wave J, May 2026).
+
+## Spacing Scale
+
+Tailwind's standard scale, 4px base unit.
+
+| Token | Value |
+| --- | --- |
+| `0` | 0px |
+| `1` | 4px |
+| `2` | 8px |
+| `3` | 12px |
+| `4` | 16px |
+| `5` | 20px |
+| `6` | 24px |
+| `8` | 32px |
+| `10` | 40px |
+| `12` | 48px |
+| `16` | 64px |
+| `20` | 80px |
+| `24` | 96px |
+
+### Scale visual
+
+Bars below are width-proportional (1px = 1px) so 4 → 96 reads at a glance.
+
+<div style={{ display: 'grid', gap: 8, margin: '12px 0 24px', fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11 }}>
+  {[
+    { token: '1', px: 4 },
+    { token: '2', px: 8 },
+    { token: '3', px: 12 },
+    { token: '4', px: 16 },
+    { token: '6', px: 24 },
+    { token: '8', px: 32 },
+    { token: '12', px: 48 },
+    { token: '16', px: 64 },
+    { token: '24', px: 96 },
+  ].map((s) => (
+    <div key={s.token} style={{ display: 'grid', gridTemplateColumns: '70px 1fr', alignItems: 'center', gap: 12 }}>
+      <code style={{ color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>
+        {s.token} · {s.px}px
+      </code>
+      <div
+        style={{
+          height: 16,
+          width: s.px,
+          background: 'var(--accent)',
+          borderRadius: 4,
+          opacity: 0.85,
+        }}
+      />
+    </div>
+  ))}
+</div>
+
+## Semantic Aliases
+
+Alias tokens give spacing values purpose. Use these instead of raw numbers.
+
+| Alias | Maps to | Use for |
+| --- | --- | --- |
+| `xs` | 4px | Tight internal gaps |
+| `sm` | 8px | Small component gaps |
+| `md` | 16px | Default spacing |
+| `lg` | 24px | Section padding |
+| `xl` | 32px | Large gaps |
+| `2xl` | 48px | Major separations |
+| `section` | 96px | Between page sections |
+| `touch` | 44px | **WCAG 2.5.5 minimum tap target** (Wave H, `--touch-target`) |
+
+The `touch` alias encodes intent: 44px is the WCAG 2.5.5 minimum
+non-negotiable accessibility dimension. Use `min-h-touch min-w-touch`
+on tappable elements (nav links, buttons, form controls).
+
+## Radius scale
+
+Two parallel radius scales coexist by design (Wave D consolidation):
+
+**Package's structured scale** (compact UI primitives — Card, Button,
+Input, Badge):
+
+| Token | Value |
+| --- | --- |
+| `--radius-sm` | 4px |
+| `--radius-md` | 8px |
+| `--radius-lg` | 12px |
+| `--radius-xl` | 16px |
+| `--radius-full` | 9999px |
+
+**App-side atmospheric scale** (content surfaces — hero, work tiles,
+contact inputs, glass panels):
+
+| Utility | Value |
+| --- | --- |
+| `rounded-card-sm` | 10px |
+| `rounded-card-md` | 14px |
+| `rounded-card-lg` | 20px |
+| `rounded-glass` | **24px mobile / 36px tablet+** (responsive via `--glass-radius`) |
+
+`rounded-glass` is the only responsive utility — its underlying CSS var
+switches at the 768px breakpoint, no `tablet:` modifier needed.
+
+### Radii grid
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: 12, margin: '12px 0 24px' }}>
+  {[
+    { name: 'sm',     px: 4 },
+    { name: 'md',     px: 8 },
+    { name: 'lg',     px: 12 },
+    { name: 'xl',     px: 16 },
+    { name: 'card-sm', px: 10 },
+    { name: 'card-md', px: 14 },
+    { name: 'card-lg', px: 20 },
+    { name: 'glass',  px: 24 },
+    { name: 'full',   px: 9999 },
+  ].map((r) => (
+    <div key={r.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+      <div
+        style={{
+          width: 88,
+          height: 88,
+          background: 'var(--surface)',
+          borderRadius: r.px,
+          border: '1.5px solid var(--accent)',
+        }}
+      />
+      <div style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>
+        {r.name} · {r.px === 9999 ? '∞' : `${r.px}px`}
+      </div>
+    </div>
+  ))}
+</div>
+
+### GlassCard size strip
+
+The `GlassCard` cva has four sizes; depths (`surface` / `raised` /
+`floating`) cross-cut on top. Strip below renders the four sizes at the
+**raised** depth, sharing the chrome glass blur (`var(--glass-blur-card)`)
+and the responsive `var(--glass-radius)`.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 12, margin: '12px 0 24px' }}>
+  {[
+    { size: 'sm',   pad: 16, h: 96,  label: 'Small' },
+    { size: 'md',   pad: 24, h: 140, label: 'Medium' },
+    { size: 'lg',   pad: 32, h: 180, label: 'Large' },
+    { size: 'hero', pad: 40, h: 220, label: 'Hero' },
+  ].map((c) => (
+    <div
+      key={c.size}
+      style={{
+        height: c.h,
+        padding: c.pad,
+        borderRadius: 'var(--glass-radius, 24px)',
+        background: 'oklch(var(--L-surface) 0.04 var(--dynamic-hue) / 0.65)',
+        backdropFilter: 'blur(12px) saturate(1.4)',
+        WebkitBackdropFilter: 'blur(12px) saturate(1.4)',
+        border: '1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.12)',
+        boxShadow: '0 8px 24px oklch(0 0 0 / 0.18), inset 0 1px 0 oklch(1 0 0 / 0.06)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        color: 'oklch(var(--L-heading) 0.02 var(--dynamic-hue))',
+      }}
+    >
+      <div style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.14em', color: 'var(--accent)' }}>
+        size · {c.size}
+      </div>
+      <div style={{ fontFamily: 'var(--font-display, ui-sans-serif)', fontWeight: 700, fontSize: 18 }}>
+        {c.label}
+      </div>
+    </div>
+  ))}
+</div>
+
+## Breakpoints
+
+Mobile-first. Stack at `mobile`, side-by-side at `tablet`, optimized at
+`desktop`, full bleed at `wide`.
+
+| Name | Value | Device |
+| --- | --- | --- |
+| `mobile:` | 390px | iPhone 15/16 baseline |
+| `tablet:` | 768px | iPad portrait |
+| `desktop:` | 1024px | Laptop |
+| `wide:` | 1440px | QHD+ full bleed |
+
+Use `mobile:`, `tablet:`, `desktop:`, `wide:` — never the default
+Tailwind `sm:`, `md:`, `lg:`. The cva `size` props (`sm`, `md`, `lg`) are
+component variants, not responsive prefixes.
+
+## Layout grid
+
+| Surface | Columns | Gutter | Margin |
+| --- | --- | --- | --- |
+| Mobile | 4 columns | 16px | 16–20px |
+| Tablet | 8 columns | 24px | 32px |
+| Desktop | 12 columns | 24–32px | 40–48px |
+
+Reading width caps at 65ch for prose, 80ch for code.
+
+## z-index named layer
+
+| Token | Value | Use |
+| --- | --- | --- |
+| `--z-modal` | 9999 | AccessGate / GateOverlay (kept above all other UI) |
+
+Accessed via Tailwind utility `z-modal`. The only named z-index in the
+system; everything else uses Tailwind's standard scale (`z-0`, `z-10`,
+`z-50`). Wave H promoted `z-[9999]` from a magic number to a named layer.

@@ -1,0 +1,177 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Button } from '../../components/Button';
+import { Badge } from '../../components/Badge';
+import { Tag } from '../../components/Tag';
+import { Card } from '../../components/Card';
+import { Alert, AlertTitle, AlertDescription } from '../../components/Alert';
+import { Avatar } from '../../components/Avatar';
+import { Divider } from '../../components/Divider';
+import { Skeleton } from '../../components/Skeleton';
+import { Input } from '../../components/Input';
+
+<Meta title="Foundations/Components" />
+
+# Components
+
+A survey of the 32 components the package exports — all variants
+side-by-side so the system reads as one. Every component below imports
+from `nectar-design` and renders against the engine canvas, so flipping
+the toolbar **Heat × Depth** repaints them live.
+
+For interactive component playgrounds (Dialog, Popover, Toast, Menu,
+Tabs, Tooltip), see their individual stories in the sidebar.
+
+## Buttons — 5 intents × 3 sizes
+
+<div style={{ display: 'grid', gap: 12, margin: '12px 0 24px' }}>
+  {['sm', 'md', 'lg'].map((size) => (
+    <div key={size} style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
+      <code style={{ width: 30, fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>{size}</code>
+      <Button intent="primary" size={size}>Primary</Button>
+      <Button intent="accent" size={size}>Accent</Button>
+      <Button intent="outline" size={size}>Outline</Button>
+      <Button intent="ghost" size={size}>Ghost</Button>
+      <Button intent="destructive" size={size}>Destructive</Button>
+    </div>
+  ))}
+</div>
+
+## Badges — 6 intents × 3 sizes
+
+<div style={{ display: 'grid', gap: 12, margin: '12px 0 24px' }}>
+  {['sm', 'md', 'lg'].map((size) => (
+    <div key={size} style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+      <code style={{ width: 30, fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>{size}</code>
+      <Badge intent="default" size={size}>Default</Badge>
+      <Badge intent="primary" size={size}>Primary</Badge>
+      <Badge intent="accent" size={size}>Accent</Badge>
+      <Badge intent="success" size={size}>Success</Badge>
+      <Badge intent="warning" size={size}>Warning</Badge>
+      <Badge intent="destructive" size={size}>Destructive</Badge>
+    </div>
+  ))}
+</div>
+
+## Tags — 4 variants × 3 sizes
+
+<div style={{ display: 'grid', gap: 12, margin: '12px 0 24px' }}>
+  {['sm', 'md', 'lg'].map((size) => (
+    <div key={size} style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+      <code style={{ width: 30, fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>{size}</code>
+      <Tag variant="default" size={size}>Default</Tag>
+      <Tag variant="primary" size={size}>Primary</Tag>
+      <Tag variant="accent" size={size}>Accent</Tag>
+      <Tag variant="muted" size={size}>Muted</Tag>
+    </div>
+  ))}
+</div>
+
+## Cards — 3 variants
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12, margin: '12px 0 24px' }}>
+  <Card variant="default" padding="md">
+    <strong>Default</strong>
+    <p style={{ fontSize: 13, marginTop: 8, opacity: 0.8 }}>Static card surface, no hover state.</p>
+  </Card>
+  <Card variant="interactive" padding="md">
+    <strong>Interactive</strong>
+    <p style={{ fontSize: 13, marginTop: 8, opacity: 0.8 }}>Border picks up `--primary` on hover.</p>
+  </Card>
+  <Card variant="elevated" padding="md">
+    <strong>Elevated</strong>
+    <p style={{ fontSize: 13, marginTop: 8, opacity: 0.8 }}>Shadow-sm at rest, shadow-md on hover.</p>
+  </Card>
+</div>
+
+## Alerts — 4 variants
+
+<div style={{ display: 'grid', gap: 12, margin: '12px 0 24px' }}>
+  <Alert variant="default">
+    <AlertTitle>Heads up</AlertTitle>
+    <AlertDescription>Default alert — neutral surface, no urgency signal.</AlertDescription>
+  </Alert>
+  <Alert variant="success">
+    <AlertTitle>Saved</AlertTitle>
+    <AlertDescription>Success alert — sage tint, low chroma.</AlertDescription>
+  </Alert>
+  <Alert variant="warning">
+    <AlertTitle>Almost full</AlertTitle>
+    <AlertDescription>Warning alert — amber tint, fg stays neutral for legibility.</AlertDescription>
+  </Alert>
+  <Alert variant="destructive">
+    <AlertTitle>Unable to save</AlertTitle>
+    <AlertDescription>Destructive alert — terracotta tint, fg picks up the brand red.</AlertDescription>
+  </Alert>
+</div>
+
+## Avatars — 4 sizes
+
+<div style={{ display: 'flex', alignItems: 'flex-end', gap: 16, margin: '12px 0 24px' }}>
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+    <Avatar size="sm" alt="Tushar Kant" />
+    <code style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>sm</code>
+  </div>
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+    <Avatar size="md" alt="Tushar Kant" />
+    <code style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>md</code>
+  </div>
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+    <Avatar size="lg" alt="Tushar Kant" />
+    <code style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>lg</code>
+  </div>
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+    <Avatar size="xl" alt="Tushar Kant" />
+    <code style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>xl</code>
+  </div>
+</div>
+
+## Form controls
+
+<div style={{ display: 'grid', gap: 16, maxWidth: 480, margin: '12px 0 24px' }}>
+  <div style={{ display: 'grid', gap: 6 }}>
+    <label style={{ fontSize: 13, fontWeight: 500, color: 'oklch(var(--L-heading) 0.02 var(--dynamic-hue))' }}>Email</label>
+    <Input type="email" placeholder="hi@tusharkantnaik.com" />
+  </div>
+  <div style={{ display: 'grid', gap: 6 }}>
+    <label style={{ fontSize: 13, fontWeight: 500, color: 'oklch(var(--L-heading) 0.02 var(--dynamic-hue))' }}>Disabled</label>
+    <Input placeholder="Read only" disabled />
+  </div>
+</div>
+
+## Skeleton + Divider
+
+<div style={{ display: 'grid', gap: 16, margin: '12px 0 24px' }}>
+  <div style={{ display: 'grid', gap: 8 }}>
+    <Skeleton style={{ height: 16, width: '60%' }} />
+    <Skeleton style={{ height: 14, width: '90%' }} />
+    <Skeleton style={{ height: 14, width: '40%' }} />
+  </div>
+  <Divider />
+  <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+    <span style={{ fontSize: 13 }}>Left</span>
+    <Divider orientation="vertical" style={{ height: 20 }} />
+    <span style={{ fontSize: 13 }}>Right</span>
+  </div>
+</div>
+
+## What's not on this page
+
+Stateful components require a story sandbox to render their open / closed
+states meaningfully — they live in the **Components/** sidebar group:
+
+- `Dialog` — modal with backdrop + focus trap
+- `Popover` — anchored floating content
+- `Tooltip` — hover / focus reveal
+- `Menu` — keyboard-navigable command list
+- `Tabs` — segmented panel switcher
+- `Toast` — ephemeral notifications via `toast()` imperative API
+- `Select` — combobox with keyboard nav
+- `Checkbox` / `Radio` / `Switch` — form controls (variants here, behavior in stories)
+- `Breadcrumbs` / `Table` / `List` — composition components
+
+## See also
+
+- `Foundations/Colors` — engine swatches that drive every component surface
+- `Foundations/Spacing` — radius scale + GlassCard size strip
+- `Foundations/Typography` — type scale that components consume
+- `Patterns/Overview` — composite patterns built from these primitives
