@@ -49,22 +49,38 @@ function setDepth(root: HTMLElement, v: number) {
   root.style.setProperty('--golden-chroma-boost', (goldenStrength * 0.12).toFixed(3));
 }
 
-/** Animate from one depth value to another, ease-in-out, ~450ms. */
+/** Animate from one depth value to another, ease-in-out, ~450ms.
+ *
+ * Adds the `depth-animating` class to <html> while the RAF is in
+ * flight so manager-head.html / preview-head.html disable their
+ * theme-fade transitions for the duration. Without this, the body
+ * background's CSS 800ms transition keeps restarting every time the
+ * RAF writes the var (60fps) and the chrome appears stuck mid-flight.
+ * Same fix as portfolio's useDepthEngine.
+ */
 function animateDepth(root: HTMLElement, from: number, to: number) {
   if (typeof window === 'undefined') return () => {};
   const start = performance.now();
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const duration = prefersReduced ? 0 : TRANSITION_DURATION_MS;
+  if (duration > 0) root.classList.add('depth-animating');
   let raf = 0;
   const step = (now: number) => {
     const t = duration > 0 ? Math.min(1, (now - start) / duration) : 1;
     // Ease-in-out (verbatim from useDepthEngine): smooth golden hour sweep.
     const eased = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
     setDepth(root, from + (to - from) * eased);
-    if (t < 1) raf = requestAnimationFrame(step);
+    if (t < 1) {
+      raf = requestAnimationFrame(step);
+    } else {
+      root.classList.remove('depth-animating');
+    }
   };
   raf = requestAnimationFrame(step);
-  return () => cancelAnimationFrame(raf);
+  return () => {
+    cancelAnimationFrame(raf);
+    root.classList.remove('depth-animating');
+  };
 }
 
 // Module-scoped state — Storybook re-runs decorators on every render but we
@@ -84,21 +100,35 @@ function setHeat(root: HTMLElement, v: number) {
   root.style.setProperty('--ui-heat', h.toFixed(2));
 }
 
-/** Animate heat over the same 450ms ease-in-out timing as depth. */
+/** Animate heat over the same 450ms ease-in-out timing as depth.
+ *
+ * Toggles the same `depth-animating` class as animateDepth so the
+ * theme-fade transitions are disabled during the heat sweep too.
+ * Heat shifts hue → resolved colors change → CSS transition would
+ * compete with the RAF without the gate. Same fix as depth path.
+ */
 function animateHeat(root: HTMLElement, from: number, to: number) {
   if (typeof window === 'undefined') return () => {};
   const start = performance.now();
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const duration = prefersReduced ? 0 : TRANSITION_DURATION_MS;
+  if (duration > 0) root.classList.add('depth-animating');
   let raf = 0;
   const step = (now: number) => {
     const t = duration > 0 ? Math.min(1, (now - start) / duration) : 1;
     const eased = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
     setHeat(root, from + (to - from) * eased);
-    if (t < 1) raf = requestAnimationFrame(step);
+    if (t < 1) {
+      raf = requestAnimationFrame(step);
+    } else {
+      root.classList.remove('depth-animating');
+    }
   };
   raf = requestAnimationFrame(step);
-  return () => cancelAnimationFrame(raf);
+  return () => {
+    cancelAnimationFrame(raf);
+    root.classList.remove('depth-animating');
+  };
 }
 
 const preview: Preview = {

@@ -110,6 +110,8 @@
     padding: 48px;
     min-height: 100vh;
     box-sizing: border-box;
+    /* No CSS transition — preview.ts's animateDepth/animateHeat sweep
+       the engine vars at 60fps. JS is the single source of truth. */
   }
 
   /* Heading + accent classes the design system uses internally. Mirrors
