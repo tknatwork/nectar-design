@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Colors — Nectar Design System</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="stylesheet" href="_foundation.css" />
+<style>
+  :root {
+    --page-pad: clamp(32px, 5vw, 64px);
+    --rule: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.12);
+  }
+  body {
+    padding: var(--page-pad);
+    max-width: 1280px;
+    margin: 0 auto;
+    background:
+      radial-gradient(1000px 700px at 80% -10%,
+        oklch(calc(var(--L-bg) + 0.05) calc(var(--C-bg) + 0.03) var(--dynamic-hue) / 0.55) 0%,
+        transparent 60%),
+      oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue));
+    background-attachment: fixed;
+    color: oklch(var(--L-body) 0.03 var(--dynamic-hue));
+    transition:
+      background-color 60s linear,
+      color 60s linear;
+  }
+  header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 56px; }
+  header h1 {
+    font-size: clamp(36px, 5vw, 56px); letter-spacing: -0.02em; margin: 0;
+    color: oklch(var(--L-heading) 0.01 var(--dynamic-hue));
+  }
+  header .lede { max-width: 60ch; color: oklch(var(--L-muted) 0.03 var(--dynamic-hue)); font-size: 17px; line-height: 1.6; }
+  header .eyebrow {
+    color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.14em;
+    font-family: var(--font-mono);
+  }
+
+  section + section { margin-top: 64px; }
+  .sec-header { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: var(--rule); }
+  .sec-header h2 {
+    font-size: 22px; font-weight: 700; letter-spacing: -0.01em; margin: 0;
+    color: oklch(var(--L-heading) 0.01 var(--dynamic-hue));
+  }
+  .sec-header .meta {
+    font-family: var(--font-mono); font-size: 12px;
+    color: oklch(var(--L-muted) 0.03 var(--dynamic-hue));
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+
+  /* ── Per-color ramp ────────────────────────────────────────── */
+  .ramp { display: flex; flex-direction: column; gap: 24px; margin-bottom: 32px; }
+  .ramp-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 720px) {
+    .ramp-row { grid-template-columns: 1fr; gap: 8px; }
+  }
+  .ramp-label { padding-top: 4px; }
+  .ramp-label .name { font-size: 18px; font-weight: 700; letter-spacing: -0.005em; color: oklch(var(--L-heading) 0.01 var(--dynamic-hue)); }
+  .ramp-label .role { font-size: 12px; color: oklch(var(--L-muted) 0.03 var(--dynamic-hue)); margin-top: 2px; font-family: var(--font-mono); }
+  .ramp-label .desc { font-size: 13px; line-height: 1.5; color: oklch(var(--L-body) 0.03 var(--dynamic-hue)); margin-top: 8px; max-width: 22ch; }
+
+  .scale {
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    gap: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px oklch(var(--L-bg) 0.02 var(--dynamic-hue) / 0.4),
+                0 0 0 1px oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08);
+  }
+  .step {
+    aspect-ratio: 1;
+    display: flex; flex-direction: column;
+    align-items: flex-start; justify-content: flex-end;
+    padding: 8px 6px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    color: var(--step-fg);
+    background: var(--step-bg);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+    position: relative;
+  }
+  .step:hover { transform: scale(1.04); z-index: 2; box-shadow: 0 4px 16px oklch(0 0 0 / 0.2); }
+  .step .num { font-weight: 600; opacity: 0.9; }
+  .step .hex { opacity: 0.7; font-size: 8px; margin-top: 1px; }
+
+  .step.is-anchor { outline: 2px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue)); outline-offset: -3px; }
+  .step.is-anchor::before {
+    content: "▾";
+    position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; color: oklch(var(--L-heading) 0.01 var(--dynamic-hue));
+  }
+
+  /* ── Tint / Tone / Shade explainer — glass surface ────────── */
+  .explainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+    padding: 24px;
+    border-radius: var(--radius-glass);
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.45);
+    backdrop-filter: blur(16px) saturate(2);
+    -webkit-backdrop-filter: blur(16px) saturate(2);
+    box-shadow: var(--glass-shadow);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+  }
+  @media (max-width: 720px) { .explainer { grid-template-columns: 1fr; } }
+  .explainer .item .label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+    color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+    font-family: var(--font-mono);
+  }
+  .explainer .item .desc { font-size: 13px; line-height: 1.5; color: oklch(var(--L-body) 0.03 var(--dynamic-hue)); margin-top: 6px; }
+  .mini-ramp { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 10px; border-radius: 8px; overflow: hidden; }
+  .mini-ramp div { aspect-ratio: 1.6; }
+
+  /* ── Engine pair (Heat × Depth at a glance) ───────────────── */
+  .axes { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 720px) { .axes { grid-template-columns: 1fr; } }
+  .axis-card {
+    padding: 24px;
+    border-radius: var(--radius-glass);
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.45);
+    backdrop-filter: blur(16px) saturate(2);
+    -webkit-backdrop-filter: blur(16px) saturate(2);
+    box-shadow: var(--glass-shadow);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+  }
+  .axis-card .axis-title {
+    font-weight: 700; font-size: 14px;
+    color: oklch(var(--L-heading) 0.01 var(--dynamic-hue));
+  }
+  .axis-card .axis-sub { font-family: var(--font-mono); font-size: 11px; color: oklch(var(--L-muted) 0.03 var(--dynamic-hue)); margin-top: 2px; }
+  .axis-strip { display: grid; grid-template-columns: repeat(11, 1fr); gap: 0; margin-top: 14px; height: 56px; border-radius: 8px; overflow: hidden; }
+  .axis-strip div { display: flex; align-items: flex-end; padding: 4px; font-family: var(--font-mono); font-size: 8px; }
+
+  /* ── Footer note — also a glass card ──────────────────────── */
+  .note {
+    margin-top: 64px; padding: 24px;
+    border-radius: var(--radius-glass);
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.4);
+    backdrop-filter: blur(12px) saturate(2);
+    -webkit-backdrop-filter: blur(12px) saturate(2);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+    font-size: 13px; line-height: 1.6;
+    color: oklch(var(--L-body) 0.03 var(--dynamic-hue));
+  }
+  .note strong { color: oklch(var(--L-heading) 0.01 var(--dynamic-hue)); }
+  .note code {
+    background: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08);
+    padding: 1px 6px; border-radius: 4px;
+    font-family: var(--font-mono); font-size: 12px;
+    color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+  }
+
+  /* ── Heat × Depth scrubber ─────────────────────────────────── */
+  .scrub {
+    position: fixed; top: 16px; right: 16px; z-index: 60;
+    padding: 14px 16px; border-radius: var(--radius-glass);
+    background: oklch(var(--L-bg) 0.02 var(--dynamic-hue) / 0.7);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    border: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.1);
+    box-shadow: var(--glass-shadow);
+    font-family: var(--font-mono); font-size: 11px;
+    color: oklch(var(--L-muted) 0.03 var(--dynamic-hue));
+    display: grid; gap: 8px; min-width: 220px;
+  }
+  .scrub label { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+  .scrub input { width: 120px; }
+</style>
+</head>
+<body>
+  <div class="scrub" aria-label="Heat × Depth scrubber">
+    <label>heat <span id="hv">0</span><input id="h" type="range" min="0" max="100" value="0"></label>
+    <label>depth <span id="dv">100</span><input id="d" type="range" min="0" max="100" value="100"></label>
+  </div>
+
+  <header>
+    <div class="eyebrow">Foundations · Color</div>
+    <h1>Colors</h1>
+    <p class="lede">Each named color is a <strong>ramp</strong>, not a swatch. Eleven steps from <em>50</em> through <em>500</em> (the seed) to <em>950</em>, so every hue carries its own legibility, surface, and emphasis variants. The page itself paints from the engine — drag the scrubber to see the chrome bend.</p>
+  </header>
+
+  <div class="explainer">
+    <div class="item">
+      <div class="label">Tint</div>
+      <div class="desc">Hue mixed toward white. Surfaces, hover backgrounds, large fills.</div>
+      <div class="mini-ramp">
+        <div style="background: oklch(0.96 0.04 60);"></div>
+        <div style="background: oklch(0.92 0.06 60);"></div>
+        <div style="background: oklch(0.86 0.09 60);"></div>
+        <div style="background: oklch(0.78 0.12 60);"></div>
+        <div style="background: oklch(0.68 0.15 60);"></div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="label">Tone</div>
+      <div class="desc">Hue mixed toward grey — saturation drops, lightness barely moves. Muted text, secondary surfaces.</div>
+      <div class="mini-ramp">
+        <div style="background: oklch(0.65 0.18 60);"></div>
+        <div style="background: oklch(0.65 0.13 60);"></div>
+        <div style="background: oklch(0.65 0.09 60);"></div>
+        <div style="background: oklch(0.65 0.05 60);"></div>
+        <div style="background: oklch(0.65 0.02 60);"></div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="label">Shade</div>
+      <div class="desc">Hue mixed toward black. Primary text, active states, deep emphasis.</div>
+      <div class="mini-ramp">
+        <div style="background: oklch(0.55 0.18 60);"></div>
+        <div style="background: oklch(0.45 0.16 60);"></div>
+        <div style="background: oklch(0.34 0.13 60);"></div>
+        <div style="background: oklch(0.24 0.09 60);"></div>
+        <div style="background: oklch(0.16 0.05 60);"></div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-header">
+      <h2>Brand ramps</h2>
+      <span class="meta">11 steps · 50–950 · seed at 500</span>
+    </div>
+
+    <div class="ramp">
+      <div class="ramp-row">
+        <div class="ramp-label">
+          <div class="name">Honey</div>
+          <div class="role">Primary · brand seed</div>
+          <div class="desc">The signature warm. Seed at 500 carries CTAs and links.</div>
+        </div>
+        <div class="scale" data-anchor="500" data-base-h="80" data-base-c="0.16"></div>
+      </div>
+      <div class="ramp-row">
+        <div class="ramp-label">
+          <div class="name">Amber</div>
+          <div class="role">Warning · golden-hour heat</div>
+          <div class="desc">Sibling to Honey, pushed toward orange. Used by the Heat engine when heat &gt; 50.</div>
+        </div>
+        <div class="scale" data-anchor="500" data-base-h="65" data-base-c="0.17"></div>
+      </div>
+      <div class="ramp-row">
+        <div class="ramp-label">
+          <div class="name">Terracotta</div>
+          <div class="role">Destructive</div>
+          <div class="desc">Earthy red, never neon. Used for delete, error, and the Ambiguity case-study tint.</div>
+        </div>
+        <div class="scale" data-anchor="500" data-base-h="30" data-base-c="0.16"></div>
+      </div>
+      <div class="ramp-row">
+        <div class="ramp-label">
+          <div class="name">Blush</div>
+          <div class="role">Soft accent · pinks</div>
+          <div class="desc">Peach / coral / rose live on this ramp. Lightest tints work as background washes.</div>
+        </div>
+        <div class="scale" data-anchor="500" data-base-h="15" data-base-c="0.10"></div>
+      </div>
+      <div class="ramp-row">
+        <div class="ramp-label">
+          <div class="name">Sky</div>
+          <div class="role">Accent · cool counterpoint</div>
+          <div class="desc">The default <code>--ui-heat = 0</code> hue (~250°). When the engine is "cold," everything shifts here.</div>
+        </div>
+        <div class="scale" data-anchor="500" data-base-h="250" data-base-c="0.14"></div>
+      </div>
+      <div class="ramp-row">
+        <div class="ramp-label">
+          <div class="name">Sage</div>
+          <div class="role">Success · nature</div>
+          <div class="desc">Muted green-grey. Mint, meadow, forest are points along this ramp.</div>
+        </div>
+        <div class="scale" data-anchor="500" data-base-h="150" data-base-c="0.10"></div>
+      </div>
+      <div class="ramp-row">
+        <div class="ramp-label">
+          <div class="name">Lavender</div>
+          <div class="role">Decorative · violets</div>
+          <div class="desc">Wisteria, plum live here. Lower chroma than Sky so it feels closer to neutral.</div>
+        </div>
+        <div class="scale" data-anchor="500" data-base-h="295" data-base-c="0.10"></div>
+      </div>
+      <div class="ramp-row">
+        <div class="ramp-label">
+          <div class="name">Stone</div>
+          <div class="role">Neutral · warm grey</div>
+          <div class="desc">Cream, fog, ash, slate, graphite collapse onto one warm-grey ramp. The default text + surface scaffold.</div>
+        </div>
+        <div class="scale" data-anchor="500" data-base-h="60" data-base-c="0.015"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-header">
+      <h2>Heat × Depth engine</h2>
+      <span class="meta">runtime · oklch</span>
+    </div>
+    <p class="lede" style="margin-bottom: 24px; font-size: 14px;">The portfolio's chrome doesn't pick from the ramps directly — it computes <code>oklch(L C var(--dynamic-hue))</code> per element. Heat shifts hue, Depth shifts lightness. The ramps are the authoring vocabulary; the engine is what paints.</p>
+
+    <div class="axes">
+      <div class="axis-card">
+        <div class="axis-title">Heat axis</div>
+        <div class="axis-sub">--ui-heat 0 → 100 · hue 250° → 40°</div>
+        <div class="axis-strip" id="heat-strip"></div>
+      </div>
+      <div class="axis-card">
+        <div class="axis-title">Depth axis</div>
+        <div class="axis-sub">--ui-depth 0 → 100 · L 0.96 → 0.15</div>
+        <div class="axis-strip" id="depth-strip"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="note">
+    <strong>Authoring rule.</strong> Static surfaces (slides, prints, throwaway prototypes) pick from the ramps by step number — e.g. <code>honey-100</code> for a card surface, <code>honey-700</code> for an active CTA. Live portfolio surfaces consume the engine variables: <code>oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue))</code> or the bridged aliases (<code>--bg</code>, <code>--fg</code>, <code>--primary</code>, <code>--surface</code>, <code>--muted-fg</code>, <code>--border</code>).
+  </div>
+
+<script>
+  const STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+  const L_CURVE = { 50:0.985, 100:0.955, 200:0.905, 300:0.835, 400:0.745, 500:0.640, 600:0.530, 700:0.430, 800:0.330, 900:0.235, 950:0.150 };
+  const C_MULT  = { 50:0.20, 100:0.35, 200:0.55, 300:0.80, 400:1.00, 500:1.00, 600:0.90, 700:0.78, 800:0.62, 900:0.42, 950:0.22 };
+
+  const _ctx = document.createElement('canvas').getContext('2d');
+  function oklchToHex(L, C, H) {
+    _ctx.fillStyle = `oklch(${L} ${C} ${H})`;
+    return _ctx.fillStyle.length === 7 ? _ctx.fillStyle : '';
+  }
+
+  document.querySelectorAll('.scale').forEach(scale => {
+    const baseH = parseFloat(scale.dataset.baseH);
+    const baseC = parseFloat(scale.dataset.baseC);
+    const anchor = parseInt(scale.dataset.anchor, 10);
+    STEPS.forEach(step => {
+      const L = L_CURVE[step];
+      const C = baseC * C_MULT[step];
+      const H = baseH;
+      const bg = `oklch(${L} ${C} ${H})`;
+      const fg = L > 0.6 ? 'oklch(0.18 0.02 80)' : 'oklch(0.97 0.005 80)';
+      const cell = document.createElement('div');
+      cell.className = 'step' + (step === anchor ? ' is-anchor' : '');
+      cell.style.setProperty('--step-bg', bg);
+      cell.style.setProperty('--step-fg', fg);
+      cell.title = `${step} — ${bg}`;
+      const hex = oklchToHex(L, C, H);
+      cell.innerHTML = `<span class="num">${step}</span>${hex ? `<span class="hex">${hex.toUpperCase()}</span>` : ''}`;
+      cell.addEventListener('click', () => navigator.clipboard?.writeText(bg));
+      scale.appendChild(cell);
+    });
+  });
+
+  const heatStrip = document.getElementById('heat-strip');
+  for (let i = 0; i <= 10; i++) {
+    const heat = i * 10;
+    const hue = 250 - heat * 2.1;
+    const div = document.createElement('div');
+    const L = 0.5;
+    div.style.background = `oklch(${L} 0.16 ${hue})`;
+    div.style.color = 'oklch(0.97 0.005 80 / 0.85)';
+    div.textContent = heat;
+    heatStrip.appendChild(div);
+  }
+
+  const depthStrip = document.getElementById('depth-strip');
+  for (let i = 0; i <= 10; i++) {
+    const depth = i * 10;
+    const L = 0.96 - (depth / 100) * 0.81;
+    const C = 0.02 + (depth / 100) * 0.06;
+    const hue = 250 - 30 * 2.1;
+    const div = document.createElement('div');
+    div.style.background = `oklch(${L} ${C} ${hue})`;
+    div.style.color = L > 0.5 ? 'oklch(0.2 0.02 80)' : 'oklch(0.97 0.005 80 / 0.7)';
+    div.textContent = depth;
+    depthStrip.appendChild(div);
+  }
+
+  const root = document.documentElement;
+  const h = document.getElementById('h');
+  const d = document.getElementById('d');
+  const hv = document.getElementById('hv');
+  const dv = document.getElementById('dv');
+  function apply() {
+    root.style.setProperty('--ui-heat',  h.value);
+    root.style.setProperty('--ui-depth', d.value);
+    hv.textContent = h.value;
+    dv.textContent = d.value;
+  }
+  h.addEventListener('input', apply);
+  d.addEventListener('input', apply);
+  apply();
+</script>
+</body>
+</html>

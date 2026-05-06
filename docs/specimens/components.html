@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Components — Nectar Design System</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="stylesheet" href="_foundation.css" />
+<style>
+  :root {
+    --rule: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.12);
+    --field-bg: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.55);
+    --field-border: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.16);
+    --field-border-strong: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.28);
+    --field-radius: 12px;
+    --field-pad-x: 14px;
+    --field-h: 44px;
+    --accent: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+    --accent-fg: oklch(var(--L-btn-fg) 0.02 var(--dynamic-hue));
+    --ink: oklch(var(--L-heading) 0.01 var(--dynamic-hue));
+    --body: oklch(var(--L-body) 0.03 var(--dynamic-hue));
+    --muted: oklch(var(--L-muted) 0.03 var(--dynamic-hue));
+  }
+  body {
+    padding: clamp(32px, 5vw, 64px);
+    max-width: 1100px; margin: 0 auto;
+    background:
+      radial-gradient(1000px 700px at 80% -10%,
+        oklch(calc(var(--L-bg) + 0.05) calc(var(--C-bg) + 0.03) var(--dynamic-hue) / 0.55) 0%,
+        transparent 60%),
+      oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue));
+    background-attachment: fixed;
+    color: var(--body);
+    transition: background-color 60s linear, color 60s linear;
+  }
+  header { margin-bottom: 56px; display: flex; flex-direction: column; gap: 8px; }
+  header h1 { font-size: clamp(36px, 5vw, 56px); letter-spacing: -0.02em; margin: 0; color: var(--ink); }
+  header .lede { color: var(--muted); max-width: 60ch; font-size: 17px; line-height: 1.6; }
+  header .eyebrow { color: var(--accent); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; font-family: var(--font-mono); }
+
+  section { margin-top: 48px; }
+  .sec-header { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: var(--rule); }
+  .sec-header h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; margin: 0; color: var(--ink); }
+  .sec-header .meta { font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .group { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; padding: 8px 0 24px; }
+
+  /* ── Buttons ─────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 44px; padding: 0 22px;
+    border-radius: 14px;
+    font-family: inherit;
+    font-weight: 600; font-size: 14px; letter-spacing: 0.02em;
+    border: 0; cursor: pointer;
+    transition: transform 200ms var(--ease-out), background-color 200ms var(--ease-out);
+  }
+  .btn-primary {
+    background: oklch(var(--L-btn-bg) 0.16 var(--dynamic-hue));
+    color: var(--accent-fg);
+    box-shadow: 0 4px 16px oklch(0.3 0.1 var(--dynamic-hue) / 0.35);
+  }
+  .btn-primary:hover { transform: scale(1.04); }
+  .btn-primary:active { transform: scale(0.97); }
+
+  .btn-secondary {
+    background: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.04);
+    border: 1px solid var(--field-border);
+    color: var(--ink);
+  }
+  .btn-secondary:hover { background: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08); }
+
+  .btn-ghost { background: transparent; color: var(--ink); }
+  .btn-ghost:hover { background: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.06); }
+
+  .btn-sm { height: 36px; padding: 0 16px; font-size: 12px; }
+  .btn-lg { height: 52px; padding: 0 28px; font-size: 15px; }
+
+  /* ── Form fields ─────────────────────────────────────────── */
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px 16px;
+  }
+  .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .field label { font-size: 12px; font-weight: 600; color: var(--ink); letter-spacing: 0.02em; }
+  .input, .textarea, .select-box {
+    height: var(--field-h);
+    padding: 0 var(--field-pad-x);
+    background: var(--field-bg);
+    border: 1px solid var(--field-border);
+    border-radius: var(--field-radius);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+    width: 100%;
+    box-sizing: border-box;
+    backdrop-filter: blur(8px) saturate(1.6);
+    -webkit-backdrop-filter: blur(8px) saturate(1.6);
+  }
+  .input::placeholder, .textarea::placeholder { color: var(--muted); }
+  .input:hover, .textarea:hover, .select-box:hover { border-color: var(--field-border-strong); }
+  .input:focus, .textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue) / 0.2); }
+  .textarea { height: auto; min-height: 96px; padding: 12px 14px; resize: vertical; line-height: 1.5; }
+  .helper { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: var(--font-mono); }
+  .helper.error { color: oklch(0.6 0.18 25); }
+
+  /* ── Custom Select ───────────────────────────────────────── */
+  .select { position: relative; }
+  .select-box {
+    display: grid;
+    grid-template-columns: 1fr 16px;
+    align-items: center;
+    column-gap: 12px;
+    text-align: left;
+    cursor: pointer;
+    user-select: none;
+  }
+  .select-box .value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .select-box .caret { width: 12px; height: 12px; color: var(--muted); transition: transform 200ms ease, color 150ms ease; justify-self: center; }
+  .select.is-open .select-box {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue) / 0.2);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .select.is-open .caret { transform: rotate(180deg); color: var(--ink); }
+  .select-panel {
+    position: absolute;
+    top: calc(var(--field-h) - 1px);
+    left: 0; right: 0;
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.85);
+    backdrop-filter: blur(20px) saturate(2);
+    -webkit-backdrop-filter: blur(20px) saturate(2);
+    border: 1px solid var(--accent);
+    border-top: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08);
+    border-radius: 0 0 var(--field-radius) var(--field-radius);
+    box-shadow: 0 12px 28px -12px oklch(0 0 0 / 0.3),
+                0 0 0 3px oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue) / 0.2);
+    overflow: hidden;
+    z-index: 10;
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition: max-height 200ms ease, opacity 150ms ease, transform 200ms ease;
+  }
+  .select.is-open .select-panel { max-height: 300px; opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .select-option {
+    display: flex; align-items: center;
+    height: var(--field-h);
+    padding: 0 var(--field-pad-x);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background-color 100ms ease;
+  }
+  .select-option:hover { background: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue) / 0.1); }
+  .select-option.is-selected { background: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue) / 0.14); font-weight: 600; }
+  .select-option + .select-option { border-top: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.06); }
+  .select-option .check { margin-left: auto; width: 14px; height: 14px; color: var(--accent); opacity: 0; }
+  .select-option.is-selected .check { opacity: 1; }
+
+  /* ── Badges ──────────────────────────────────────────────── */
+  .badge {
+    display: inline-flex; align-items: center;
+    height: 24px; padding: 0 10px;
+    border-radius: 999px;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    border: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.14);
+    background: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.04);
+    color: var(--ink);
+    font-family: var(--font-mono);
+  }
+  .badge-primary { background: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue) / 0.18); border-color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue) / 0.35); color: var(--ink); }
+  .badge-success { background: oklch(0.7 0.14 145 / 0.18); border-color: oklch(0.6 0.14 145 / 0.4); color: oklch(0.4 0.14 145); }
+  .badge-warning { background: oklch(0.78 0.13 75 / 0.22); border-color: oklch(0.6 0.14 70 / 0.35); color: oklch(0.42 0.12 70); }
+  .badge-destructive { background: oklch(0.65 0.18 25 / 0.18); border-color: oklch(0.55 0.18 25 / 0.4); color: oklch(0.45 0.18 25); }
+  .badge-accent { background: oklch(0.7 0.14 250 / 0.18); border-color: oklch(0.55 0.14 250 / 0.35); color: oklch(0.45 0.14 250); }
+
+  /* ── Cards ───────────────────────────────────────────────── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .card {
+    border-radius: var(--radius-glass);
+    padding: 24px;
+    transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  }
+  .card-surface {
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.4);
+    backdrop-filter: blur(12px) saturate(2);
+    -webkit-backdrop-filter: blur(12px) saturate(2);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+  }
+  .card-raised {
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.5);
+    backdrop-filter: blur(16px) saturate(2);
+    -webkit-backdrop-filter: blur(16px) saturate(2);
+    box-shadow: var(--glass-shadow);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+  }
+  .card-floating {
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.55);
+    backdrop-filter: blur(24px) saturate(2);
+    -webkit-backdrop-filter: blur(24px) saturate(2);
+    box-shadow: var(--glass-shadow);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+  }
+  .card-floating:hover { transform: translateY(-6px) scale(1.01); }
+  .card h4 { margin: 0 0 8px; font-size: 17px; font-weight: 700; color: var(--ink); }
+  .card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+
+  /* ── Switch & avatar ─────────────────────────────────────── */
+  .switch {
+    position: relative; width: 44px; height: 26px;
+    background: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.16);
+    border-radius: 999px; cursor: pointer;
+    transition: background-color 200ms ease;
+  }
+  .switch::after {
+    content: ""; position: absolute; top: 3px; left: 3px;
+    width: 20px; height: 20px;
+    background: oklch(var(--L-bg) 0.01 var(--dynamic-hue));
+    border-radius: 50%;
+    box-shadow: 0 1px 3px oklch(0 0 0 / 0.25);
+    transition: transform 200ms cubic-bezier(0.5, 0, 0.2, 1.4);
+  }
+  .switch.on { background: var(--accent); }
+  .switch.on::after { transform: translateX(18px); background: var(--accent-fg); }
+
+  .avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: oklch(var(--L-btn-bg) 0.16 var(--dynamic-hue));
+    color: var(--accent-fg);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; letter-spacing: 0.02em;
+  }
+
+  /* ── Chips ───────────────────────────────────────────────── */
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: inline-block; border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 11px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--body);
+    background: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.06);
+    font-family: var(--font-mono);
+  }
+  .chip-lab {
+    background: transparent;
+    border: 1px dashed oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.22);
+    color: var(--muted);
+  }
+
+  /* Heat × Depth scrubber */
+  .scrub {
+    position: fixed; top: 16px; right: 16px; z-index: 60;
+    padding: 14px 16px; border-radius: var(--radius-glass);
+    background: oklch(var(--L-bg) 0.02 var(--dynamic-hue) / 0.7);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    border: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.1);
+    box-shadow: var(--glass-shadow);
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--muted);
+    display: grid; gap: 8px; min-width: 220px;
+  }
+  .scrub label { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+  .scrub input { width: 120px; }
+</style>
+</head>
+<body>
+  <div class="scrub" aria-label="Heat × Depth scrubber">
+    <label>heat <span id="hv">0</span><input id="h" type="range" min="0" max="100" value="0"></label>
+    <label>depth <span id="dv">100</span><input id="d" type="range" min="0" max="100" value="100"></label>
+  </div>
+
+  <header>
+    <div class="eyebrow">Foundations · Components</div>
+    <h1>Components</h1>
+    <p class="lede">A small kit that matches what actually ships on the live site: glass surfaces, soft-shadow CTAs, 1-px form fields, and a custom Select whose options drop <em>below</em> the box and inherit the field's border, radius, and inset spacing. Every value below reads from the engine — drag the scrubber and watch every component re-paint.</p>
+  </header>
+
+  <section>
+    <div class="sec-header"><h2>Buttons</h2><span class="meta">primary · secondary · ghost</span></div>
+    <div class="group">
+      <button class="btn btn-primary">View Work →</button>
+      <button class="btn btn-secondary">Get in Touch</button>
+      <button class="btn btn-ghost">Learn more</button>
+      <button class="btn btn-primary" disabled style="opacity: 0.45; cursor: not-allowed;">Disabled</button>
+    </div>
+    <div class="group">
+      <button class="btn btn-primary btn-sm">Small</button>
+      <button class="btn btn-primary">Default</button>
+      <button class="btn btn-primary btn-lg">Large</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-header"><h2>Form fields</h2><span class="meta">44px · 12px radius · 14px inset</span></div>
+    <div class="form-grid">
+      <div class="field">
+        <label for="i1">Email address</label>
+        <input id="i1" class="input" type="email" placeholder="you@example.com" />
+        <span class="helper">We'll never share it.</span>
+      </div>
+      <div class="field">
+        <label for="i2">API key</label>
+        <input id="i2" class="input" value="sk_live_••••••••" />
+        <span class="helper error">This key is invalid.</span>
+      </div>
+      <div class="field">
+        <label for="s1-btn">Theme</label>
+        <div class="select" id="s1" data-value="auto">
+          <button id="s1-btn" type="button" class="select-box" aria-haspopup="listbox" aria-expanded="false">
+            <span class="value">Auto (circadian)</span>
+            <svg class="caret" viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="select-panel" role="listbox">
+            <div class="select-option is-selected" data-value="auto" role="option" aria-selected="true">
+              Auto (circadian)
+              <svg class="check" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7l3.5 3.5L12 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="select-option" data-value="light" role="option">
+              Light
+              <svg class="check" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7l3.5 3.5L12 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="select-option" data-value="dark" role="option">
+              Dark
+              <svg class="check" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7l3.5 3.5L12 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div>
+        <span class="helper">Options drop directly below; styled like the form fields.</span>
+      </div>
+      <div class="field" style="grid-column: span 2;">
+        <label for="t1">Message</label>
+        <textarea id="t1" class="textarea" placeholder="What are you building?"></textarea>
+        <span class="helper">Plain textarea. Same border + radius as inputs.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-header"><h2>Badges</h2><span class="meta">status · capsule</span></div>
+    <div class="group">
+      <span class="badge">Default</span>
+      <span class="badge badge-primary">Primary</span>
+      <span class="badge badge-success">Shipped</span>
+      <span class="badge badge-warning">Provisional</span>
+      <span class="badge badge-destructive">Deprecated</span>
+      <span class="badge badge-accent">Experimental</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-header"><h2>Chips</h2><span class="meta">practice · in the lab</span></div>
+    <div class="chip-row" style="margin-bottom: 12px;">
+      <span class="chip">Industrial Design</span>
+      <span class="chip">Product Design</span>
+      <span class="chip">Design Systems</span>
+      <span class="chip">Prototyping</span>
+      <span class="chip">Motion Design</span>
+    </div>
+    <div class="chip-row">
+      <span class="chip chip-lab">React / Next.js</span>
+      <span class="chip chip-lab">TypeScript</span>
+      <span class="chip chip-lab">Tailwind CSS</span>
+      <span class="chip chip-lab">GSAP · motion.dev</span>
+      <span class="chip chip-lab">Claude · Copilot</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-header"><h2>Cards</h2><span class="meta">surface · raised · floating</span></div>
+    <div class="cards">
+      <div class="card card-surface">
+        <h4>Surface</h4>
+        <p>Lightest tint, sits on the page. Used inside lists and dense layouts where the card shouldn't compete.</p>
+      </div>
+      <div class="card card-raised">
+        <h4>Raised</h4>
+        <p>Default for most content tiles. Subtle blur, hairline border, soft shadow.</p>
+      </div>
+      <div class="card card-floating">
+        <h4>Floating</h4>
+        <p>Hero surfaces. Stronger blur, lift on hover. Reserved for the primary card on a page.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-header"><h2>Switch &amp; avatar</h2><span class="meta">control · identity</span></div>
+    <div class="group">
+      <div class="switch on" onclick="this.classList.toggle('on')"></div>
+      <div class="switch" onclick="this.classList.toggle('on')"></div>
+      <div class="avatar">TK</div>
+      <div class="avatar" style="background: oklch(0.55 0.16 250); color: oklch(0.97 0.005 90);">AN</div>
+      <div class="avatar" style="background: oklch(0.55 0.14 150); color: oklch(0.97 0.005 90);">RP</div>
+    </div>
+  </section>
+
+<script>
+  document.querySelectorAll('.select').forEach(select => {
+    const btn = select.querySelector('.select-box');
+    const valueEl = select.querySelector('.value');
+    const options = Array.from(select.querySelectorAll('.select-option'));
+
+    const open = () => { select.classList.add('is-open'); btn.setAttribute('aria-expanded', 'true'); };
+    const close = () => { select.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); };
+    const toggle = () => select.classList.contains('is-open') ? close() : open();
+    const choose = (opt) => {
+      options.forEach(o => { o.classList.remove('is-selected'); o.setAttribute('aria-selected', 'false'); });
+      opt.classList.add('is-selected');
+      opt.setAttribute('aria-selected', 'true');
+      valueEl.textContent = opt.textContent.trim();
+      select.dataset.value = opt.dataset.value;
+      close();
+      btn.focus();
+    };
+
+    btn.addEventListener('click', toggle);
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault(); open();
+        const sel = select.querySelector('.select-option.is-selected') || options[0];
+        sel.focus();
+      }
+    });
+
+    options.forEach((opt, i) => {
+      opt.tabIndex = -1;
+      opt.addEventListener('click', () => choose(opt));
+      opt.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); options[(i + 1) % options.length].focus(); }
+        if (e.key === 'ArrowUp')   { e.preventDefault(); options[(i - 1 + options.length) % options.length].focus(); }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(opt); }
+        if (e.key === 'Escape')    { e.preventDefault(); close(); btn.focus(); }
+      });
+    });
+
+    document.addEventListener('click', (e) => { if (!select.contains(e.target)) close(); });
+  });
+
+  const root = document.documentElement;
+  const h = document.getElementById('h');
+  const d = document.getElementById('d');
+  const hv = document.getElementById('hv');
+  const dv = document.getElementById('dv');
+  function apply() {
+    root.style.setProperty('--ui-heat',  h.value);
+    root.style.setProperty('--ui-depth', d.value);
+    hv.textContent = h.value;
+    dv.textContent = d.value;
+  }
+  h.addEventListener('input', apply);
+  d.addEventListener('input', apply);
+  apply();
+</script>
+</body>
+</html>
