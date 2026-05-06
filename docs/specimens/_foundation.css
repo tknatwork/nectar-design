@@ -1,0 +1,461 @@
+/*
+ * Nectar Design System — Colors & Type
+ * SOURCE OF TRUTH for THIS project: the live runtime engine in
+ * tknatwork/myportfolio:app/globals.css. The Nectar JSON token
+ * pipeline (tknatwork/nectar-design) loads in production but every
+ * paint-relevant variable is overridden by the Heat × Depth engine
+ * below. Treat this file as the engine + the bridged aliases that
+ * components actually consume.
+ *
+ * If you need the seed/alias/mapped tokens, read them at runtime
+ * from `--seed-*` (set by nectar-design/tokens.css).
+ */
+
+/* ═════════════════════════════════════════════════════════
+   1. Variable fonts (self-hosted, woff2)
+   ═════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'Google Sans Flex';
+  src: url('fonts/GoogleSansFlex.woff2') format('woff2-variations');
+  font-weight: 1 1000;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('fonts/PlusJakartaSans.woff2') format('woff2-variations');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('fonts/PlayfairDisplay.woff2') format('woff2-variations');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('fonts/PlayfairDisplay-Italic.woff2') format('woff2-variations');
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Crimson Pro';
+  src: url('fonts/CrimsonPro.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Monaspace Neon';
+  src: url('fonts/MonaspaceNeon.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ═════════════════════════════════════════════════════════
+   2. Heat × Depth engine — the dual-axis runtime
+   --ui-heat   0–100  (interaction → hue)
+   --ui-depth  0–100  (toggle      → lightness; 0=light, 100=dark)
+   Default ships at depth=100 (dark) to match production FOUC script.
+   ═════════════════════════════════════════════════════════ */
+
+:root {
+  --ui-heat: 0;
+  --ui-depth: 100;
+  --golden-hue-shift: 0;
+  --golden-chroma-boost: 0;
+  /* Heat curve — indigo 260° → warm-sand 60°.
+     Rationale: the original 250 → 40 sweep crossed 0° (red) which clashed
+     with the indigo/sand foundation. This 260 → 60 band stays in colors
+     that share undertones with the existing palette — cool indigo, slate,
+     ochre, sand. No saturated reds or pinks ever appear. */
+  --dynamic-hue: calc(260 - (var(--ui-heat) * 2.0) + var(--golden-hue-shift));
+
+  /* Lightness anchors — interpolate light→dark as depth 0→100 */
+  --L-bg:      calc(0.96 - (var(--ui-depth) / 100) * 0.81);  /* 0.96 → 0.15 */
+  --L-heading: calc(0.20 + (var(--ui-depth) / 100) * 0.75);  /* 0.20 → 0.95 */
+  --L-body:    calc(0.35 + (var(--ui-depth) / 100) * 0.33);  /* 0.35 → 0.68 */
+  --L-muted:   calc(0.50 + (var(--ui-depth) / 100) * 0.10);  /* 0.50 → 0.60 */
+  --L-accent:  calc(0.50 + (var(--ui-depth) / 100) * 0.22);  /* 0.50 → 0.72 */
+  --L-btn-bg:  calc(0.45 + (var(--ui-depth) / 100) * 0.33);  /* 0.45 → 0.78 */
+  --L-btn-fg:  calc(0.98 - (var(--ui-depth) / 100) * 0.83);  /* 0.98 → 0.15 */
+  --L-surface: calc(0.98 - (var(--ui-depth) / 100) * 0.80);  /* 0.98 → 0.18 */
+
+  /* Chroma — subtle in light, vivid in dark, plus golden-hour boost.
+     Taper at the warm end (heat > 60) so the sand tones don't bloom orange. */
+  --C-bg:     calc(0.02 + (var(--ui-depth) / 100) * 0.06 + var(--golden-chroma-boost));
+  --C-accent: calc(0.16 - (var(--ui-depth) / 100) * 0.04
+                   - max(0, (var(--ui-heat) - 60)) * 0.0015
+                   + var(--golden-chroma-boost));
+
+  /* Glass borders — depth-responsive (dark edges in light, white edges in dark) */
+  --glass-border-top:    oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.04 + var(--ui-depth) / 100 * 0.16));
+  --glass-border-left:   oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.02 + var(--ui-depth) / 100 * 0.08));
+  --glass-border-right:  oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.01 + var(--ui-depth) / 100 * 0.03));
+  --glass-border-bottom: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.005 + var(--ui-depth) / 100 * 0.015));
+  --glass-specular:      oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.02 + var(--ui-depth) / 100 * 0.06));
+
+  /* Bridge — semantic aliases components actually consume */
+  --bg:          oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue));
+  --fg:          oklch(var(--L-body) 0.03 var(--dynamic-hue));
+  --surface:     oklch(var(--L-surface) 0.02 var(--dynamic-hue));
+  --surface-fg:  oklch(var(--L-heading) 0.01 var(--dynamic-hue));
+  --muted:       oklch(var(--L-surface) 0.01 var(--dynamic-hue));
+  --muted-fg:    oklch(var(--L-muted) 0.03 var(--dynamic-hue));
+  --primary:     oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+  --primary-fg:  oklch(var(--L-btn-fg) 0.02 var(--dynamic-hue));
+  --border:      oklch(var(--L-muted) 0.02 var(--dynamic-hue) / 0.3);
+  --ring:        oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+  --input:       oklch(var(--L-surface) 0.02 var(--dynamic-hue));
+  --shadow-color: oklch(var(--L-bg) 0.04 var(--dynamic-hue) / 0.3);
+}
+
+/* Light mode — same engine, depth=0 */
+[data-theme="light"], :root[data-theme="light"] { --ui-depth: 0; }
+
+/* ═════════════════════════════════════════════════════════
+   3. Type — families & scale
+   Stack matches the FIVE families actually loaded by layout.tsx.
+   The on-site /design-system docs page lists a different stack
+   (Libre Baskerville / Switzer / Merriweather / Roboto Mono);
+   that is stale. Trust the layout, not the docs page.
+   ═════════════════════════════════════════════════════════ */
+
+:root {
+  --font-display: 'Google Sans Flex', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-sans:    'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-serif:   'Playfair Display', Georgia, serif;
+  --font-caption: 'Crimson Pro', Georgia, serif;
+  --font-mono:    'Monaspace Neon', ui-monospace, monospace;
+
+  /* Major-third scale (1.25), 16px base */
+  --fs-xs:   0.64rem;   /* ~10px */
+  --fs-sm:   0.8rem;    /* ~13px */
+  --fs-base: 1rem;      /* 16px  */
+  --fs-md:   1.25rem;   /* ~20px */
+  --fs-lg:   1.563rem;  /* ~25px */
+  --fs-xl:   1.953rem;  /* ~31px */
+  --fs-2xl:  2.441rem;  /* ~39px */
+  --fs-3xl:  3.052rem;  /* ~49px */
+  --fs-4xl:  3.815rem;  /* ~61px */
+
+  /* Fluid hero — clamp(28px, 5vw, 48px) — verbatim from HeroSection.tsx */
+  --fs-fluid-hero: clamp(28px, 5vw, 48px);
+  --fs-fluid-lead: clamp(14px, 1.6vw, 17px);
+
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  --lh-tight:   1.15;   /* hero */
+  --lh-snug:    1.25;
+  --lh-normal:  1.5;
+  --lh-prose:   1.7;    /* body in cards */
+  --lh-relaxed: 1.75;
+}
+
+/* ═════════════════════════════════════════════════════════
+   4. Spacing, radii, motion — derived from shipped values
+   ═════════════════════════════════════════════════════════ */
+
+:root {
+  /* 4px grid */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 48px;
+  --space-section: 96px;
+
+  /* GlassCard radii (verbatim from glassCardVariants) */
+  --radius-xs:    8px;
+  --radius-sm:    10px;   /* nav button */
+  --radius-md:    12px;   /* tab bar slot */
+  --radius-lg:    14px;   /* CTA */
+  --radius-xl:    20px;   /* cover image */
+  --radius-glass: 24px;   /* card mobile */
+  --radius-glass-lg: 36px; /* card desktop */
+  --radius-full:  9999px; /* chips */
+
+  /* Motion springs — exact values from GlassCard.tsx */
+  --spring-card:   stiffness 300 damping 20;   /* CARD_SPRING   */
+  --spring-button: stiffness 500 damping 25;   /* BUTTON_SPRING */
+  --spring-nav:    stiffness 200 damping 30;   /* NAV_SPRING    */
+
+  /* Easing + duration */
+  --dur-fast:  120ms;
+  --dur-base:  200ms;
+  --dur-slow:  300ms;
+  --dur-cross: 800ms;   /* the long color cross-fade used everywhere */
+
+  --ease-out:    cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1);
+
+  --tx-color: color var(--dur-cross) ease-out, background-color var(--dur-cross) ease-out, border-color var(--dur-cross) ease-out;
+
+  /* Glass shadow (honey-resin), used by GlassCard + nav */
+  --glass-shadow:
+    0 1px 4px oklch(0.3 0.015 80 / 0.04),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -1px 4px oklch(0.7 0.02 80 / 0.05);
+
+  /* A11y */
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 2px;
+  --min-touch: 44px;
+
+  /* Breakpoints (reference) */
+  --bp-tablet:  768px;
+  --bp-desktop: 1024px;
+  --bp-wide:    1440px;
+}
+
+/* ═════════════════════════════════════════════════════════
+   5. Body + text utilities — long color cross-fade matches
+      what the live site does on every theme/heat change
+   ═════════════════════════════════════════════════════════ */
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: oklch(var(--L-body) 0.03 var(--dynamic-hue));
+  background-color: oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue));
+  transition: background-color var(--dur-cross) ease-out, color var(--dur-cross) ease-out;
+  margin: 0;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Engine-driven text/bg utilities — exact match to globals.css */
+.text-accent  { color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue)); transition: var(--tx-color); }
+.text-heading { color: oklch(var(--L-heading) 0.01 var(--dynamic-hue)); transition: var(--tx-color); }
+.text-body    { color: oklch(var(--L-body) 0.03 var(--dynamic-hue)); transition: var(--tx-color); }
+.text-muted   { color: oklch(var(--L-muted) 0.03 var(--dynamic-hue)); transition: var(--tx-color); }
+.text-action  { color: oklch(var(--L-btn-fg) 0.02 var(--dynamic-hue)); transition: var(--tx-color); }
+.bg-action    { background-color: oklch(var(--L-btn-bg) 0.16 var(--dynamic-hue)); transition: var(--tx-color); }
+
+/* ═════════════════════════════════════════════════════════
+   6. Type primitives — semantic element classes
+   ═════════════════════════════════════════════════════════ */
+
+h1, .h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-fluid-hero);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.02em;
+  color: oklch(var(--L-heading) 0.01 var(--dynamic-hue));
+  margin: 0;
+}
+h2, .h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  letter-spacing: -0.015em;
+  color: oklch(var(--L-heading) 0.01 var(--dynamic-hue));
+  margin: 0;
+}
+h3, .h3 {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  color: oklch(var(--L-heading) 0.01 var(--dynamic-hue));
+  margin: 0;
+}
+h4, .h4 {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-normal);
+  color: oklch(var(--L-heading) 0.01 var(--dynamic-hue));
+  margin: 0;
+}
+
+/* The recurring small-caps eyebrow — used in HeroSection, AboutSection,
+   CaseStudyGrid header, and per-project tag rows. */
+.eyebrow {
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+}
+
+/* Chip — Practice (filled) vs In-the-lab (dashed-outline). Both
+   uppercase 0.06em-tracked 11px medium weight. */
+.chip {
+  display: inline-block;
+  border-radius: var(--radius-full);
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: var(--fw-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: oklch(var(--L-muted) 0.03 var(--dynamic-hue));
+  background: rgba(255, 255, 255, 0.05);
+}
+.chip--lab {
+  background: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+}
+
+/* Project tile tag — slightly different from chip, used inside cards */
+.tag {
+  display: inline-block;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: var(--fw-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: oklch(var(--L-body) 0.03 var(--dynamic-hue));
+}
+
+p {
+  font-size: var(--fs-base);
+  line-height: var(--lh-prose);
+  margin: 0;
+  color: oklch(var(--L-body) 0.03 var(--dynamic-hue));
+}
+
+.lead {
+  font-size: var(--fs-fluid-lead);
+  line-height: var(--lh-prose);
+}
+
+.caption {
+  font-family: var(--font-caption);
+  font-style: italic;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+}
+
+.serif { font-family: var(--font-serif); }
+.mono  { font-family: var(--font-mono); font-size: var(--fs-sm); }
+
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+}
+
+a {
+  color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: var(--tx-color);
+}
+a:hover { opacity: 0.85; }
+
+:focus-visible {
+  outline: var(--focus-ring-width) solid oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* ═════════════════════════════════════════════════════════
+   7. Glass — the only surface treatment shipped
+   ═════════════════════════════════════════════════════════ */
+
+.glass-surface,
+.glass-card {
+  position: relative;
+  background: oklch(calc(0.97 - var(--ui-depth) / 100 * 0.74) calc(0.008 + var(--ui-depth) / 100 * 0.007) 80 / 0.12);
+  -webkit-backdrop-filter: blur(16px) saturate(2);
+  backdrop-filter: blur(16px) saturate(2);
+  border-radius: var(--radius-glass);
+  border-top:    1.5px solid var(--glass-border-top);
+  border-left:   1.5px solid var(--glass-border-left);
+  border-right:  1.5px solid var(--glass-border-right);
+  border-bottom: 1.5px solid var(--glass-border-bottom);
+  box-shadow: var(--glass-shadow);
+  transition: background-color var(--dur-cross) ease-out, border-color var(--dur-cross) ease-out, box-shadow var(--dur-cross) ease-out;
+}
+@media (min-width: 768px) {
+  .glass-surface, .glass-card { border-radius: var(--radius-glass-lg); }
+}
+
+/* GlassCard size variants — verbatim padding from glassCardVariants */
+.glass-card--sm { padding: 16px; }
+.glass-card--md { padding: 20px 16px; }
+.glass-card--lg { padding: 24px 20px; }
+@media (min-width: 768px) {
+  .glass-card--sm { padding: 24px; }
+  .glass-card--md { padding: 32px 28px; }
+  .glass-card--lg { padding: 48px 44px; }
+}
+
+/* GlassCard depth — only blur changes; tint comes from the engine */
+.glass-card--surface  { backdrop-filter: blur(12px) saturate(2); -webkit-backdrop-filter: blur(12px) saturate(2); }
+.glass-card--raised   { backdrop-filter: blur(16px) saturate(2); -webkit-backdrop-filter: blur(16px) saturate(2); }
+.glass-card--floating { backdrop-filter: blur(20px) saturate(2); -webkit-backdrop-filter: blur(20px) saturate(2); }
+
+/* CTAs — primary fills with engine action color, secondary stays glassy */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  border: 0;
+  transition: var(--tx-color), box-shadow var(--dur-slow) ease-out, transform var(--dur-fast) ease-out;
+}
+@media (min-width: 768px) {
+  .btn { padding: 14px 28px; }
+}
+.btn--primary {
+  background-color: oklch(var(--L-btn-bg) 0.16 var(--dynamic-hue));
+  color: oklch(var(--L-btn-fg) 0.02 var(--dynamic-hue));
+  box-shadow: 0 4px 16px oklch(0.3 0.1 var(--dynamic-hue) / 0.35);
+}
+.btn--primary:hover { transform: scale(1.04); }
+.btn--primary:active { transform: scale(0.97); }
+
+.btn--secondary {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: oklch(var(--L-body) 0.03 var(--dynamic-hue));
+}
+.btn--secondary:hover { transform: scale(1.04); }
+
+/* ═════════════════════════════════════════════════════════
+   8. Ink-route override — for bespoke case studies (E.A.S.T)
+   These pages opt OUT of the engine and ship their own art
+   direction. Apply [data-route="ink"] to the route root.
+   ═════════════════════════════════════════════════════════ */
+
+[data-route="ink"] {
+  --ink-bg:   #0A0A0D;
+  --ink-fg:   #F4ECE0;
+  --ink-fg-muted: rgba(244, 236, 224, 0.72);
+  background-color: var(--ink-bg);
+  color: var(--ink-fg);
+}
+[data-route="ink"] body,
+[data-route="ink"].body { background-color: var(--ink-bg); color: var(--ink-fg); }
+
+/* ═════════════════════════════════════════════════════════
+   9. Reduced motion — disable cross-fades + drift
+   ═════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  body, .text-accent, .text-heading, .text-body, .text-muted,
+  .text-action, .bg-action, .glass-surface, .glass-card,
+  .btn, a { transition: none; }
+}

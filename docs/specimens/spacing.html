@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Spacing — Nectar Design System</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="stylesheet" href="_foundation.css" />
+<style>
+  body {
+    padding: 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+    background:
+      radial-gradient(1000px 700px at 80% -10%,
+        oklch(calc(var(--L-bg) + 0.06) calc(var(--C-bg) + 0.04) var(--dynamic-hue) / 0.6) 0%,
+        transparent 60%),
+      oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue));
+    background-attachment: fixed;
+  }
+  h1.page { margin: 0 0 8px; color: oklch(var(--L-heading) 0.01 var(--dynamic-hue)); }
+  .lede { color: oklch(var(--L-muted) 0.03 var(--dynamic-hue)); margin: 0 0 32px; max-width: 60ch; }
+  h2 { margin-top: 48px; color: oklch(var(--L-heading) 0.01 var(--dynamic-hue)); }
+  h2 + .sub { color: oklch(var(--L-muted) 0.03 var(--dynamic-hue)); margin: -8px 0 20px; max-width: 60ch; font-size: var(--fs-sm); }
+
+  /* Sections live inside glass surfaces, like the rest of the system */
+  .panel {
+    padding: 28px;
+    border-radius: var(--radius-glass);
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.45);
+    backdrop-filter: blur(16px) saturate(2);
+    -webkit-backdrop-filter: blur(16px) saturate(2);
+    box-shadow: var(--glass-shadow);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+    margin-bottom: 24px;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px dashed oklch(var(--L-muted) 0.02 var(--dynamic-hue) / 0.2);
+  }
+  .row:last-child { border-bottom: 0; }
+  .meta { font-family: var(--font-mono); font-size: 11px; color: oklch(var(--L-muted) 0.03 var(--dynamic-hue)); }
+  .bar {
+    background: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue) / 0.5);
+    height: 14px;
+    border-radius: 4px;
+  }
+
+  /* Radii grid — every tile is itself a glass surface */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  .tile {
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.55);
+    backdrop-filter: blur(12px) saturate(2);
+    -webkit-backdrop-filter: blur(12px) saturate(2);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+    padding: 24px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: oklch(var(--L-body) 0.03 var(--dynamic-hue));
+  }
+
+  /* Glass-shadow specimens — show the multi-layer cast at three depths */
+  .gs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .gs-tile {
+    border-radius: var(--radius-glass);
+    background: oklch(var(--L-surface) 0.03 var(--dynamic-hue) / 0.5);
+    box-shadow: var(--glass-shadow);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+    padding: 24px;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .gs-tile.surface  { backdrop-filter: blur(12px) saturate(2); -webkit-backdrop-filter: blur(12px) saturate(2); }
+  .gs-tile.raised   { backdrop-filter: blur(16px) saturate(2); -webkit-backdrop-filter: blur(16px) saturate(2); }
+  .gs-tile.floating { backdrop-filter: blur(24px) saturate(2); -webkit-backdrop-filter: blur(24px) saturate(2); }
+  .gs-tile h4 { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 18px; color: oklch(var(--L-heading) 0.01 var(--dynamic-hue)); }
+  .gs-tile .meta { margin: 0; }
+
+  /* GlassCard size sampler */
+  .size-strip { display: grid; grid-template-columns: 1fr 1fr 1fr 1.4fr; gap: 16px; align-items: stretch; }
+  .gc {
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.5);
+    backdrop-filter: blur(16px) saturate(2);
+    -webkit-backdrop-filter: blur(16px) saturate(2);
+    box-shadow: var(--glass-shadow);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+    color: oklch(var(--L-body) 0.03 var(--dynamic-hue));
+    display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
+  }
+  .gc--sm   { padding: 16px;        border-radius: 16px; }
+  .gc--md   { padding: 20px 16px;   border-radius: 16px; }
+  .gc--lg   { padding: 32px 24px;   border-radius: 20px; }
+  .gc--hero { padding: 56px 48px;   border-radius: var(--radius-glass-lg); }
+  @media (min-width: 768px) {
+    .gc--sm, .gc--md { border-radius: var(--radius-glass); }
+    .gc--lg          { border-radius: 28px; }
+  }
+  .gc h5 { margin: 0; font-family: var(--font-display); font-weight: 700; color: oklch(var(--L-heading) 0.01 var(--dynamic-hue)); }
+  .gc h5.sm { font-size: 15px; }
+  .gc h5.md { font-size: 17px; }
+  .gc h5.lg { font-size: 22px; }
+  .gc h5.hero { font-size: 28px; }
+
+  /* Motion tiles — driven by --dur-* and --ease-* tokens */
+  .motion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .motion-tile {
+    padding: 16px;
+    border-radius: var(--radius-glass);
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.5);
+    backdrop-filter: blur(16px) saturate(2);
+    -webkit-backdrop-filter: blur(16px) saturate(2);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+    cursor: pointer;
+    user-select: none;
+  }
+  .motion-tile .ball {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: oklch(var(--L-btn-bg) 0.16 var(--dynamic-hue));
+    margin-top: 12px;
+  }
+  .motion-tile.fast   .ball { transition: transform var(--dur-instant) var(--ease-out-circ); }
+  .motion-tile.snap   .ball { transition: transform var(--dur-fast)    var(--ease-in-out); }
+  .motion-tile.base   .ball { transition: transform var(--dur-base)    var(--ease-out); }
+  .motion-tile.bounce .ball { transition: transform var(--dur-slow)    var(--ease-out-back); }
+  .motion-tile:hover .ball { transform: translateX(140px); }
+
+  /* Springs (verbatim from glassCardVariants) */
+  .springs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .spring {
+    padding: 16px 20px;
+    border-radius: var(--radius-glass);
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.5);
+    backdrop-filter: blur(12px) saturate(2);
+    -webkit-backdrop-filter: blur(12px) saturate(2);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+  }
+  .spring h5 { margin: 0 0 4px; font-size: 13px; font-family: var(--font-mono); color: oklch(var(--L-heading) 0.01 var(--dynamic-hue)); }
+  .spring code { font-family: var(--font-mono); font-size: 11px; color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue)); }
+  .spring p { margin: 6px 0 0; font-size: 12px; color: oklch(var(--L-muted) 0.03 var(--dynamic-hue)); }
+
+  /* Heat × Depth scrubber — same affordance as kits/portfolio */
+  .scrub {
+    position: fixed; top: 16px; right: 16px; z-index: 60;
+    padding: 14px 16px; border-radius: var(--radius-glass);
+    background: oklch(var(--L-bg) 0.02 var(--dynamic-hue) / 0.7);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    border: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.1);
+    box-shadow: var(--glass-shadow);
+    font-family: var(--font-mono); font-size: 11px;
+    color: oklch(var(--L-muted) 0.03 var(--dynamic-hue));
+    display: grid; gap: 8px; min-width: 220px;
+  }
+  .scrub label { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+  .scrub input { width: 120px; }
+</style>
+</head>
+<body>
+  <div class="scrub" aria-label="Heat × Depth scrubber">
+    <label>heat <span id="hv">0</span><input id="h" type="range" min="0" max="100" value="0"></label>
+    <label>depth <span id="dv">100</span><input id="d" type="range" min="0" max="100" value="100"></label>
+  </div>
+
+  <h1 class="page">Spacing, radii, glass, motion</h1>
+  <p class="lede">Everything is on a 4px grid. Radii read from the GlassCard scale (16–36px). Shadow is one cast — <code>--glass-shadow</code> — varied by depth via backdrop blur. Motion runs short and snappy by default; spring stiffness/damping are the only "long" values in the system.</p>
+
+  <h2>Spacing scale</h2>
+  <p class="sub">Every spacing token is a multiple of 4. Section-level rhythm tops out at 96px.</p>
+  <div class="panel">
+    <div class="row"><div class="meta">--space-xs · 4px</div><div class="bar" style="width: 4px;"></div></div>
+    <div class="row"><div class="meta">--space-sm · 8px</div><div class="bar" style="width: 8px;"></div></div>
+    <div class="row"><div class="meta">--space-md · 16px</div><div class="bar" style="width: 16px;"></div></div>
+    <div class="row"><div class="meta">--space-lg · 24px</div><div class="bar" style="width: 24px;"></div></div>
+    <div class="row"><div class="meta">--space-xl · 32px</div><div class="bar" style="width: 32px;"></div></div>
+    <div class="row"><div class="meta">--space-2xl · 48px</div><div class="bar" style="width: 48px;"></div></div>
+    <div class="row"><div class="meta">--space-section · 96px</div><div class="bar" style="width: 96px;"></div></div>
+  </div>
+
+  <h2>Radii — verbatim from <code>glassCardVariants</code></h2>
+  <p class="sub">Mobile values up top, desktop values below — tiles widen the radius at the 768px breakpoint, like real GlassCards do.</p>
+  <div class="grid">
+    <div class="tile" style="border-radius: 8px;"><div class="meta">--radius-xs · 8px</div></div>
+    <div class="tile" style="border-radius: 10px;"><div class="meta">--radius-sm · 10px</div></div>
+    <div class="tile" style="border-radius: 16px;"><div class="meta">--radius-md · 16px<br>nav buttons</div></div>
+    <div class="tile" style="border-radius: 20px;"><div class="meta">--radius-lg · 20px</div></div>
+    <div class="tile" style="border-radius: var(--radius-glass);"><div class="meta">--radius-glass · 24px<br>md cards (desktop)</div></div>
+    <div class="tile" style="border-radius: var(--radius-glass-lg);"><div class="meta">--radius-glass-lg · 36px<br>hero (desktop)</div></div>
+    <div class="tile" style="border-radius: var(--radius-full); aspect-ratio: 1; min-height: 0;"><div class="meta">--radius-full<br>chips, pills</div></div>
+  </div>
+
+  <h2>GlassCard sizes</h2>
+  <p class="sub">Padding and radius vary by size. Borders, blur, shadow, and tint stay constant — they're the engine's job.</p>
+  <div class="size-strip">
+    <div class="gc gc--sm"><h5 class="sm">size=sm</h5><span class="meta">padding 16px<br>radius 16/24</span></div>
+    <div class="gc gc--md"><h5 class="md">size=md</h5><span class="meta">padding 20×16px<br>radius 16/24</span></div>
+    <div class="gc gc--lg"><h5 class="lg">size=lg</h5><span class="meta">padding 32×24px<br>radius 20/28</span></div>
+    <div class="gc gc--hero"><h5 class="hero">size=hero</h5><span class="meta">padding 56×48px<br>radius 24/36</span></div>
+  </div>
+
+  <h2>Glass — one shadow, three depths</h2>
+  <p class="sub">There is no second surface treatment. Where a card needs to feel heavier, raise the depth — only <code>backdrop-filter</code> changes; tint comes from the engine.</p>
+  <div class="gs-grid">
+    <div class="gs-tile surface">
+      <h4>depth=surface</h4>
+      <div class="meta">blur(12px) saturate(2)<br>inline tiles, small chips</div>
+    </div>
+    <div class="gs-tile raised">
+      <h4>depth=raised</h4>
+      <div class="meta">blur(16px) saturate(2)<br>project cards, content blocks</div>
+    </div>
+    <div class="gs-tile floating">
+      <h4>depth=floating</h4>
+      <div class="meta">blur(24px) saturate(2)<br>hero, nav pill, modals</div>
+    </div>
+  </div>
+
+  <h2>Motion — hover the cards</h2>
+  <p class="sub">Default is 200ms with <code>--ease-out</code>. Anything longer feels slow on a 60Hz display. <code>prefers-reduced-motion</code> drops every transition to 0ms.</p>
+  <div class="motion-grid">
+    <div class="motion-tile fast"><div class="meta">--dur-instant · 50ms · ease-out-circ</div><div class="ball"></div></div>
+    <div class="motion-tile snap"><div class="meta">--dur-fast · 120ms · ease-in-out</div><div class="ball"></div></div>
+    <div class="motion-tile base"><div class="meta">--dur-base · 200ms · ease-out (default)</div><div class="ball"></div></div>
+    <div class="motion-tile bounce"><div class="meta">--dur-slow · 300ms · ease-out-back</div><div class="ball"></div></div>
+  </div>
+
+  <h2>Springs (Framer Motion · verbatim from <code>GlassCard.tsx</code>)</h2>
+  <p class="sub">Two springs ship. Cards use the soft one; buttons use the snappy one.</p>
+  <div class="springs">
+    <div class="spring">
+      <h5>--spring-card</h5>
+      <code>stiffness 300, damping 20</code>
+      <p>GlassCard hover lift. Soft settle, ~280ms.</p>
+    </div>
+    <div class="spring">
+      <h5>--spring-button</h5>
+      <code>stiffness 500, damping 25</code>
+      <p>Action button scale-to-1.04. Snappier; ~180ms.</p>
+    </div>
+  </div>
+
+  <h2>Cross-fade — circadian engine</h2>
+  <p class="sub">When solar position drives a variable change, the transition is intentionally long: 60 seconds. It's ambient, not interactive.</p>
+  <div class="panel">
+    <div class="row"><div class="meta">--dur-cross · 60s</div><div style="font-family: var(--font-mono); font-size: 12px; color: oklch(var(--L-body) 0.03 var(--dynamic-hue));">color, background-color, border-color, fill, stroke</div></div>
+  </div>
+
+<script>
+  const root = document.documentElement;
+  const h = document.getElementById('h');
+  const d = document.getElementById('d');
+  const hv = document.getElementById('hv');
+  const dv = document.getElementById('dv');
+  function apply() {
+    root.style.setProperty('--ui-heat',  h.value);
+    root.style.setProperty('--ui-depth', d.value);
+    hv.textContent = h.value;
+    dv.textContent = d.value;
+  }
+  h.addEventListener('input', apply);
+  d.addEventListener('input', apply);
+  apply();
+</script>
+</body>
+</html>

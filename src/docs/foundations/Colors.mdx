@@ -1,0 +1,215 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Colors" />
+
+# Colors
+
+A warm, pastel-forward palette built from seed primitives through semantic
+aliases to theme-mapped values. Migrated from `myportfolio/app/app/design-system/colors/page.tsx` (Wave J, May 2026) — this Storybook is the source of truth.
+
+## Semantic Palette
+
+These are the mapped tokens — the CSS custom properties components consume.
+They change between light and dark mode (and breathe with the engine when
+the value is engine-driven).
+
+**Live swatches:** the chips below read directly from `:root` — flip the
+**Heat** and **Depth** toolbar above and the engine-driven entries
+re-paint on every frame. The static entries (destructive / success /
+warning) stay constant; they're brand-curated for in-flow status UI.
+
+<div
+  style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+    gap: 12,
+    margin: '16px 0 24px',
+  }}
+>
+  {[
+    { label: 'Primary',     css: 'var(--primary)',     fg: 'var(--primary-foreground)', kind: 'engine' },
+    { label: 'Accent',      css: 'var(--accent)',      fg: 'var(--accent-foreground)',  kind: 'engine' },
+    { label: 'Surface',     css: 'var(--surface)',     fg: 'var(--fg)',                 kind: 'engine' },
+    { label: 'Background',  css: 'var(--bg)',          fg: 'var(--fg)',                 kind: 'engine' },
+    { label: 'Muted',       css: 'var(--muted)',       fg: 'var(--muted-fg)',           kind: 'engine' },
+    { label: 'Border',      css: 'var(--border)',      fg: 'var(--fg)',                 kind: 'engine' },
+    { label: 'Destructive', css: 'oklch(0.65 0.20 25)', fg: '#fff',                     kind: 'static' },
+    { label: 'Success',     css: 'oklch(0.72 0.16 145)', fg: '#0c1410',                 kind: 'static' },
+    { label: 'Warning',     css: 'oklch(0.75 0.16 80)',  fg: '#1a1408',                 kind: 'static' },
+  ].map((s) => (
+    <div
+      key={s.label}
+      style={{
+        height: 96,
+        borderRadius: 12,
+        background: s.css,
+        color: s.fg,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: 12,
+        fontFamily: 'var(--font-sans, ui-sans-serif)',
+        fontSize: 12,
+        boxShadow: '0 1px 3px oklch(0 0 0 / 0.10), inset 0 0 0 1px oklch(1 0 0 / 0.08)',
+      }}
+    >
+      <span style={{ fontWeight: 600 }}>{s.label}</span>
+      <span style={{ opacity: 0.85, fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        {s.kind}
+      </span>
+    </div>
+  ))}
+</div>
+
+| Name | Tailwind utility | Source |
+| --- | --- | --- |
+| Primary | `bg-primary` | Engine oklch (Heat × Depth) |
+| Accent | `bg-accent` | Engine oklch (Wave B unified — was static, now engine-driven) |
+| Destructive | `bg-destructive` | Terracotta — static brand status |
+| Success | `bg-success` | Sage green — static brand status |
+| Warning | `bg-warning` | Amber — static brand status |
+| Muted | `bg-muted` | Engine oklch surface tint |
+| Surface | `bg-surface` | Card / panel (engine) |
+| Background | `bg-bg` | Page background (engine) |
+| Border | `bg-border` | Warm ash (engine) |
+| Glass | `bg-glass` | Honey-tinted glass surface (Wave C) |
+
+## Heat sweep
+
+Five frozen-state previews of `--accent` across Heat 0 → 100, evaluated at
+the current Depth setting. The midpoint (Heat 50, ~145°) shows the
+teal-green crossover; warm extreme (Heat 100, ~40°) is the engine's amber
+peak.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 8, margin: '12px 0 24px' }}>
+  {[
+    { label: 'Cool', heat: 0,   hue: 250 },
+    { label: '25',   heat: 25,  hue: 197.5 },
+    { label: 'Mid',  heat: 50,  hue: 145 },
+    { label: '75',   heat: 75,  hue: 92.5 },
+    { label: 'Warm', heat: 100, hue: 40 },
+  ].map((stop) => (
+    <div key={stop.label} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <div
+        style={{
+          height: 64,
+          borderRadius: 10,
+          background: `oklch(calc(0.50 + (var(--ui-depth) / 100) * 0.22) calc(0.18 - (var(--ui-depth) / 100) * 0.04) ${stop.hue})`,
+          boxShadow: 'inset 0 0 0 1px oklch(1 0 0 / 0.06)',
+        }}
+      />
+      <div style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 10, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>
+        {stop.label} · {stop.hue}°
+      </div>
+    </div>
+  ))}
+</div>
+
+## Depth sweep
+
+Five frozen-state previews of `--surface` across Depth 0 → 100 at the
+current Heat setting. The bell-curve golden-hour peak around Depth 40 is
+where the engine sweeps through warm amber during the live transition.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 8, margin: '12px 0 24px' }}>
+  {[0, 25, 50, 75, 100].map((d) => (
+    <div key={d} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <div
+        style={{
+          height: 64,
+          borderRadius: 10,
+          background: `oklch(calc(0.98 - (${d} / 100) * 0.80) calc(0.02 + (${d} / 100) * 0.06) var(--dynamic-hue))`,
+          boxShadow: 'inset 0 0 0 1px oklch(0.5 0 0 / 0.10)',
+        }}
+      />
+      <div style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 10, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>
+        Depth {d}
+      </div>
+    </div>
+  ))}
+</div>
+
+The **engine-driven** entries respond to Heat × Depth — they recompute on every
+slider tick. The **static** entries (destructive / success / warning) stay
+brand-curated; they're for in-flow UI like form errors and destructive
+buttons across 12+ sites in the live app.
+
+## Brand Identity
+
+Three static brand constants (Wave G consolidation) that don't shift with
+Heat × Depth like the engine semantic vars do. Used by Ink Routes (E.A.S.T
+case study), OG / Apple Touch Icon contexts where Satori needs static hex,
+and project-specific identity tints.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, margin: '12px 0 24px' }}>
+  {[
+    { label: 'Ink bone', hex: '#F4ECE0', fg: '#0A0A0D', desc: 'Bone text on ink' },
+    { label: 'Ink deep', hex: '#0A0A0D', fg: '#F4ECE0', desc: 'Opaque ink background' },
+    { label: 'Brand red', hex: '#E4342C', fg: '#F4ECE0', desc: 'AMBIGUITY identity' },
+  ].map((b) => (
+    <div
+      key={b.label}
+      style={{
+        height: 112,
+        borderRadius: 12,
+        background: b.hex,
+        color: b.fg,
+        padding: 14,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        boxShadow: 'inset 0 0 0 1px oklch(1 0 0 / 0.06)',
+      }}
+    >
+      <span style={{ fontWeight: 700, fontSize: 14 }}>{b.label}</span>
+      <div>
+        <div style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, opacity: 0.8 }}>{b.hex}</div>
+        <div style={{ fontSize: 11, opacity: 0.7, marginTop: 4 }}>{b.desc}</div>
+      </div>
+    </div>
+  ))}
+</div>
+
+| Name | Hex | Tailwind utility | Used by |
+| --- | --- | --- | --- |
+| Ink bone | `#F4ECE0` | `bg-ink-bone` | Ink Route bone-colored text + accent strips on OG/icon |
+| Ink deep | `#0A0A0D` | `bg-ink-deep` | Ink Route opaque background (E.A.S.T case study) |
+| Brand red | `#E4342C` | `bg-brand-red` | AMBIGUITY case-study identity hue |
+
+## Toast colors
+
+Toast notification colors are scoped to `GlassToast` only (not bridged to
+Tailwind utilities). Distinct from the static brand status colors above —
+toasts want attention-grabbing brightness for ephemeral notifications.
+
+```css
+--toast-default: oklch(var(--L-accent) 0.12 var(--dynamic-hue));
+--toast-success: oklch(0.72 0.16 145);
+--toast-error:   oklch(0.65 0.20 25);
+--toast-warning: oklch(0.75 0.16 80);
+```
+
+## Pastel Seeds
+
+Raw primitive colors — the building blocks. Named for what they look like,
+not what they mean. Live as `--seed-color-*` in the Style Dictionary
+pipeline (Tier 2). Examples: `lavender`, `mint`, `peach`, `coral`, `sage`,
+`blush`, `sky`, `lemon`, `butter`, `honey`, `cream`, `fog`, `ash`, `cloud`,
+`wisteria`, `azure`, `spring`, `lichen`.
+
+## Neutral Scale
+
+11 steps from `50` (near-white `#FAFAF9`) to `950` (near-black `#0C0A09`).
+Tailwind's neutral palette is preserved 1:1 — components reach for these
+when they need a flat backdrop unrelated to Heat × Depth.
+
+## How Colors Flow
+
+Seed defines the raw value (e.g. `honey = #FFE082`). Alias gives it
+meaning (`primary → honey`). Mapped resolves per theme (light primary =
+honey, dark primary = deep honey `#D4A843`). Components reference mapped
+tokens via CSS custom properties — they never see raw hex.
+
+The runtime **Heat × Depth engine** then overrides the mapped tier for
+every paint-relevant token at `:root` in `app/globals.css`. See
+`Foundations/Theming` for the full engine docs.

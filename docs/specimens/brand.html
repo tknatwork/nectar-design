@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Brand — Nectar Design System</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="stylesheet" href="_foundation.css" />
+<style>
+  body {
+    padding: 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+    background:
+      radial-gradient(1000px 700px at 80% -10%,
+        oklch(calc(var(--L-bg) + 0.06) calc(var(--C-bg) + 0.04) var(--dynamic-hue) / 0.6) 0%,
+        transparent 60%),
+      oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue));
+    background-attachment: fixed;
+  }
+  h1.page { margin: 0 0 8px; color: oklch(var(--L-heading) 0.01 var(--dynamic-hue)); }
+  .lede { color: oklch(var(--L-muted) 0.03 var(--dynamic-hue)); margin: 0 0 32px; max-width: 60ch; }
+  h2 { margin-top: 48px; color: oklch(var(--L-heading) 0.01 var(--dynamic-hue)); }
+  h2 + .sub { color: oklch(var(--L-muted) 0.03 var(--dynamic-hue)); margin: -8px 0 20px; max-width: 60ch; font-size: var(--fs-sm); }
+
+  .panel {
+    padding: 32px;
+    border-radius: var(--radius-glass);
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.45);
+    backdrop-filter: blur(16px) saturate(2);
+    -webkit-backdrop-filter: blur(16px) saturate(2);
+    box-shadow: var(--glass-shadow);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+    margin-bottom: 16px;
+  }
+
+  /* Wordmark — depth-responsive, top of the system */
+  .wordmark { font-family: var(--font-display); font-weight: 900; letter-spacing: -0.02em; line-height: 1; color: oklch(var(--L-heading) 0.01 var(--dynamic-hue)); }
+  .wm-link {
+    position: relative;
+    color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+  }
+  .wm-link::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 3px;
+    background: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+    border-radius: 2px;
+    opacity: 0; transition: opacity var(--dur-base) var(--ease-out);
+  }
+  .wm-link:hover::after { opacity: 1; }
+
+  /* Favicon — the accent color comes from the engine */
+  .favicon {
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    background: oklch(var(--L-btn-bg) 0.16 var(--dynamic-hue));
+    color: oklch(var(--L-btn-fg) 0.02 var(--dynamic-hue));
+    font-family: var(--font-display); font-weight: 900;
+    box-shadow: 0 4px 16px oklch(0.3 0.1 var(--dynamic-hue) / 0.35);
+  }
+  .fav-row { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+
+  /* Voice card — uses GlassCard idiom, accent strip on the do/don't side */
+  .voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .voice {
+    padding: 24px;
+    border-radius: var(--radius-glass);
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.5);
+    backdrop-filter: blur(12px) saturate(2);
+    -webkit-backdrop-filter: blur(12px) saturate(2);
+    box-shadow: var(--glass-shadow);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   3px solid oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue) / 0.4);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+  }
+  .voice.dont {
+    border-left-color: oklch(0.65 0.2 25 / 0.5);
+  }
+  .voice h4 {
+    margin: 0 0 12px;
+    font-family: var(--font-mono); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.14em;
+    color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+  }
+  .voice.dont h4 { color: oklch(0.65 0.2 25); }
+  .voice ul { margin: 0; padding-left: 18px; color: oklch(var(--L-body) 0.03 var(--dynamic-hue)); }
+  .voice li { margin-bottom: 8px; font-size: 14px; line-height: 1.5; }
+
+  /* Imagery — engine-driven gradients only */
+  .imagery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .img-tile {
+    aspect-ratio: 4/3;
+    border-radius: var(--radius-glass);
+    box-shadow: var(--glass-shadow);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+    display: flex; align-items: flex-end; padding: 16px;
+    position: relative; overflow: hidden;
+  }
+  .img-tile small {
+    font-family: var(--font-caption); font-style: italic; font-size: 12px;
+    color: oklch(var(--L-heading) 0.01 var(--dynamic-hue));
+    background: oklch(var(--L-bg) 0.02 var(--dynamic-hue) / 0.6);
+    padding: 4px 10px; border-radius: var(--radius-full);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .img-tile.a {
+    background:
+      radial-gradient(circle at 30% 30%, oklch(calc(var(--L-accent) + 0.05) calc(var(--C-accent) + 0.04) var(--dynamic-hue)) 0%, transparent 60%),
+      radial-gradient(circle at 80% 80%, oklch(calc(var(--L-accent) - 0.05) 0.12 calc(var(--dynamic-hue) - 60)) 0%, transparent 50%),
+      oklch(var(--L-surface) 0.04 var(--dynamic-hue));
+  }
+  .img-tile.b {
+    background:
+      radial-gradient(circle at 30% 30%,
+        color-mix(in oklch, oklch(0.7 0.18 22) 70%, oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue))) 0%,
+        transparent 60%),
+      color-mix(in oklch, oklch(0.45 0.16 22) 60%, oklch(var(--L-surface) 0.04 var(--dynamic-hue)));
+  }
+  .img-tile.c {
+    background:
+      radial-gradient(circle at 30% 30%,
+        color-mix(in oklch, oklch(0.7 0.18 160) 70%, oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue))) 0%,
+        transparent 60%),
+      color-mix(in oklch, oklch(0.5 0.14 160) 60%, oklch(var(--L-surface) 0.04 var(--dynamic-hue)));
+  }
+
+  /* Tabler icons — currentColor only */
+  .icons { display: flex; flex-wrap: wrap; gap: 12px; }
+  .icon-tile {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 16px;
+    border-radius: var(--radius-glass);
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.4);
+    backdrop-filter: blur(12px) saturate(2);
+    -webkit-backdrop-filter: blur(12px) saturate(2);
+    border-top:    1px solid var(--glass-border-top);
+    border-left:   1px solid var(--glass-border-left);
+    border-right:  1px solid var(--glass-border-right);
+    border-bottom: 1px solid var(--glass-border-bottom);
+    min-width: 96px;
+    color: oklch(var(--L-body) 0.03 var(--dynamic-hue));
+  }
+  .icon-tile svg { stroke: currentColor; }
+  .icon-tile small { font-family: var(--font-mono); font-size: 11px; color: oklch(var(--L-muted) 0.03 var(--dynamic-hue)); }
+
+  /* Ink-route specimen — the one place hex literals are allowed */
+  .ink {
+    background: #0A0A0D;
+    color: #F4ECE0;
+    padding: 32px;
+    border-radius: var(--radius-glass);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.4;
+    border: 1px solid #1a1a1d;
+  }
+  .ink .meta {
+    font-family: var(--font-mono); font-style: normal; font-size: 11px;
+    color: #F4ECE0; opacity: 0.6;
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 12px; display: block;
+  }
+
+  .scrub {
+    position: fixed; top: 16px; right: 16px; z-index: 60;
+    padding: 14px 16px; border-radius: var(--radius-glass);
+    background: oklch(var(--L-bg) 0.02 var(--dynamic-hue) / 0.7);
+    backdrop-filter: blur(20px) saturate(1.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    border: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.1);
+    box-shadow: var(--glass-shadow);
+    font-family: var(--font-mono); font-size: 11px;
+    color: oklch(var(--L-muted) 0.03 var(--dynamic-hue));
+    display: grid; gap: 8px; min-width: 220px;
+  }
+  .scrub label { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+  .scrub input { width: 120px; }
+</style>
+</head>
+<body>
+  <div class="scrub" aria-label="Heat × Depth scrubber">
+    <label>heat <span id="hv">0</span><input id="h" type="range" min="0" max="100" value="0"></label>
+    <label>depth <span id="dv">100</span><input id="d" type="range" min="0" max="100" value="100"></label>
+  </div>
+
+  <h1 class="page">Brand</h1>
+  <p class="lede">No graphical logo. The wordmark is the brand. Color is computed from <code>--ui-heat</code> and <code>--ui-depth</code>; the favicon, the underline, the gradients in cover art — every accent on this page is the same oklch expression.</p>
+
+  <h2>Wordmark</h2>
+  <p class="sub">Google Sans Flex, weight 900, -2% tracking. Heading lightness comes from the engine — drag the depth slider and the wordmark re-paints.</p>
+  <div class="panel">
+    <div class="wordmark" style="font-size: 56px;">Tushar Kant <span class="wm-link">Naik</span></div>
+  </div>
+  <p class="caption" style="margin-top: 12px;">Hover the surname to reveal the underline (3px, accent color, fades in over <code>--dur-base</code>).</p>
+
+  <h2>Favicon</h2>
+  <p class="sub">A lowercase <code>t</code> on a circle filled with the engine's action color. The favicon, too, breathes with Heat.</p>
+  <div class="panel fav-row">
+    <span class="favicon" style="width: 64px; height: 64px; font-size: 40px;">t</span>
+    <span class="favicon" style="width: 32px; height: 32px; font-size: 22px;">t</span>
+    <span class="favicon" style="width: 16px; height: 16px; font-size: 11px;">t</span>
+    <p class="caption" style="margin: 0;">64 / 32 / 16px. Sized once; the gradient is one expression.</p>
+  </div>
+
+  <h2>Voice — do &amp; don't</h2>
+  <p class="sub">The accent strip on the left of each card is the engine's accent color (do) or a fixed warning hue (don't). The hex literal on the don't card is the <i>only</i> hex value on this page that isn't <code>oklch()</code>.</p>
+  <div class="voice-grid">
+    <div class="voice do">
+      <h4>Do</h4>
+      <ul>
+        <li>Plain, declarative sentences.</li>
+        <li>Show the receipts — real numbers, current numbers.</li>
+        <li>Pair the <em>what</em> with the <em>why</em>.</li>
+        <li>First-person when the work is yours. "I'm a tinkerer."</li>
+        <li>Sentence case for headings; Title Case for buttons (live convention).</li>
+        <li>Oxford commas. Curly quotes in prose.</li>
+        <li>Document the audit. <code>audit/INCONSISTENCIES.md</code> is part of the system.</li>
+      </ul>
+    </div>
+    <div class="voice dont">
+      <h4>Don't</h4>
+      <ul>
+        <li>"Stunning, powerful, next-generation."</li>
+        <li>"Leverages a sophisticated pipeline."</li>
+        <li>Three-word adjective stacks; exclamation points.</li>
+        <li>Quoting Steve Jobs or Dieter Rams.</li>
+        <li>"Are you sure?" Use a verb instead — "Delete?"</li>
+        <li>Inventing a "brutalist controls + glass" pairing. There is no brutalism on the live site.</li>
+        <li>Hardcoding hex outside the two Ink-Route constants.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Imagery</h2>
+  <p class="sub">Three options, all engine-driven. The middle tile uses <code>color-mix(in oklch, $identity-hue, var(--dynamic-hue))</code> — the project-tint mechanism — so it reads as "the red one" while still bending with Heat.</p>
+  <div class="imagery">
+    <div class="img-tile a"><small>Default · breathes with Heat</small></div>
+    <div class="img-tile b"><small>Ambiguity · identity-tint 22°</small></div>
+    <div class="img-tile c"><small>Forest · identity-tint 160°</small></div>
+  </div>
+
+  <h2>Ink Route specimen</h2>
+  <p class="sub">The one escape hatch from the engine. <code>isInkRoute(pathname)</code> in <code>app/lib/ink-routes.ts</code> opts a route out: opaque <code>#0A0A0D</code> ink, <code>#F4ECE0</code> bone text, <code>GlassNav</code> + <code>HeatLayer</code> suppressed. Used today only for the E.A.S.T. case study.</p>
+  <div class="ink">
+    <span class="meta">Case study · Systems thinking</span>
+    "When the brief is foggy, here's the order I bring decisions back into focus."
+  </div>
+
+  <h2>Icons — Tabler at 24px stroke 1.5</h2>
+  <p class="sub"><code>currentColor</code> only. Icon stroke inherits from the surrounding text color; drop one in a <code>floating</code> GlassCard and it picks up the right contrast for free.</p>
+  <div class="icons">
+    <div class="icon-tile">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+      <small>clock</small>
+    </div>
+    <div class="icon-tile">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      <small>arrow-right</small>
+    </div>
+    <div class="icon-tile">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 7-9 11-9-11z"></path></svg>
+      <small>diamond</small>
+    </div>
+    <div class="icon-tile">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"></path></svg>
+      <small>sun</small>
+    </div>
+    <div class="icon-tile">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
+      <small>moon</small>
+    </div>
+    <div class="icon-tile">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M9 9h6v6H9z"></path></svg>
+      <small>square-stack</small>
+    </div>
+    <div class="icon-tile">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>
+      <small>arrow-up</small>
+    </div>
+    <div class="icon-tile">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9M5 10v10h14V10"></path></svg>
+      <small>home</small>
+    </div>
+  </div>
+
+<script>
+  const root = document.documentElement;
+  const h = document.getElementById('h');
+  const d = document.getElementById('d');
+  const hv = document.getElementById('hv');
+  const dv = document.getElementById('dv');
+  function apply() {
+    root.style.setProperty('--ui-heat',  h.value);
+    root.style.setProperty('--ui-depth', d.value);
+    hv.textContent = h.value;
+    dv.textContent = d.value;
+  }
+  h.addEventListener('input', apply);
+  d.addEventListener('input', apply);
+  apply();
+</script>
+</body>
+</html>

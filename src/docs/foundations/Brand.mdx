@@ -1,0 +1,191 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Brand" />
+
+# Brand
+
+The verbal + visual identity that's *not* engine-driven — wordmark, favicon,
+voice, and the static ink palette used by Ink Routes. Anything you see here
+holds steady when the toolbar Heat / Depth flips.
+
+## Wordmark
+
+The signature is **Tushar Kant** in Plus Jakarta Sans tracked tight, plus
+**Naik** in Playfair italic accent. The italic surname gets `--accent`
+color so it breathes even though the rest of the wordmark is static.
+
+<div
+  style={{
+    padding: '32px 24px',
+    margin: '12px 0 24px',
+    borderRadius: 16,
+    background: 'oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.4)',
+    border: '1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08)',
+    textAlign: 'center',
+  }}
+>
+  <div
+    style={{
+      fontFamily: 'var(--font-display, ui-sans-serif)',
+      fontWeight: 700,
+      fontSize: 44,
+      letterSpacing: '-0.02em',
+      color: 'oklch(var(--L-heading) 0.02 var(--dynamic-hue))',
+    }}
+  >
+    Tushar Kant{' '}
+    <span style={{ fontFamily: 'var(--font-serif, ui-serif)', fontStyle: 'italic', fontWeight: 500, color: 'var(--accent)' }}>
+      Naik
+    </span>
+  </div>
+</div>
+
+## Favicons
+
+Three sizes generated from the same lowercase **t** glyph on a radial
+accent gradient. Browsers pick the closest size; PWA + Apple Touch use the
+larger asset with a deeper background.
+
+<div style={{ display: 'flex', gap: 16, alignItems: 'flex-end', margin: '12px 0 24px' }}>
+  {[
+    { px: 64, fz: 38 },
+    { px: 32, fz: 19 },
+    { px: 16, fz: 10 },
+  ].map((f) => (
+    <div key={f.px} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+      <div
+        style={{
+          width: f.px,
+          height: f.px,
+          borderRadius: f.px <= 16 ? 3 : 8,
+          background: 'radial-gradient(circle at 30% 25%, var(--accent), oklch(0.20 0.04 var(--dynamic-hue)) 90%)',
+          color: '#F4ECE0',
+          fontFamily: 'var(--font-display, ui-sans-serif)',
+          fontWeight: 800,
+          fontSize: f.fz,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: 'inset 0 0 0 1px oklch(1 0 0 / 0.08)',
+        }}
+      >
+        t
+      </div>
+      <code style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 10, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>
+        {f.px}×{f.px}
+      </code>
+    </div>
+  ))}
+</div>
+
+## Voice
+
+How the portfolio sounds in copy — captions, alt text, hover labels, error
+messages. Plain over performative. Specific over puffy. First person where
+it would otherwise feel impersonal.
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, margin: '12px 0 24px' }}>
+  <div
+    style={{
+      padding: 16,
+      borderRadius: 12,
+      background: 'oklch(var(--L-surface) 0.04 var(--dynamic-hue) / 0.5)',
+      borderLeft: '3px solid var(--accent)',
+    }}
+  >
+    <div style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>
+      Do
+    </div>
+    <ul style={{ paddingLeft: 18, margin: 0, fontFamily: 'var(--font-sans)', fontSize: 13, lineHeight: 1.55, color: 'oklch(var(--L-body) 0.02 var(--dynamic-hue))' }}>
+      <li>"A designer learning the engineering."</li>
+      <li>"Selected work."</li>
+      <li>"NDA — ask for the password."</li>
+      <li>"Comments load when the gate opens."</li>
+    </ul>
+  </div>
+  <div
+    style={{
+      padding: 16,
+      borderRadius: 12,
+      background: 'oklch(var(--L-surface) 0.04 var(--dynamic-hue) / 0.5)',
+      borderLeft: '3px solid oklch(0.65 0.20 25)',
+    }}
+  >
+    <div style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, color: 'oklch(0.65 0.20 25)', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 10 }}>
+      Don't
+    </div>
+    <ul style={{ paddingLeft: 18, margin: 0, fontFamily: 'var(--font-sans)', fontSize: 13, lineHeight: 1.55, color: 'oklch(var(--L-body) 0.02 var(--dynamic-hue))' }}>
+      <li>"Award-winning, full-stack creative." (puffy)</li>
+      <li>"Synergistic experiences." (jargon)</li>
+      <li>"Coming soon." (vague)</li>
+      <li>"Click here to learn more." (CTA junk)</li>
+    </ul>
+  </div>
+</div>
+
+## Identity tints
+
+Per-project glass tints via `WORK_SECTION_OVERRIDES.glassStyle` (see
+`Patterns/Overview` § CaseStudyTile). Each tint mixes a fixed identity
+hue with the live `--dynamic-hue` so it still breathes with Heat.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 12, margin: '12px 0 24px' }}>
+  {[
+    { name: 'Default', tint: 'color-mix(in oklch, oklch(0.50 0.10 var(--dynamic-hue) / 0.30) 100%, transparent)', hue: 'var(--dynamic-hue)' },
+    { name: 'AMBIGUITY', tint: 'color-mix(in oklch, oklch(0.50 0.06 65 / 0.30) 65%, oklch(0.40 0.08 var(--dynamic-hue) / 0.20) 35%)', hue: '65° (warm grey)' },
+    { name: 'Forest',   tint: 'color-mix(in oklch, oklch(0.45 0.08 160 / 0.30) 70%, oklch(0.40 0.08 var(--dynamic-hue) / 0.20) 30%)', hue: '160° (forest)' },
+  ].map((p) => (
+    <div
+      key={p.name}
+      style={{
+        height: 130,
+        padding: 14,
+        borderRadius: 14,
+        background: p.tint,
+        border: '1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.12)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        color: 'oklch(var(--L-heading) 0.02 var(--dynamic-hue))',
+      }}
+    >
+      <div style={{ fontFamily: 'var(--font-display, ui-sans-serif)', fontWeight: 700, fontSize: 16 }}>{p.name}</div>
+      <div style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 10, opacity: 0.75 }}>{p.hue}</div>
+    </div>
+  ))}
+</div>
+
+## Ink Route specimen
+
+Routes that pass `isInkRoute(pathname)` opt out of glass + Heat entirely
+(see `Patterns/Overview` § Ink Routes). The art direction goes opaque —
+`#0A0A0D` ink background, `#F4ECE0` bone text, Playfair italic accent.
+
+<div
+  style={{
+    margin: '12px 0 24px',
+    padding: '40px 32px',
+    borderRadius: 14,
+    background: '#0A0A0D',
+    color: '#F4ECE0',
+    border: '1px solid oklch(0 0 0 / 0.4)',
+  }}
+>
+  <div style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.18em', opacity: 0.6, marginBottom: 16 }}>
+    /projects/systems-thinking-experiments
+  </div>
+  <div style={{ fontFamily: 'var(--font-display, ui-sans-serif)', fontWeight: 900, fontSize: 36, letterSpacing: '-0.02em', lineHeight: 1.05 }}>
+    A study in{' '}
+    <span style={{ fontFamily: 'var(--font-serif, ui-serif)', fontStyle: 'italic', fontWeight: 500, color: '#E4342C' }}>ambiguity</span>.
+  </div>
+  <div style={{ fontFamily: 'var(--font-caption, ui-serif)', fontStyle: 'italic', fontSize: 15, opacity: 0.75, marginTop: 16, maxWidth: 520 }}>
+    Ink routes get full bleed — no engine, no glass, no chrome. The bone /
+    ink palette holds across light and dark; only `--brand-red` stays as
+    the accent surface.
+  </div>
+</div>
+
+## See also
+
+- `Foundations/Colors` § Brand Identity — `--ink-bone`, `--ink-deep`, `--brand-red` tokens
+- `Patterns/Overview` § Ink Routes + CaseStudyTile — where these patterns live in production

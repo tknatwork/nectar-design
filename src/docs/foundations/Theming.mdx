@@ -1,0 +1,131 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Theming" />
+
+# Theming
+
+Two layers paint the site. A runtime **Heat × Depth** engine decides every
+base color from two scalars. On top of that, per-project overrides cascade
+through CSS custom properties — zero component code changes when a project
+wants its own identity. Migrated from
+`myportfolio/app/app/design-system/theming/page.tsx` (Wave J, May 2026).
+
+## Heat × Depth — the runtime engine
+
+The page you're reading (in the live Storybook canvas) is painted by a
+runtime engine, not by static tokens. Two CSS variables drive it:
+
+| Variable | Range | Source | Effect |
+| --- | --- | --- | --- |
+| `--ui-heat` | 0–100 | scroll, drag, idle | Hue 260° → 60° (cool indigo → warm sand) |
+| `--ui-depth` | 0–100 | theme toggle / system | Lightness 0 = light, 100 = dark |
+
+Both axes update through an 800ms cross-fade so the page feels like it's
+breathing. Every paint-relevant token —
+`--bg`, `--fg`, `--primary`, `--surface`, `--muted-fg`, `--border`,
+`--ring` — is recomputed from these axes plus a fixed lightness/chroma
+curve. A single oklch expression in `app/globals.css` controls the whole
+site.
+
+```css
+:root {
+  --ui-heat: 0;
+  --ui-depth: 100;
+  --dynamic-hue: calc(250 - (var(--ui-heat) * 2.1) + var(--golden-hue-shift));
+
+  --L-bg:      calc(0.96 - (var(--ui-depth) / 100) * 0.81);   /* 0.96 → 0.15 */
+  --L-heading: calc(0.20 + (var(--ui-depth) / 100) * 0.75);   /* 0.20 → 0.95 */
+  --L-body:    calc(0.35 + (var(--ui-depth) / 100) * 0.33);   /* 0.35 → 0.68 */
+  --L-muted:   calc(0.50 + (var(--ui-depth) / 100) * 0.10);
+  --L-accent:  calc(0.50 + (var(--ui-depth) / 100) * 0.22);
+  --L-surface: calc(0.98 - (var(--ui-depth) / 100) * 0.80);
+
+  --bg:      oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue));
+  --fg:      oklch(var(--L-body) 0.03 var(--dynamic-hue));
+  --surface: oklch(var(--L-surface) 0.02 var(--dynamic-hue));
+  --primary: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+  /* ... and so on */
+}
+```
+
+Underneath the engine, `nectar-design` provides the authoring layer: a
+five-tier JSON token pipeline (primitives / seed / map / semantic /
+components) compiled to CSS variables. Components reach for the semantic
+tier (`bg-bg`, `text-fg`, `border-border`); the engine overrides those at
+runtime. That's the bridge tier — explicit by design.
+
+## Per-Project Theming — How It Works
+
+1. Each project stores color overrides in the CMS (primary, accent).
+2. `ProjectLayout` wraps the page and injects overrides as CSS custom
+   properties via the `style` attribute.
+3. All Tailwind classes referencing these tokens (`bg-primary`,
+   `text-accent-fg`, etc.) auto-resolve to the project colors.
+4. CSS `color-mix()` derived tokens (hover states, shadows) recompute
+   automatically via the cascade.
+
+## Cross-Stack Theming
+
+| Layer | How it reads tokens |
+| --- | --- |
+| Tailwind CSS | Directly via CSS custom properties |
+| Framer Motion | `motion-tokens.ts` (JS import) |
+| GSAP | `getComputedStyle()` reads project colors at runtime |
+| Three.js (future) | `color-utils.ts` for JS color math |
+
+## Per-section overrides — the three escape hatches
+
+Three escape hatches sit on top of the engine. Use them sparingly — they
+exist so individual surfaces can break the global theme without forking it.
+
+### 1. AccessGate
+
+Server Component at the layout root. Gates every route except `/privacy`
+and `/admin/*` behind a terms-acceptance overlay until the visitor sets
+the `ACCEPTED_COOKIE`. The gate is what crawlers see — SSR only emits the
+gate markup unless the cookie is present. Lives in
+`app/components/AccessGate.tsx`.
+
+### 2. Ink Routes — `isInkRoute(pathname)`
+
+Predicate in `app/lib/ink-routes.ts`. Routes that return true opt out of
+glass + Heat entirely: opaque `#0A0A0D` ink, bone-colored `#F4ECE0` text,
+suppressed `GlassNav` and `HeatLayer`. Today only the E.A.S.T. case study
+at `/projects/systems-thinking-experiments` opts in. Use this when a
+route needs full art-direction control.
+
+### 3. WORK_SECTION_OVERRIDES
+
+Map in `app/components/CaseStudyGrid.tsx` keyed by case-study slug. Each
+entry can override `renderTitle`, `renderRole`, `renderDescription`,
+`renderTag`, `glassStyle`, and `hoverLift`. The Ambiguity tile is the only
+one populated today — it tints its glass via `color-mix(in oklch, …)` so
+the card reads as "the warm-neutral one" while still bending with the
+Heat engine.
+
+Full shape, rules, and recipe for adding a new project:
+`app/components/CaseStudyGrid.README.md`.
+
+## The text-accent collision (resolved)
+
+A historical note: pre-Wave-B, two CSS rules named `.text-accent`
+produced different colors:
+
+- Tailwind auto-utility (from `theme.css` `--color-accent: var(--accent)`)
+  → static nectar hex (`#B3D4F0` light, `#2E4563` dark)
+- Manual class in `globals.css` → live engine `oklch(var(--L-accent) …)`
+
+Whichever loaded later in the cascade would win. Wave B (PR #496) resolved
+the collision by overriding `--accent` and `--accent-fg` in the engine's
+`:root` block, using the same expressions the manual class used. Both
+rules now produce the same value. The manual class is kept for the
+`transition: color var(--dur-theme-fade) ease-out` smooth-fade behavior;
+the Tailwind utility provides modifier composability (`hover:`, `dark:`,
+`motion-reduce:`).
+
+## Audit document
+
+The point-in-time reconciliation between repo, on-site docs, and live
+site lives at `docs/audit/INCONSISTENCIES.md` in `myportfolio`. Read it
+when you find a value on screen that disagrees with a value in the
+package — the engine wins, and the audit explains why.
