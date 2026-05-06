@@ -110,13 +110,8 @@
     padding: 48px;
     min-height: 100vh;
     box-sizing: border-box;
-    /* Theme-fade for instant-mode toggle. While the RAF is sweeping
-       depth/heat (.depth-animating class on :root from preview.ts),
-       this transition is disabled so it doesn't fight the var loop. */
-    transition: background-color 800ms ease-out, color 800ms ease-out;
-  }
-  :root.depth-animating body {
-    transition: none !important;
+    /* No CSS transition — preview.ts's animateDepth/animateHeat sweep
+       the engine vars at 60fps. JS is the single source of truth. */
   }
 
   /* Heading + accent classes the design system uses internally. Mirrors

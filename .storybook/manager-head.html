@@ -93,20 +93,10 @@
       oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue)) !important;
     background-attachment: fixed !important;
     color: oklch(var(--L-body) 0.03 var(--dynamic-hue)) !important;
-    /* Theme-fade is disabled while the canvas decorator's RAF is
-       sweeping --ui-depth (.depth-animating class on :root). See
-       preview.ts decorator + matching rule below. */
-    transition: background-color 800ms ease-out, color 800ms ease-out;
-  }
-  :root.depth-animating body,
-  :root.depth-animating nav[id^="storybook-explorer-tree"],
-  :root.depth-animating [class*="sidebar-container"],
-  :root.depth-animating aside[class*="Sidebar"],
-  :root.depth-animating [class*="Bar-"],
-  :root.depth-animating [class*="bar-"],
-  :root.depth-animating [class*="addon-panel"],
-  :root.depth-animating [id^="storybook-panel-root"] {
-    transition: none !important;
+    /* No CSS transition — preview.ts's animateDepth/animateHeat sweep
+       the engine vars at 60fps. CSS transitions would either fight the
+       RAF (stuck mid-flight) or lag instant-mode swaps. JS engine is
+       the single source of truth. */
   }
 
   /* Sidebar pane — depth-modulated alpha + blur (matches portfolio).
