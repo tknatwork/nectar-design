@@ -8,13 +8,26 @@
  * (3-column shell — sidebar, canvas, addons panel) painted in the
  * Heat × Depth engine's vocabulary.
  *
- * Why oklch values are static here: Storybook's manager UI runs in a
+ * Why values are static here: Storybook's manager UI runs in a
  * top-level React app outside the engine's runtime. It can't read
  * `--ui-heat` / `--ui-depth` at runtime, so we pick a single point in
  * the design space — engine **default state** (heat=0, depth=100) —
  * and bake those values in. The CANVAS (story rendering area) DOES get
  * the live engine via preview.ts + preview-head.html, so component
  * stories continue to breathe with Heat × Depth.
+ *
+ * Why hex/rgba and not oklch: Storybook's `create()` runs every color
+ * value through [polished](https://polished.js.org) for hover / focus /
+ * border-derived states. Polished only parses hex / rgb / hsl — passing
+ * an `oklch()` string crashes the manager bundle with PolishedError #5
+ * and you get a blank page. The hex values below are computed once
+ * from the engine's oklch formulas (snapshot at heat=0, depth=100,
+ * hue=250) using chroma-js's oklch→sRGB conversion, then committed.
+ *
+ * If you want to update the snapshot point, recompute via:
+ *   node -e "const c = require('chroma-js'); ...; console.log(c.oklch(L, C, H).hex())"
+ * The exact computation lived at fix/storybook-theme-polished-oklch-crash
+ * commit — see git log for the full snippet.
  *
  * Engine default-state derivations (from app/globals.css formulas):
  *   --L-bg      = 0.96 - (depth/100)*0.81  → 0.15  (near-black)
@@ -29,20 +42,19 @@
 
 import { create } from 'storybook/internal/theming';
 
-// Engine default state — heat=0, depth=100 (dark).
-// All values produced by oklch() at this point in the design space.
-const HUE = 250;
-
+// Engine default state — heat=0, depth=100 (dark), hue=250.
+// Hex values computed via chroma-js from the oklch formulas above.
+// Storybook's `create()` requires hex/rgb/hsl (not oklch — see file header).
 const ENGINE = {
-  bg:      `oklch(0.15 0.08 ${HUE})`,
-  surface: `oklch(0.18 0.02 ${HUE})`,
-  heading: `oklch(0.95 0.01 ${HUE})`,
-  body:    `oklch(0.68 0.03 ${HUE})`,
-  muted:   `oklch(0.60 0.03 ${HUE})`,
-  accent:  `oklch(0.72 0.14 ${HUE})`,
-  border:  `oklch(0.95 0.01 ${HUE} / 0.08)`,
-  borderHover: `oklch(0.95 0.01 ${HUE} / 0.16)`,
-  inputBg: `oklch(0.18 0.02 ${HUE} / 0.55)`,
+  bg:          '#00082b',                       // oklch(0.15 0.08 250)
+  surface:     '#0b121a',                       // oklch(0.18 0.02 250)
+  heading:     '#eaeff5',                       // oklch(0.95 0.01 250)
+  body:        '#8b9aab',                       // oklch(0.68 0.03 250)
+  muted:       '#738292',                       // oklch(0.60 0.03 250)
+  accent:      '#59aaf8',                       // oklch(0.72 0.14 250)
+  border:      'rgba(234, 239, 245, 0.08)',     // oklch(0.95 0.01 250 / 0.08)
+  borderHover: 'rgba(234, 239, 245, 0.16)',     // oklch(0.95 0.01 250 / 0.16)
+  inputBg:     'rgba(11, 18, 26, 0.55)',        // oklch(0.18 0.02 250 / 0.55)
 } as const;
 
 export const nectarTheme = create({
