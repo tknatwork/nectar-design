@@ -101,11 +101,24 @@ const preview: Preview = {
      Adds a "Depth" dropdown to the Storybook canvas toolbar.
      Selecting Light / Dark triggers the gradual --ui-depth
      animation in the canvas iframe (same 450ms sweep + golden
-     hour hue shift the live site uses). The default is 100
-     (dark) to match the manager theme baked from depth=100.
+     hour hue shift the live site uses).
+
+     Default = OS prefers-color-scheme. If the visitor's OS is in
+     dark mode, the toolbar starts at Dark (depth=100); otherwise
+     Light (depth=0). This keeps the design system site consistent
+     with the visitor's device-wide theme — same as how the
+     portfolio's DepthToggle defaults. preview-head.html does the
+     same swap via @media (prefers-color-scheme: dark), and theme.ts
+     picks light/dark hex snapshots the same way. The three layers
+     resolve to the same starting state.
      ───────────────────────────────────────────────────────── */
   initialGlobals: {
-    depth: 100,
+    depth:
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 100
+        : 0,
     heat: 0,
   },
   globalTypes: {
