@@ -68,24 +68,40 @@
      surfaces with backdrop-filter blur(12px) saturate(2). Hairline
      1px borders at heading-color/8% alpha. */
 
-  /* Body — radial-gradient at top-right per kit */
+  /* Body — radial-gradient at top-right per kit. Chroma bumped on the
+     radial overlay so the heat axis (cool blue → warm amber) is
+     visible in the chrome, matching portfolio fix #4. */
   body {
     background:
       radial-gradient(1000px 700px at 80% -10%,
-        oklch(calc(var(--L-bg) + 0.04) calc(var(--C-bg) + 0.03) var(--dynamic-hue) / 0.5) 0%,
+        oklch(calc(var(--L-bg) + 0.04) calc(var(--C-bg) + 0.10) var(--dynamic-hue) / 0.55) 0%,
         transparent 60%),
       oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue)) !important;
     background-attachment: fixed !important;
     color: oklch(var(--L-body) 0.03 var(--dynamic-hue)) !important;
+    /* Theme-fade is disabled while the canvas decorator's RAF is
+       sweeping --ui-depth (.depth-animating class on :root). See
+       preview.ts decorator + matching rule below. */
+    transition: background-color 800ms ease-out, color 800ms ease-out;
+  }
+  :root.depth-animating body,
+  :root.depth-animating nav[id^="storybook-explorer-tree"],
+  :root.depth-animating [class*="sidebar-container"],
+  :root.depth-animating aside[class*="Sidebar"],
+  :root.depth-animating [class*="Bar-"],
+  :root.depth-animating [class*="bar-"],
+  :root.depth-animating [class*="addon-panel"],
+  :root.depth-animating [id^="storybook-panel-root"] {
+    transition: none !important;
   }
 
-  /* Sidebar pane — translucent + blurred */
+  /* Sidebar pane — translucent + blurred (matched to portfolio fix #3) */
   nav[id^="storybook-explorer-tree"],
   [class*="sidebar-container"],
   aside[class*="Sidebar"] {
-    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.4) !important;
-    backdrop-filter: blur(12px) saturate(2) !important;
-    -webkit-backdrop-filter: blur(12px) saturate(2) !important;
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.28) !important;
+    backdrop-filter: blur(28px) saturate(1.8) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(1.8) !important;
     border-right: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08) !important;
   }
 
@@ -105,18 +121,18 @@
   /* Top bar (the row above canvas with story tabs) */
   [class*="Bar-"],
   [class*="bar-"] {
-    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.55) !important;
-    backdrop-filter: blur(16px) saturate(2) !important;
-    -webkit-backdrop-filter: blur(16px) saturate(2) !important;
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.40) !important;
+    backdrop-filter: blur(32px) saturate(1.8) !important;
+    -webkit-backdrop-filter: blur(32px) saturate(1.8) !important;
     border-bottom: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08) !important;
   }
 
   /* Addon panel (right side) */
   [class*="addon-panel"],
   [id^="storybook-panel-root"] {
-    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.4) !important;
-    backdrop-filter: blur(12px) saturate(2) !important;
-    -webkit-backdrop-filter: blur(12px) saturate(2) !important;
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.28) !important;
+    backdrop-filter: blur(28px) saturate(1.8) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(1.8) !important;
     border-left: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08) !important;
   }
 
