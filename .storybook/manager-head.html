@@ -1,0 +1,145 @@
+<!--
+  manager-head.html — injected into Storybook's MANAGER iframe head.
+
+  Storybook splits its UI into two iframes:
+    manager → top bar, sidebar, addons panel (this iframe)
+    canvas  → where stories render (preview-head.html injects there)
+
+  theme.ts sets the static color palette (hex) for the manager via
+  Storybook's `create()` API. That gives us the right base colors but
+  NOT the glass aesthetic the kit prescribes (backdrop-filter blur,
+  hairline borders, dotted canvas background, live engine vars). This
+  file fills that gap by:
+
+    1. Setting the engine vars on `:root` of the manager iframe so any
+       child CSS can `oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue))`.
+       Default state: heat=0, depth=0 (LIGHT, matching portfolio).
+       `@media (prefers-color-scheme: dark)` flips depth to 100 so the
+       manager follows the visitor's OS theme — same as preview-head.html.
+
+    2. Layering kit-style glass overrides on top of Storybook's manager
+       components: search input, sidebar items, panel borders, top bar.
+       Verbatim from `kits/storybook.html` so visitors see the same
+       glass / dotted-grid feel the kit prescribes.
+
+  IMPORTANT: Storybook's manager components use generated class names
+  that change between releases. The selectors below are scoped to
+  Storybook's stable data attributes (`[data-testid]`, semantic HTML)
+  to survive class-name churn.
+-->
+
+<style>
+  /* ─── Engine vars on the manager :root ─────────────────────────
+     The manager runs outside the canvas's engine runtime, so it
+     wouldn't naturally have these vars. Mirroring preview-head.html
+     here lets manager CSS use the same oklch() expressions and
+     keeps the chrome consistent across both iframes. */
+  :root {
+    --ui-heat: 0;
+    --ui-depth: 0;
+    --golden-hue-shift: 0;
+    --golden-chroma-boost: 0;
+
+    --dynamic-hue: calc(250 - (var(--ui-heat) * 2.1) + var(--golden-hue-shift));
+
+    --L-bg:      calc(0.96 - (var(--ui-depth) / 100) * 0.81);
+    --L-heading: calc(0.20 + (var(--ui-depth) / 100) * 0.75);
+    --L-body:    calc(0.35 + (var(--ui-depth) / 100) * 0.33);
+    --L-muted:   calc(0.50 + (var(--ui-depth) / 100) * 0.10);
+    --L-accent:  calc(0.50 + (var(--ui-depth) / 100) * 0.22);
+    --L-surface: calc(0.98 - (var(--ui-depth) / 100) * 0.80);
+
+    --C-bg:     calc(0.02 + (var(--ui-depth) / 100) * 0.06 + var(--golden-chroma-boost));
+    --C-accent: calc(0.18 - (var(--ui-depth) / 100) * 0.04 + var(--golden-chroma-boost));
+
+    /* Static brand identity colors — match portfolio */
+    --brand-accent: #2e4563;
+    --ink-bone: #f4ece0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ui-depth: 100;
+    }
+  }
+
+  /* ─── Kit-style glass overrides ────────────────────────────────
+     Per kits/storybook.html: panels are semi-transparent oklch
+     surfaces with backdrop-filter blur(12px) saturate(2). Hairline
+     1px borders at heading-color/8% alpha. */
+
+  /* Body — radial-gradient at top-right per kit */
+  body {
+    background:
+      radial-gradient(1000px 700px at 80% -10%,
+        oklch(calc(var(--L-bg) + 0.04) calc(var(--C-bg) + 0.03) var(--dynamic-hue) / 0.5) 0%,
+        transparent 60%),
+      oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue)) !important;
+    background-attachment: fixed !important;
+    color: oklch(var(--L-body) 0.03 var(--dynamic-hue)) !important;
+  }
+
+  /* Sidebar pane — translucent + blurred */
+  nav[id^="storybook-explorer-tree"],
+  [class*="sidebar-container"],
+  aside[class*="Sidebar"] {
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.4) !important;
+    backdrop-filter: blur(12px) saturate(2) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(2) !important;
+    border-right: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08) !important;
+  }
+
+  /* Search input in the sidebar */
+  input[type="search"],
+  [class*="SearchField"] input {
+    background: oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue) / 0.5) !important;
+    border: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.1) !important;
+    color: oklch(var(--L-body) 0.03 var(--dynamic-hue)) !important;
+  }
+  input[type="search"]:focus,
+  [class*="SearchField"] input:focus {
+    border-color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue)) !important;
+    outline: none !important;
+  }
+
+  /* Top bar (the row above canvas with story tabs) */
+  [class*="Bar-"],
+  [class*="bar-"] {
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.55) !important;
+    backdrop-filter: blur(16px) saturate(2) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(2) !important;
+    border-bottom: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08) !important;
+  }
+
+  /* Addon panel (right side) */
+  [class*="addon-panel"],
+  [id^="storybook-panel-root"] {
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.4) !important;
+    backdrop-filter: blur(12px) saturate(2) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(2) !important;
+    border-left: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08) !important;
+  }
+
+  /* Canvas stage — dotted grid (kit's signature) */
+  [id^="storybook-preview-wrapper"],
+  [class*="canvas-container"] {
+    background-image:
+      radial-gradient(oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08) 1px, transparent 1px) !important;
+    background-size: 16px 16px !important;
+  }
+
+  /* Active sidebar item — kit's btn--primary feel */
+  [class*="sidebar-item"][data-selected="true"],
+  [class*="SidebarItem"][data-selected="true"],
+  [aria-selected="true"][role="treeitem"] {
+    background: var(--brand-accent) !important;
+    color: var(--ink-bone) !important;
+    font-weight: 600 !important;
+  }
+
+  /* Sidebar item hover */
+  [class*="sidebar-item"]:not([data-selected="true"]):hover,
+  [role="treeitem"]:not([aria-selected="true"]):hover {
+    background: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.06) !important;
+  }
+</style>
