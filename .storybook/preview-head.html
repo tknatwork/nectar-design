@@ -26,11 +26,15 @@
 -->
 
 <style>
-  /* Engine default state — heat=0, depth=100. Matches the static theme
-     in .storybook/theme.ts so manager + canvas chrome read as one. */
+  /* Engine default state — heat=0, depth=0 (LIGHT). Matches the
+     portfolio's default load state at tusharkantnaik.com and the
+     static theme baked in .storybook/theme.ts, so manager + canvas
+     chrome read as one. The toolbar can flip Depth to 100 (dark) or
+     Heat across cool/mid/warm to inspect inverse states via the
+     same 450ms golden-hour sweep the live site uses. */
   :root {
     --ui-heat: 0;
-    --ui-depth: 100;
+    --ui-depth: 0;
     --golden-hue-shift: 0;
     --golden-chroma-boost: 0;
 
@@ -72,6 +76,18 @@
 
   @media (min-width: 768px) {
     :root { --glass-radius: 36px; }
+  }
+
+  /* OS preference: dark mode flips --ui-depth to 100 so the canvas
+     starts in the dark engine state matching what the visitor sees
+     on the rest of their device. Toolbar Depth toggle still overrides
+     this at any time — same UX as the portfolio's DepthToggle button.
+     The 450ms golden-hour sweep handles the transition because the
+     toolbar decorator animates --ui-depth from current to target. */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ui-depth: 100;
+    }
   }
 
   /* Canvas stage — dotted grid, mirrors kits/storybook.html .canvas-stage.
