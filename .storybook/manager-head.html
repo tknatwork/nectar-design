@@ -68,14 +68,28 @@
      surfaces with backdrop-filter blur(12px) saturate(2). Hairline
      1px borders at heading-color/8% alpha. */
 
-  /* Body — radial-gradient at top-right per kit. Chroma bumped on the
-     radial overlay so the heat axis (cool blue → warm amber) is
-     visible in the chrome, matching portfolio fix #4. */
+  /* Body — kit's radial backdrop + a wide center wash whose chroma
+     scales with (1 - depth/100). In LIGHT mode the wash is the
+     dominant tint and visibly shifts cool↔warm with the heat axis
+     (matches portfolio kit-home::before fix). In DARK mode the wash
+     fades to near-zero chroma; the body's --C-bg (=0.08 at depth=100)
+     carries the hue. */
   body {
     background:
+      /* Wide center wash — heat-tint surface, light-mode dominant */
+      radial-gradient(150% 110% at 50% 35%,
+        oklch(
+          calc(var(--L-bg) + 0.02)
+          calc((1 - var(--ui-depth) / 100) * 0.10 + 0.01)
+          var(--dynamic-hue)
+          / 0.85
+        ) 0%,
+        transparent 75%),
+      /* Top-right kit accent */
       radial-gradient(1000px 700px at 80% -10%,
-        oklch(calc(var(--L-bg) + 0.04) calc(var(--C-bg) + 0.10) var(--dynamic-hue) / 0.55) 0%,
+        oklch(calc(var(--L-bg) + 0.04) calc(var(--C-bg) + 0.10) var(--dynamic-hue) / 0.50) 0%,
         transparent 60%),
+      /* Solid base from engine vars */
       oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue)) !important;
     background-attachment: fixed !important;
     color: oklch(var(--L-body) 0.03 var(--dynamic-hue)) !important;
@@ -95,13 +109,19 @@
     transition: none !important;
   }
 
-  /* Sidebar pane — translucent + blurred (matched to portfolio fix #3) */
+  /* Sidebar pane — depth-modulated alpha + blur (matches portfolio).
+     Light mode: 0.28 (orbs visible); Dark mode: 0.62 (stars blurred but
+     readable text). Blur 28px → 44px so the canvas stars/comets behind
+     read as atmospheric noise, not text-competing detail. */
   nav[id^="storybook-explorer-tree"],
   [class*="sidebar-container"],
   aside[class*="Sidebar"] {
-    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.28) !important;
-    backdrop-filter: blur(28px) saturate(1.8) !important;
-    -webkit-backdrop-filter: blur(28px) saturate(1.8) !important;
+    background: oklch(
+      var(--L-surface) 0.02 var(--dynamic-hue) /
+      calc(0.28 + (var(--ui-depth) / 100) * 0.34)
+    ) !important;
+    backdrop-filter: blur(calc(28px + (var(--ui-depth) / 100) * 16px)) saturate(1.8) !important;
+    -webkit-backdrop-filter: blur(calc(28px + (var(--ui-depth) / 100) * 16px)) saturate(1.8) !important;
     border-right: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08) !important;
   }
 
@@ -118,21 +138,27 @@
     outline: none !important;
   }
 
-  /* Top bar (the row above canvas with story tabs) */
+  /* Top bar — depth-modulated alpha (matches portfolio nav). */
   [class*="Bar-"],
   [class*="bar-"] {
-    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.40) !important;
-    backdrop-filter: blur(32px) saturate(1.8) !important;
-    -webkit-backdrop-filter: blur(32px) saturate(1.8) !important;
+    background: oklch(
+      var(--L-surface) 0.02 var(--dynamic-hue) /
+      calc(0.40 + (var(--ui-depth) / 100) * 0.30)
+    ) !important;
+    backdrop-filter: blur(calc(32px + (var(--ui-depth) / 100) * 12px)) saturate(1.8) !important;
+    -webkit-backdrop-filter: blur(calc(32px + (var(--ui-depth) / 100) * 12px)) saturate(1.8) !important;
     border-bottom: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08) !important;
   }
 
-  /* Addon panel (right side) */
+  /* Addon panel (right side) — depth-modulated alpha. */
   [class*="addon-panel"],
   [id^="storybook-panel-root"] {
-    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.28) !important;
-    backdrop-filter: blur(28px) saturate(1.8) !important;
-    -webkit-backdrop-filter: blur(28px) saturate(1.8) !important;
+    background: oklch(
+      var(--L-surface) 0.02 var(--dynamic-hue) /
+      calc(0.28 + (var(--ui-depth) / 100) * 0.34)
+    ) !important;
+    backdrop-filter: blur(calc(28px + (var(--ui-depth) / 100) * 16px)) saturate(1.8) !important;
+    -webkit-backdrop-filter: blur(calc(28px + (var(--ui-depth) / 100) * 16px)) saturate(1.8) !important;
     border-left: 1px solid oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08) !important;
   }
 
