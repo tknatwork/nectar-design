@@ -23,7 +23,80 @@
 
   Wave 2 of the Nectar Design System integration push (Storybook chrome
   redesign — kits/storybook.html ground truth).
+
+  Last sync with myportfolio (`Portfolio/app/.storybook/preview-head.html`):
+  2026-05-07 — added @font-face declarations matching the unified Storybook
+  build at design.tusharkantnaik.com (per ADR 0015).
 -->
+
+<!-- ─── Font preloads ────────────────────────────────────────
+     Five families served from this repo's docs/specimens/fonts/
+     (mapped to /specimens/fonts/ via .storybook/main.ts staticDirs).
+     These are subset/single-weight variants — sufficient for nd's
+     standalone Storybook (nd-only dev surface).
+
+     The DEPLOYED Storybook at design.tusharkantnaik.com uses mp's
+     full variable-axis fonts (`Portfolio/app/fonts/`) — see
+     `Portfolio/app/.storybook/preview-head.html` for the deployed
+     declarations. Per ADR 0015's chrome dual-source policy, these
+     two preview-head.html files share the same family names and
+     weight ranges, but differ in `src:` URLs because the font asset
+     trees differ between repos. Family names + weight ranges should
+     stay aligned. -->
+<link rel="preload" href="/specimens/fonts/PlusJakartaSans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/specimens/fonts/GoogleSansFlex.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/specimens/fonts/PlayfairDisplay.woff2" as="font" type="font/woff2" crossorigin>
+
+<style>
+  /* ─── @font-face declarations ─────────────────────────────
+     Single-weight subsets that ship with nd's specimens. For the
+     deployed Storybook (mp), variable-axis equivalents are declared
+     in `Portfolio/app/.storybook/preview-head.html` with the same
+     family names — Storybook's font pipeline doesn't see across
+     iframes, so each chrome declares its own. */
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+    src: url('/specimens/fonts/PlusJakartaSans.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Google Sans Flex';
+    font-style: normal;
+    font-weight: 1 1000;
+    font-display: swap;
+    src: url('/specimens/fonts/GoogleSansFlex.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+    src: url('/specimens/fonts/PlayfairDisplay.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Playfair Display';
+    font-style: italic;
+    font-weight: 400 900;
+    font-display: swap;
+    src: url('/specimens/fonts/PlayfairDisplay-Italic.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Crimson Pro';
+    font-style: normal;
+    font-weight: 200 900;
+    font-display: swap;
+    src: url('/specimens/fonts/CrimsonPro.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Monaspace Neon';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('/specimens/fonts/MonaspaceNeon.woff2') format('woff2');
+  }
+</style>
 
 <style>
   /* Engine default state — heat=0, depth=0 (LIGHT). Matches the

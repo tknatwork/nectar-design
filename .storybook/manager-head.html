@@ -26,7 +26,58 @@
   that change between releases. The selectors below are scoped to
   Storybook's stable data attributes (`[data-testid]`, semantic HTML)
   to survive class-name churn.
+
+  Last sync with myportfolio (`Portfolio/app/.storybook/manager-head.html`):
+  2026-05-07 — added @font-face declarations matching the unified Storybook
+  build. The manager iframe is separate from the preview iframe, so it
+  needs its own @font-face declarations even though preview-head.html
+  has the same set.
 -->
+
+<style>
+  /* ─── @font-face declarations (manager iframe) ────────────
+     Same family names as preview-head.html — the manager iframe
+     is its own document context. nd standalone serves these from
+     /specimens/fonts/ (mapped via main.ts staticDirs); mp's deployed
+     unified Storybook serves variable-axis equivalents from /fonts/.
+     Per ADR 0015 dual-source policy: keep family names + weight
+     ranges identical between this repo and Portfolio/app/.storybook/. */
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+    src: url('/specimens/fonts/PlusJakartaSans.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Google Sans Flex';
+    font-style: normal;
+    font-weight: 1 1000;
+    font-display: swap;
+    src: url('/specimens/fonts/GoogleSansFlex.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+    src: url('/specimens/fonts/PlayfairDisplay.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Crimson Pro';
+    font-style: normal;
+    font-weight: 200 900;
+    font-display: swap;
+    src: url('/specimens/fonts/CrimsonPro.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Monaspace Neon';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('/specimens/fonts/MonaspaceNeon.woff2') format('woff2');
+  }
+</style>
 
 <style>
   /* ─── Engine vars on the manager :root ─────────────────────────

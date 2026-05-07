@@ -13,8 +13,16 @@ const config: StorybookConfig = {
     "@storybook/addon-onboarding"
   ],
   "framework": "@storybook/react-vite",
-  // Serve ../public as static assets so design.tusharkantnaik.com can
-  // expose /.well-known/security.txt (RFC 9116) from the Storybook build.
-  "staticDirs": ["../public"]
+  // Serve ../public + ../docs/specimens as static assets.
+  // - ../public → / (default mapping; ships /.well-known/security.txt RFC 9116)
+  // - ../docs/specimens → /specimens (HTML specimen pages + fonts referenced
+  //   by preview-head.html @font-face declarations and foundations MDX)
+  "staticDirs": [
+    "../public",
+    {
+      "from": "../docs/specimens",
+      "to": "/specimens"
+    }
+  ]
 };
 export default config;
