@@ -1,2 +1,14 @@
+# Single source of truth for postinstall-script approval. Per pnpm v10,
+# `pnpm.onlyBuiltDependencies` in package.json is silently ignored when
+# the package is part of a workspace. Previously declared in BOTH places
+# (package.json + here); the duplicate emitted a "will not take effect"
+# warning when nd was consumed as a submodule by myportfolio. Removed
+# the duplicate and centralized the full list here.
+#
+# CI-safe: nd's CI runs `pnpm install --frozen-lockfile --ignore-scripts`
+# so postinstall scripts are skipped regardless. This list governs
+# local-dev installs + downstream consumers.
 onlyBuiltDependencies:
+  - "@parcel/watcher"
   - esbuild
+  - unrs-resolver
