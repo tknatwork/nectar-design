@@ -177,32 +177,33 @@ The engine test suite validates all 16 CSS variables (typography + motion + shad
 
 Visual component catalog for browsing all components and token documentation.
 
-- **Live:** [design.tusharkantnaik.com](https://design.tusharkantnaik.com) — Vercel project `nectar-design-storybook`, deploys directly from this repo (not via portfolio submodule)
-- **Config:** `.storybook/` + `vercel.json` (static build config at repo root)
-- **Stories:** `src/**/*.stories.tsx`
-- **Components:** Button (8 variants), Card (3 sizes), Badge (5 variants), Input, Textarea, ProjectLayout, and more
+- **Deployed catalog:** [design.tusharkantnaik.com](https://design.tusharkantnaik.com) — built from `tknatwork/myportfolio` (the **unified Storybook**) per [Portfolio/docs/decisions/0015-unified-storybook-from-mp.md](https://github.com/tknatwork/myportfolio/blob/main/docs/decisions/0015-unified-storybook-from-mp.md), live since 2026-05-07. nd-only ships do **not** auto-deploy here — myportfolio's submodule pointer must bump first.
+- **nd standalone Storybook (this repo):** still exists for nd-only iteration (`pnpm storybook` here). No public deployment from nd anymore — the nd-side Vercel project for design.tusharkantnaik.com was decommissioned in the Path F migration.
+- **Config (nd standalone):** `.storybook/` (chrome files), `src/**/*.stories.tsx`, `src/**/*.mdx`
+- **Components:** Button (8 variants), Card (3 sizes), Badge (5 variants), Input, Textarea, GlassCard, ProjectLayout
 - **Circadian Explorer:** Interactive story with time slider (0–1439 min), live preview panel, 24-hour color strip, solar info, typography/motion/shadow panels — 4 presets (Mumbai, Helsinki, HighContrast, CoolBrand)
 - **Token pages:** Color swatches, spacing scale, typography specimens
 
 ```bash
-pnpm storybook        # Launch dev server (default port 6006)
-pnpm build-storybook  # Build static Storybook → storybook-static/
+pnpm storybook        # Launch nd-only dev server (default port 6006)
+pnpm build-storybook  # Build nd-only static Storybook → storybook-static/
 ```
 
-**Vercel deploy flow:**
+**How nd changes reach the deployed Storybook:**
 
-- Every PR to this repo gets a Storybook preview URL automatically (Vercel git integration)
-- `main` branch deploys to production at design.tusharkantnaik.com
-- Build: `pnpm install --frozen-lockfile --ignore-scripts && pnpm build && pnpm build-storybook`
-- Output: `storybook-static/`
-- Config: `vercel.json` at repo root
+1. nd-feature → nd-dev → nd-main (via standard PR flow in this repo)
+2. mp opens a `chore/bump-nd-submodule-...` branch, advances submodule pointer to new nd-main HEAD, regenerates `pnpm-lock.yaml`
+3. mp-feature → mp-dev → mp-main (via PR flow in `tknatwork/myportfolio`)
+4. Vercel rebuilds the unified Storybook from mp-main and deploys to design.tusharkantnaik.com
 
-**Visual regression (Chromatic):**
+**Chrome dual-source policy:** the chrome files (`.storybook/preview-head.html`, `theme.ts`, `theme-colors.ts`, `manager-head.html`, `manager.ts`) live in BOTH this repo AND `Portfolio/app/.storybook/`. Per ADR 0015, edit nd first, then mirror into mp's copy in the same submodule-bump cycle. This is the deliberate dual-source policy — nd needs its own chrome to remain a self-contained dev surface; mp needs its own because of different stories globs.
 
-- Runs in THIS repo (not portfolio) — `.github/workflows/chromatic.yml`
-- Trigger: PRs to main/dev + push to main
-- Requires `CHROMATIC_PROJECT_TOKEN` GitHub Actions secret
-- Review visual diffs in the Chromatic dashboard — matches Vercel Storybook deploy state
+**Visual regression (Chromatic) — paired-token model:**
+
+- Runs in BOTH repos via the same `CHROMATIC_PROJECT_TOKEN` value (single shared Chromatic project)
+- nd's `.github/workflows/chromatic.yml`: uploads nd standalone Storybook (primitives in isolation) — early-warning layer for nd-only regressions
+- mp's `.github/workflows/chromatic.yml`: uploads the unified Storybook (mp shell + nd primitives via submodule) — production-truth layer
+- Same nd story rendered from either context produces the same baseline signature
 
 ---
 
