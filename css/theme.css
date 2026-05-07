@@ -76,14 +76,20 @@
   --radius-full: var(--seed-borderRadius-full);
 
   /* ── Spacing — semantic tier ── */
-  /* Enables: p-xs, gap-md, m-xl, p-section, etc. */
-  --spacing-xs: var(--spacing-xs);
-  --spacing-sm: var(--spacing-sm);
-  --spacing-md: var(--spacing-md);
-  --spacing-lg: var(--spacing-lg);
-  --spacing-xl: var(--spacing-xl);
-  --spacing-2xl: var(--spacing-2xl);
-  --spacing-section: var(--spacing-section);
+  /* Enables: p-xs, gap-md, m-xl, p-section, etc.
+     Sourced from the seed scale (defined in tokens.css) so Tailwind v4
+     resolves `--spacing-xs` etc. to a literal pixel value at @theme
+     processing time. Was self-referential (`--spacing-xs: var(--spacing-xs)`)
+     which relied on cascade fallback from tokens.css and emitted a
+     "self-reference" warning from audit-theme-namespaces.mjs. Direct
+     seed reference is explicit + audit-clean. */
+  --spacing-xs: var(--seed-spacing-1);          /* 4px — tight */
+  --spacing-sm: var(--seed-spacing-2);          /* 8px — small gaps */
+  --spacing-md: var(--seed-spacing-4);          /* 16px — default */
+  --spacing-lg: var(--seed-spacing-6);          /* 24px — sections */
+  --spacing-xl: var(--seed-spacing-8);          /* 32px — large gaps */
+  --spacing-2xl: var(--seed-spacing-12);        /* 48px — major gaps */
+  --spacing-section: var(--seed-spacing-24);    /* 96px — between sections */
 
   /* ── Breakpoints — seed tier (static values required for @media) ── */
   /* Mobile-first: mobile: tablet: desktop: wide: */
