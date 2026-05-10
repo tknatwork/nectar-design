@@ -1,3 +1,13 @@
+# === SYSTEM PAIRING ===
+# Consumed by: every CI workflow in this repo (ci.yml, chromatic.yml)
+# Updated by: manual — mirror of myportfolio's setup-toolchain
+# Pairs with: myportfolio's .github/actions/setup-toolchain/action.yml,
+#             myportfolio's docs/decisions/server-ops/AD-014-pnpm-store-warm-cron.md,
+#             myportfolio's docs/decisions/server-ops/AD-016-pnpm-store-ownership.md
+# Update trigger: toolchain version bump OR new pnpm-store fix OR mp ships a setup-toolchain change
+# Last verified: 2026-05-11
+# === END PAIRING ===
+
 name: Setup toolchain (nectar-design)
 description: |
   Activates pnpm via corepack into a user-writable directory and sets up
@@ -36,6 +46,18 @@ description: |
     this composite — hardlinks are now viable again, install gets back
     to its faster + smaller-disk footprint).
 
+  Corepack-ordering fix (2026-05-11, mirror of mp PR #694 / cross-Claude
+  #691): Node is installed BEFORE corepack runs (Step 0 below). This
+  prevents `corepack prepare pnpm@<v>` from executing on the image-default
+  Node 20.20.2 that ships in github-hosted ubuntu-24.04 runners — which
+  would otherwise crash with `ERR_UNKNOWN_BUILTIN_MODULE: node:sqlite`
+  the moment a pnpm 11+ install is attempted (pnpm 11 imports
+  `node:sqlite`, added to Node only in v22.5). Original failure traced
+  on mp Renovate PR #682; server-ops course-corrected the diagnosis
+  (it's a workflow-side bug, not a runner-host issue) on cross-Claude
+  #691. nd is vulnerable to the SAME failure mode on its next pnpm
+  major attempt — this composite mirrors the fix proactively.
+
 inputs:
   node-version:
     description: Node.js version to install. Must match engines.node in package.json (>=24.15.0).
@@ -44,7 +66,7 @@ inputs:
   pnpm-version:
     description: pnpm version to activate via corepack. Must match the packageManager field in package.json.
     required: false
-    default: 10.33.2
+    default: 10.33.4
   cache-dependency-path:
     description: pnpm-lock.yaml path used as the setup-node cache key (GitHub-hosted only).
     required: false
@@ -53,9 +75,48 @@ inputs:
 runs:
   using: composite
   steps:
+    # === STEP 0 — Install Node BEFORE corepack runs ===
+    # The image-default Node on github-hosted ubuntu-24.04 is 20.20.2.
+    # Without this step, the next step (`corepack prepare pnpm@<v>`)
+    # would execute on that image-default Node. When `<v>` is pnpm 11+
+    # (which imports `node:sqlite` — added to Node only in v22.5+),
+    # corepack-fetched pnpm crashes with `ERR_UNKNOWN_BUILTIN_MODULE:
+    # No such built-in module: node:sqlite` before it can even print
+    # --version. Observed on mp Renovate PR #682 (closed) and traced
+    # via cross-Claude #691: server-ops pulled the failing run's logs
+    # and confirmed it executed on a github-hosted runner (image-default
+    # Node 20), NOT on nest-mp-*/nest-nd-1 (which apt-installed Node
+    # 24.15.0). The fix is workflow-side: install Node FIRST so corepack
+    # runs on the pinned 24.x.
+    #
+    # On self-hosted runner (nest-nd-1) the host already has Node 24.x
+    # at the system level via apt NodeSource, so setup-node@v6 finds it
+    # in toolcache and is a near-no-op (~200ms). This step supersedes
+    # the previous "Setup Node (self-hosted, no Azure Blob cache)" step,
+    # whose rationale referenced AD-016 (revert of nd PR #83's chmod
+    # workaround). That historical context is preserved in the
+    # description block above; the AD-016 ownership rationale is
+    # unchanged.
+    #
+    # No `cache:` parameter here — pnpm isn't on PATH yet. The dedicated
+    # cache restore step (Step 3 below) handles pnpm-store on
+    # github-hosted; self-hosted uses host-warm /var/cache/pnpm-store
+    # per AD-014.
+    - name: Setup Node (always — corepack target)
+      uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    # === STEP 1 — Install pnpm via corepack ===
     # Composite-action inputs are routed through env: per CWE-78
     # mitigation (don't interpolate inputs/contexts directly into a run:
     # body; use process env so the value can't escape its quoting context).
+    #
+    # Step 0 guarantees this runs on the pinned Node version (24.x), so
+    # any pnpm major version (10, 11, 12, ...) is safe to corepack-fetch.
+    # The `command -v pnpm` short-circuit lets a pre-installed pnpm win
+    # over corepack — relevant when this action runs inside a container
+    # image that already ships pnpm.
     - name: Setup pnpm via corepack
       shell: bash
       env:
@@ -72,9 +133,10 @@ runs:
         pnpm --version
         which pnpm
 
+    # === STEP 2 — Pre-create pnpm-store dir (GitHub-hosted only) ===
     # Pre-create the pnpm-store target directory on github-hosted before
-    # setup-node@v6 attempts a `cache: pnpm` restore. Without this, the
-    # cache.tzst archive (which contains paths like
+    # setup-node@v6 attempts a `cache: pnpm` restore (Step 3 below).
+    # Without this, the cache.tzst archive (which contains paths like
     # `~/.local/share/pnpm/store/v10/...`) fails to extract because
     # `~/.local/share/` doesn't exist on a fresh github-hosted runner.
     # tar logs `Cannot mkdir: No such file or directory` and exits 2,
@@ -87,27 +149,28 @@ runs:
       run: |
         mkdir -p "$HOME/.local/share/pnpm/store"
 
-    - name: Setup Node + pnpm-store cache (GitHub-hosted)
+    # === STEP 3 — Restore pnpm-store cache (GitHub-hosted only) ===
+    # Second setup-node@v6 call: pnpm is now on PATH (Step 1) so the
+    # `cache: pnpm` machinery can resolve `pnpm config get store-dir`.
+    # The Node install short-circuits here — Node 24.x is already active
+    # from Step 0, so setup-node logs "Found in cache" and proceeds to
+    # the cache restore (~200ms overhead, documented fast path).
+    #
+    # Self-hosted (nest-nd-1) skips this step entirely: host-local
+    # /var/cache/pnpm-store is already warm via daily cron (AD-014) and
+    # /home/runner/.config/pnpm/rc points pnpm there, so an Azure Blob
+    # restore would just waste bandwidth (~10-15 min observed on mp PR
+    # #404 first run) and reopens the SAS-window expiry flake.
+    #
+    # Hardlinks from /var/cache/pnpm-store work because the store is
+    # now owned by runner:runner (server-ops AD-016). Earlier versions
+    # of this composite needed `npm_config_package_import_method=copy`
+    # as a workaround; that's been reverted now that the underlying
+    # ownership mismatch is fixed at the source.
+    - name: Restore pnpm-store cache (GitHub-hosted)
       if: runner.environment == 'github-hosted'
       uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
       with:
         node-version: ${{ inputs.node-version }}
         cache: pnpm
         cache-dependency-path: ${{ inputs.cache-dependency-path }}
-
-    - name: Setup Node (self-hosted, no Azure Blob cache)
-      if: runner.environment != 'github-hosted'
-      uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
-      with:
-        node-version: ${{ inputs.node-version }}
-        # No `cache:` — host-local /var/cache/pnpm-store is already warm
-        # via cron, and /home/runner/.config/pnpm/rc directs pnpm there.
-        # Closes the Azure Blob SAS-window expiry flake (myportfolio PR
-        # #408 precedent).
-        #
-        # Hardlinks from /var/cache/pnpm-store work because the store
-        # is now owned by runner:runner (server-ops AD-016). Earlier
-        # versions of this composite needed
-        # `npm_config_package_import_method=copy` as a workaround;
-        # that's been reverted now that the underlying ownership
-        # mismatch is fixed at the source.
