@@ -79,6 +79,12 @@
       "matchPackageNames": ["pnpm/action-setup"],
       "matchUpdateTypes": ["major"],
       "enabled": false
+    },
+    {
+      "description": "Cap pnpm at v10 — defensive mirror of mp PR #689's rule. pnpm v11+ imports node:sqlite (added in Node 22.5+), and the corepack-fetched install would crash on github-hosted ubuntu-24.04 runners whose image-default Node is 20.20.2. The setup-toolchain composite action was fixed to install Node BEFORE corepack on 2026-05-11 (cross-Claude #691 / mp PR #694's mirror in nd), but this cap stays in place as a defensive backstop until a Renovate pnpm v11 PR opens here AND succeeds end-to-end on cloud CI. Once verified, drop this cap in coordinated PRs across both repos (mp + nd).",
+      "matchPackageNames": ["pnpm"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     }
   ],
   "postUpdateOptions": ["pnpmDedupe"]
