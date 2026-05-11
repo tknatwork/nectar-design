@@ -51,14 +51,23 @@ const config: StorybookConfig = {
    * plugins we don't own. Informational only — disabling silences
    * the noise without affecting any actual behavior. Same fix mirrored
    * in mp's `app/.storybook/main.ts` per the ADR 0015 dual-source policy.
+   *
+   * Correct option path per Rolldown docs:
+   *   build.rollupOptions.checks.plugintimings = false
+   * (https://rolldown.rs/options/checks#plugintimings)
+   * NOT `experimental.checkPluginTimings` — that's not a valid Rolldown
+   * key and Vite reports "Invalid input options" if used. The `checks`
+   * field isn't in vanilla Vite/Rollup TS types yet, so we extend via
+   * intersection type to keep ESLint's `no-explicit-any` rule happy.
    */
-  viteFinal: async (config: any) => {
+  viteFinal: async (config) => {
     config.build = config.build ?? {};
-    config.build.rollupOptions = config.build.rollupOptions ?? {};
-    config.build.rollupOptions.experimental = {
-      ...(config.build.rollupOptions.experimental ?? {}),
-      checkPluginTimings: false,
+    type RollupOptionsWithChecks = NonNullable<typeof config.build.rollupOptions> & {
+      checks?: { plugintimings?: boolean };
     };
+    const rollupOpts: RollupOptionsWithChecks = config.build.rollupOptions ?? {};
+    rollupOpts.checks = { ...(rollupOpts.checks ?? {}), plugintimings: false };
+    config.build.rollupOptions = rollupOpts;
     return config;
   }
 };
