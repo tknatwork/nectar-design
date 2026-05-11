@@ -39,36 +39,20 @@ const config: StorybookConfig = {
   // Ref: https://storybook.js.org/docs/configure/telemetry
   "core": {
     "disableTelemetry": true
-  },
-  /**
-   * Vite tuning for the Storybook build.
-   *
-   * Disables Rolldown's experimental plugin-timing check. Storybook's
-   * plugin stack legitimately accounts for ~25% of build time (the
-   * project-annotations-plugin alone). The check fires a
-   * `Vite [PLUGIN_TIMINGS] Warning: Your build spent significant time
-   * in plugins` notice on every build, listing internal Storybook
-   * plugins we don't own. Informational only — disabling silences
-   * the noise without affecting any actual behavior. Same fix mirrored
-   * in mp's `app/.storybook/main.ts` per the ADR 0015 dual-source policy.
-   *
-   * Correct option path per Rolldown docs:
-   *   build.rollupOptions.checks.plugintimings = false
-   * (https://rolldown.rs/options/checks#plugintimings)
-   * NOT `experimental.checkPluginTimings` — that's not a valid Rolldown
-   * key and Vite reports "Invalid input options" if used. The `checks`
-   * field isn't in vanilla Vite/Rollup TS types yet, so we extend via
-   * intersection type to keep ESLint's `no-explicit-any` rule happy.
-   */
-  viteFinal: async (config) => {
-    config.build = config.build ?? {};
-    type RollupOptionsWithChecks = NonNullable<typeof config.build.rollupOptions> & {
-      checks?: { plugintimings?: boolean };
-    };
-    const rollupOpts: RollupOptionsWithChecks = config.build.rollupOptions ?? {};
-    rollupOpts.checks = { ...(rollupOpts.checks ?? {}), plugintimings: false };
-    config.build.rollupOptions = rollupOpts;
-    return config;
   }
+  //
+  // Note re: Rolldown PLUGIN_TIMINGS warning
+  // ----------------------------------------
+  // A `Vite [PLUGIN_TIMINGS] Warning` fires on every storybook build
+  // listing Storybook's own internal plugins consuming >X% of build
+  // time. Attempted suppression via `viteFinal` setting both
+  // `build.rollupOptions.checks.plugintimings = false` AND
+  // `experimental.checkPluginTimings = false` — both rejected by
+  // Storybook's bundler schema as "Invalid input options" (Storybook
+  // validates rollupOptions against a stricter Rollup-only key set
+  // that rejects Rolldown-specific extensions). Accepted as
+  // informational noise; documented in mp's
+  // `docs/runbooks/symptoms-to-docs.md`. Revisit when Storybook
+  // exposes a first-class way to pass Rolldown-native options through.
 };
 export default config;
