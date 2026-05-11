@@ -1,6 +1,6 @@
 # Contributing to nectar-design
 
-Thank you for your interest in contributing! nectar-design is a private React component library and design system.
+Thank you for your interest in contributing! nectar-design is a React component library and design system, open-sourced as of 2026-05-11.
 
 ---
 

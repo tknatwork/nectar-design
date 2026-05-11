@@ -11,7 +11,7 @@ Index: docs/SYSTEM-INDEX.md
 
 ## What we are building
 
-A private design system package (nectar-design) with a 5-tier token pipeline (479 CSS vars), 32 cva components, a biomimetic adaptive theme engine (solar-driven circadian colors), and motion presets for GSAP + Framer Motion. Used as a git submodule in the Portfolio platform.
+A design system package (nectar-design) with a 5-tier token pipeline (479 CSS vars), 32 cva components, a biomimetic adaptive theme engine (solar-driven circadian colors), and motion presets for GSAP + Framer Motion. Used as a git submodule in the Portfolio platform. Open-sourced (public) as of 2026-05-11.
 
 ## What good looks like
 
