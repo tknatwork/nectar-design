@@ -39,6 +39,27 @@ const config: StorybookConfig = {
   // Ref: https://storybook.js.org/docs/configure/telemetry
   "core": {
     "disableTelemetry": true
+  },
+  /**
+   * Vite tuning for the Storybook build.
+   *
+   * Disables Rolldown's experimental plugin-timing check. Storybook's
+   * plugin stack legitimately accounts for ~25% of build time (the
+   * project-annotations-plugin alone). The check fires a
+   * `Vite [PLUGIN_TIMINGS] Warning: Your build spent significant time
+   * in plugins` notice on every build, listing internal Storybook
+   * plugins we don't own. Informational only — disabling silences
+   * the noise without affecting any actual behavior. Same fix mirrored
+   * in mp's `app/.storybook/main.ts` per the ADR 0015 dual-source policy.
+   */
+  viteFinal: async (config: any) => {
+    config.build = config.build ?? {};
+    config.build.rollupOptions = config.build.rollupOptions ?? {};
+    config.build.rollupOptions.experimental = {
+      ...(config.build.rollupOptions.experimental ?? {}),
+      checkPluginTimings: false,
+    };
+    return config;
   }
 };
 export default config;
