@@ -21,7 +21,7 @@ Index: docs/SYSTEM-INDEX.md
 
 - Storybook (live): <https://design.tusharkantnaik.com>
 - Chromatic: linked via GitHub PR checks on `packages/nectar-design/**`
-- Repo: <https://github.com/tknatwork/nectar-design> (private)
+- Repo: <https://github.com/tknatwork/nectar-design> (public — open-sourced 2026-05-11)
 - Parent repo (Portfolio): <https://github.com/tknatwork/myportfolio> (private)
 - Token pipeline docs: `docs/token-pipeline.md`
 
