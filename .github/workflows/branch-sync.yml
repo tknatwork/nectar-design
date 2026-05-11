@@ -1,0 +1,75 @@
+# === SYSTEM PAIRING ===
+# Consumed by: weekly scheduled cron + manual workflow_dispatch
+# Updated by: manual
+# Pairs with: mp's branch-sync.yml (same pattern, simpler — no
+#   submodule context, no self-hosted runner pool)
+# Update trigger: branch protection change on dev OR cron schedule change
+# Last verified: 2026-05-11
+# === END PAIRING ===
+#
+# Ported from mp's branch-sync.yml after 2026-05-11. nd's regular-merge
+# dev → main flow inherently leaves dev N commits behind main per ship
+# cycle (the merge commit lands on main but not dev). Without periodic
+# reset, dev drifts ~1 commit per shipped PR.
+#
+# This workflow runs weekly (Monday 06:00 UTC) and on demand. It checks
+# whether dev has any code diff vs main first — if dev has unpromoted
+# work, the reset is skipped to avoid silently destroying it.
+#
+# Security: this workflow does NOT consume any untrusted user input
+# (issue titles, PR titles/bodies, commit messages, etc.) into run:
+# commands. Only git operations against refs + structured output to
+# $GITHUB_OUTPUT. Safe-by-construction.
+
+name: Dev Reset (weekly sync)
+
+"on":
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  reset:
+    name: Reset dev to main
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          ref: dev
+          fetch-depth: 0
+          # github.token suffices — nd is public (2026-05-11), no PAT needed
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+
+      - name: Check for code diff
+        id: check
+        run: |
+          DIFF=$(git diff origin/main..origin/dev --stat | tail -1)
+          if [ -z "$DIFF" ]; then
+            echo "has_diff=false" >> "$GITHUB_OUTPUT"
+            echo "No code difference — safe to reset"
+          else
+            echo "has_diff=true" >> "$GITHUB_OUTPUT"
+            echo "Dev has changes not on main: $DIFF"
+          fi
+
+      - name: Reset dev to main
+        if: steps.check.outputs.has_diff == 'false'
+        run: |
+          git checkout -B dev origin/main
+          git push origin dev --force-with-lease
+          echo "Dev reset to main — nd-dev now matches nd-main"
+
+      - name: Skip reset
+        if: steps.check.outputs.has_diff == 'true'
+        run: |
+          echo "::warning::Dev has unpromoted code — skipping reset."
+          echo "Ship dev to main first (regular PR flow), then re-run this workflow."
