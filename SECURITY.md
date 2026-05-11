@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in nectar-design (private repository), please report it responsibly.
+If you discover a security vulnerability in nectar-design, please report it responsibly. (Repo open-sourced 2026-05-11.)
 
 **Contact:** Email [hi@tusharkantnaik.com](mailto:hi@tusharkantnaik.com)
 
