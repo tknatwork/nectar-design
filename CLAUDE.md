@@ -13,6 +13,41 @@ Index: docs/SYSTEM-INDEX.md
 
 You are helping **Tushar Kant Naik**, a designer learning development, with **nectar-design** — the design system package for the Nectar Portfolio Platform.
 
+## Cross-Claude Bus Identity
+
+> **Self-identify as `Portfolio Claude`** in every cross-Claude bus message. NEVER use "Mac Claude" — that identity belongs to the Mac Claude instance running from `~/` (home dir, cross-project work). Portfolio Claude is the instance running inside this project directory (this nd repo is part of Portfolio scope per the global Cross-Claude Mode rule). NEVER use "Server Claude" — that identity belongs to the Claude running on the nest home server.
+
+### Why this matters
+Server Claude introduced the cross-Claude bus-split rule on 2026-05-13 to stop work from drifting onto the wrong bus. Identity-pinning at the project level is the harness: it prevents this nd session from picking up server-ops work or impersonating Mac Claude. nd is grouped with Portfolio for cross-Claude purposes — both repos share the same Portfolio-Claude identity and the same `tknatwork/myportfolio` bus.
+
+### Inbox — check at session start
+```bash
+gh issue list --repo tknatwork/myportfolio --label cross-claude:to-portfolio --state open \
+  --json number,title,labels,body
+```
+
+### Send work to Mac Claude
+```bash
+gh issue create --repo tknatwork/myportfolio --label cross-claude:to-mac \
+  --title "..." --body "From: Portfolio Claude (nd repo)\n..."
+```
+
+### Send work to Server Claude
+Portfolio Claude has a dedicated direct bus to Server Claude inside the `myportfolio` repo. No Mac Claude broker required. nd-side handoffs use the same bus — prefix the body so Server Claude knows the source surface.
+```bash
+gh issue create --repo tknatwork/myportfolio --label cross-claude:to-server-ops \
+  --title "..." --body "From: Portfolio Claude (nd repo)\n..."
+```
+Modifiers (combine with the routing label as needed):
+- `cross-claude:priority-high` — act on this in the next Server Claude session, not later.
+- `cross-claude:awaiting-human` — block until Tushar explicitly approves (destructive ops, policy changes).
+
+### Hard rules
+- NEVER use `tknatwork/claude-bus` issues — that bus is reserved for Mac Claude ↔ Server Claude (server-ops scope).
+- NEVER self-identify as "Mac Claude" or "Server Claude" in any bus message — identity drift breaks routing.
+- ALWAYS prefix outbound issue bodies with `From: Portfolio Claude (nd repo)` so the recipient distinguishes which Portfolio-Claude surface sent it.
+- If a cross-Claude issue arrives addressed to a different identity, ignore it — do not act on Mac Claude or Server Claude work.
+
 ## Rules
 
 - Write in plain, clear language
