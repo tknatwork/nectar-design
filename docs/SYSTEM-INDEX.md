@@ -59,4 +59,4 @@ Same as portfolio:
 ## See also
 
 - Portfolio's [`docs/SYSTEM-INDEX.md`](https://github.com/tknatwork/myportfolio/blob/main/docs/SYSTEM-INDEX.md) — full pairing pattern reference (where this convention originated)
-- Parent workspace [`design-docs/CLAUDE.md`](../../CLAUDE.md) — dual-clone protocol for nd (dedicated vs submodule)
+- Parent workspace [`design-docs/CLAUDE.md`](../../AGENTS.md) — dual-clone protocol for nd (dedicated vs submodule)
