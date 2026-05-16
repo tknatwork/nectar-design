@@ -3,7 +3,7 @@ Consumed by: AI sessions for what-we-are-building reference in nd
 Updated by: manual
 Pairs with: CLAUDE.md, REFERENCES.md, docs/SYSTEM-INDEX.md
 Update trigger: product direction shift OR new what-good-looks-like criteria
-Last verified: 2026-05-01
+Last verified: 2026-05-16
 Index: docs/SYSTEM-INDEX.md
 === END PAIRING === -->
 

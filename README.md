@@ -3,7 +3,7 @@
 Private design system for the **Nectar Portfolio Platform**.
 5-tier token pipeline generating **474 CSS custom properties** plus a Biomimetic Adaptive Theme engine that computes 16 runtime CSS variables from solar physics.
 
-> **For AI agents:** Read [`CLAUDE.md`](CLAUDE.md) for full design system instructions.
+> **For AI agents:** Read [`CLAUDE.md`](AGENTS.md) for full design system instructions.
 
 ## Quick Start
 
@@ -95,8 +95,8 @@ How nd changes reach the deployed catalog:
 
 | Document | Audience | Purpose |
 | -------- | -------- | ------- |
-| [`CLAUDE.md`](CLAUDE.md) | AI + developers | Design system guide (deep dive) |
+| [`CLAUDE.md`](AGENTS.md) | AI + developers | Design system guide (deep dive) |
 | [`design/STATE.md`](design/STATE.md) | AI + developers | Current system snapshot (Shipped / Provisional / Experimental) |
 | [`design/OPEN.md`](design/OPEN.md) | AI + developers | Open questions, gaps, decisions worth challenging |
 | [Portfolio README](https://github.com/tknatwork/myportfolio/blob/main/README.md) | Everyone | Project overview (parent repo) |
-| [Portfolio CLAUDE.md](https://github.com/tknatwork/myportfolio/blob/main/CLAUDE.md) | AI + developers | Complete project guide (parent repo) |
+| [Portfolio CLAUDE.md](https://github.com/tknatwork/myportfolio/blob/main/AGENTS.md) | AI + developers | Complete project guide (parent repo) |

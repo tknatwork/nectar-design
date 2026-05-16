@@ -3,7 +3,7 @@ Consumed by: AI sessions at session-start in the nd repo
 Updated by: manual (humans + AI sessions when adding new system-level files in nd)
 Pairs with: CLAUDE.md, CONTEXT.md, REFERENCES.md, design/STATE.md, design/OPEN.md
 Update trigger: any new system-level file added to nd OR new pairing header introduced
-Last verified: 2026-05-01
+Last verified: 2026-05-16
 Index: self
 === END PAIRING === -->
 
@@ -59,4 +59,4 @@ Same as portfolio:
 ## See also
 
 - Portfolio's [`docs/SYSTEM-INDEX.md`](https://github.com/tknatwork/myportfolio/blob/main/docs/SYSTEM-INDEX.md) — full pairing pattern reference (where this convention originated)
-- Parent workspace [`design-docs/CLAUDE.md`](../../CLAUDE.md) — dual-clone protocol for nd (dedicated vs submodule)
+- Parent workspace [`design-docs/CLAUDE.md`](../../AGENTS.md) — dual-clone protocol for nd (dedicated vs submodule)
