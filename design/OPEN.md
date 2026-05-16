@@ -3,7 +3,7 @@ Consumed by: AI sessions when designing — read alongside design/STATE.md
 Updated by: manual
 Pairs with: design/STATE.md, CLAUDE.md, docs/SYSTEM-INDEX.md
 Update trigger: new open question OR resolved question moves to STATE.md
-Last verified: 2026-05-01
+Last verified: 2026-05-16
 Index: docs/SYSTEM-INDEX.md
 === END PAIRING === -->
 
