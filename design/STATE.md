@@ -3,7 +3,7 @@ Consumed by: AI sessions before any UI work in nd
 Updated by: manual
 Pairs with: design/OPEN.md, CLAUDE.md, docs/SYSTEM-INDEX.md
 Update trigger: shipped / provisional / experimental status change for any subsystem
-Last verified: 2026-05-01
+Last verified: 2026-05-16
 Index: docs/SYSTEM-INDEX.md
 === END PAIRING === -->
 

@@ -3,7 +3,7 @@ Consumed by: AI sessions at session-start in the nd repo
 Updated by: manual (humans + AI sessions when adding new system-level files in nd)
 Pairs with: CLAUDE.md, CONTEXT.md, REFERENCES.md, design/STATE.md, design/OPEN.md
 Update trigger: any new system-level file added to nd OR new pairing header introduced
-Last verified: 2026-05-01
+Last verified: 2026-05-16
 Index: self
 === END PAIRING === -->
 
