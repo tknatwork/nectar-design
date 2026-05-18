@@ -43,7 +43,7 @@ env:
 jobs:
   chromatic:
     name: Visual Diff
-    runs-on: [self-hosted, Linux, X64, nest-mp]
+    runs-on: [self-hosted, Linux, X64]
     timeout-minutes: 20
     # PAUSED 2026-05-08 — shared Chromatic free-tier snapshot quota
     # exhausted (paired-token model with mp's chromatic-unified.yml).
