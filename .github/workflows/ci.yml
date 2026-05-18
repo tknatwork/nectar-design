@@ -1,44 +1,21 @@
 name: CI — nectar-design
+# Trigger model (post 2026-05-18 CI shift):
+# PR-to-main only — canonical ship gate. Dev-side validation runs
+# via developer pre-push gates (Lane A) before reaching this surface.
 "on":
   pull_request:
     branches:
       - main
-      - dev
-  push:
-    branches:
-      - dev
+  workflow_dispatch:
 permissions:
   contents: read
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  determine-runner:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      actions: read
-    outputs:
-      runner: ${{ steps.pick.outputs.runner }}
-    steps:
-      - id: pick
-        env:
-          GH_TOKEN: ${{ secrets.RUNNER_CHECK_TOKEN }}
-        run: |-
-          #!/bin/bash
-          set -e
-          AVAILABLE=$(gh api "repos/${{ github.repository }}/actions/runners" --jq '[.runners[] | select(.status=="online" and .busy==false and (.labels | map(.name) | contains(["self-hosted", "Linux"])))] | length' 2>/dev/null || echo 0)
-          if [ "$AVAILABLE" -gt 0 ]; then
-            echo 'runner=["self-hosted","Linux","X64"]' >> $GITHUB_OUTPUT
-            echo "Selected: self-hosted (${AVAILABLE} runner(s) available)"
-          else
-            echo 'runner="ubuntu-latest"' >> $GITHUB_OUTPUT
-            echo "Selected: ubuntu-latest (no self-hosted available)"
-          fi
   build:
     name: Build + Type Check
-    needs: determine-runner
-    runs-on: ${{ fromJSON(needs.determine-runner.outputs.runner) }}
+    runs-on: [self-hosted, Linux, X64, nest-mp]
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
