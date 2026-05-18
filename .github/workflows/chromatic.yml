@@ -29,7 +29,6 @@ name: Chromatic — Visual Regression
     types: [opened, synchronize, reopened, labeled]
     branches:
       - main
-      - dev
   schedule:
     - cron: '0 6 * * 1'
   workflow_dispatch: null
@@ -42,40 +41,9 @@ concurrency:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
-  determine-runner:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    # Three-tier throttle — mirrors the chromatic job's if: below.
-    # Both must short-circuit on irrelevant events so determine-runner
-    # doesn't waste a slot when chromatic itself would skip.
-    if: |
-      github.event_name == 'workflow_dispatch' ||
-      github.event_name == 'schedule' ||
-      (github.event_name == 'pull_request' && github.base_ref == 'main' && github.head_ref == 'dev') ||
-      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'visual-check'))
-    permissions:
-      actions: read
-    outputs:
-      runner: ${{ steps.pick.outputs.runner }}
-    steps:
-      - id: pick
-        env:
-          GH_TOKEN: ${{ secrets.RUNNER_CHECK_TOKEN }}
-        run: |-
-          #!/bin/bash
-          set -e
-          AVAILABLE=$(gh api "repos/${{ github.repository }}/actions/runners" --jq '[.runners[] | select(.status=="online" and .busy==false and (.labels | map(.name) | contains(["self-hosted", "Linux"])))] | length' 2>/dev/null || echo 0)
-          if [ "$AVAILABLE" -gt 0 ]; then
-            echo 'runner=["self-hosted","Linux","X64"]' >> $GITHUB_OUTPUT
-            echo "Selected: self-hosted (${AVAILABLE} runner(s) available)"
-          else
-            echo 'runner="ubuntu-latest"' >> $GITHUB_OUTPUT
-            echo "Selected: ubuntu-latest (no self-hosted available)"
-          fi
   chromatic:
     name: Visual Diff
-    needs: determine-runner
-    runs-on: ${{ fromJSON(needs.determine-runner.outputs.runner) }}
+    runs-on: [self-hosted, Linux, X64]
     timeout-minutes: 20
     # PAUSED 2026-05-08 — shared Chromatic free-tier snapshot quota
     # exhausted (paired-token model with mp's chromatic-unified.yml).
