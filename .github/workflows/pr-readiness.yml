@@ -15,6 +15,7 @@ on:
 permissions:
   contents: read
   pull-requests: read
+  checks: read  # required for gh api .../check-runs polling
 
 concurrency:
   group: pr-readiness-${{ github.event.pull_request.number }}
