@@ -1,0 +1,59 @@
+# === SYSTEM PAIRING ===
+# Consumed by: PR-to-main events (final SAST gate before ship), workflow_dispatch
+# Updated by: manual (Renovate auto-bumps action SHAs)
+# Pairs with: myportfolio's .github/workflows/semgrep.yml (sibling SAST workflow)
+# Update trigger: severity ramp OR new ruleset OR Semgrep deprecation
+# Last verified: 2026-05-19
+# === END PAIRING ===
+#
+# Mirror of myportfolio's semgrep.yml for pipeline parity per ADR 0021
+# follow-up. Per cross-Claude #709's out-of-scope note, nd's surface is
+# consumed by mp + downstream packages, so SAST findings here matter.
+#
+# Security: no untrusted github.event.* input flows into run: commands.
+# All SEMGREP_* configuration uses literal values from this file.
+
+name: Semgrep SAST
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  semgrep:
+    name: Semgrep SAST
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 15
+    container:
+      image: semgrep/semgrep:1.163.0
+      # Pin to runner agent UID/GID — prevents root-owned-file leak
+      # into the GHA-mounted workspace. Root cause diagnosed on mp PR
+      # #861 (cross-Claude #862); mp's V29 enforces this on every
+      # container: block.
+      options: --user 1001:1002
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 1
+      - name: Semgrep CI scan
+        run: semgrep ci
+        env:
+          # OSS rulesets, no Semgrep Cloud account required.
+          # Selection mirrors mp's, minus nextjs (nd is a library).
+          SEMGREP_RULES: >-
+            p/owasp-top-ten
+            p/github-actions
+            p/typescript
+            p/secrets
+          SEMGREP_SEVERITIES: ERROR
+          SEMGREP_SEND_METRICS: "off"

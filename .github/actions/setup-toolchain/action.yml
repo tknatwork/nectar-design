@@ -124,6 +124,18 @@ runs:
       run: |
         if ! command -v pnpm >/dev/null 2>&1; then
           echo "pnpm not on PATH; activating via corepack into user-writable dir"
+          # Redirect corepack's cache to RUNNER_TEMP. Default $HOME/.cache
+          # is not writable inside container jobs that run with
+          # `--user 1001:1002` (e.g. Playwright/SAST containers) because
+          # /github/home/.cache/ is root-owned by the base image.
+          # RUNNER_TEMP is always writable on every runner topology
+          # (GH-hosted, self-hosted, containerized). Mirror of
+          # myportfolio's setup-toolchain fix on PR #861 — keeping both
+          # repos' actions in lockstep so nd stays safe if it ever adds
+          # a container job. Defense in depth.
+          export COREPACK_HOME="${RUNNER_TEMP}/corepack"
+          mkdir -p "$COREPACK_HOME"
+          echo "COREPACK_HOME=$COREPACK_HOME" >> "$GITHUB_ENV"
           mkdir -p "$HOME/.local/bin"
           corepack enable --install-directory "$HOME/.local/bin"
           corepack prepare "pnpm@${PNPM_VERSION}" --activate
