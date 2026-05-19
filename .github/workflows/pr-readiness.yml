@@ -60,7 +60,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PR_HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
-          required=("CI — nectar-design" "Semgrep SAST")
+          # check-runs API surfaces JOB names, not WORKFLOW names. nd ci.yml
+          # workflow name = "CI — nectar-design" but its job is "Build + Type Check".
+          required=("Build + Type Check" "Semgrep SAST")
           deadline=$(( $(date +%s) + 1200 ))
           while [ "$(date +%s)" -lt "$deadline" ]; do
             all_pass=true
