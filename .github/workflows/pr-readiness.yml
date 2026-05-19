@@ -24,7 +24,14 @@ concurrency:
 jobs:
   aggregate:
     name: PR Readiness
-    runs-on: [self-hosted, Linux, X64]
+    # ubuntu-latest (NOT self-hosted nest-nd-1) — aggregator only does
+    # `gh api` polling, no heavy build work. nd's runner pool has 1 agent;
+    # running aggregator on it serialized with ci.yml + semgrep.yml,
+    # causing aggregator to deadlock waiting for jobs that couldn't start
+    # (observed timeout on PR #158 second run). Moving to github-hosted
+    # frees nd-1 for the actual workload. Cost: ~30s of github-hosted
+    # minutes per PR (within free tier for the repo's PR cadence).
+    runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
