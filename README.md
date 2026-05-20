@@ -1,7 +1,7 @@
 # nectar-design
 
 Private design system for the **Nectar Portfolio Platform**.
-5-tier token pipeline generating **474 CSS custom properties** plus a Biomimetic Adaptive Theme engine that computes 16 runtime CSS variables from solar physics.
+5-tier token pipeline generating **494 CSS custom properties** plus a Biomimetic Adaptive Theme engine that computes 16 runtime CSS variables from solar physics.
 
 > **For AI agents:** Read [`CLAUDE.md`](AGENTS.md) for full design system instructions.
 
@@ -17,7 +17,7 @@ pnpm storybook       # Launch standalone Storybook dev server (port 6006)
 
 ```text
 primitives.json → seed.json → map.json → semantic.json → components/*.json
-  → scripts/build-tokens-sd.mjs → css/tokens.css (474 CSS vars)
+  → scripts/build-tokens-sd.mjs → css/tokens.css (494 CSS vars)
                                 → dist/echarts-theme.json (light + dark)
   → scripts/build-motion-presets.mjs → dist/gsap/presets.js
                                      → dist/framer/variants.js
@@ -30,10 +30,10 @@ primitives.json → seed.json → map.json → semantic.json → components/*.js
 | Seed | 19 | Brand decisions (colorPrimary, controlHeight) |
 | Map | 96 | Derived via `color-mix(in oklch)` (color states + alpha scales) |
 | Semantic | 87 | Aliases (spacing, typography, grid, motion, a11y) |
-| Components | 57 (across 4 files: button, card, badge, input) | Per-component tokens |
+| Components | 77 (across 5 files: button, card, badge, input, glass) | Per-component tokens |
 | Themes | 33 each (light, dark, high-contrast) | Theme overrides |
 
-Total compiled output: 474 CSS custom properties in [`css/tokens.css`](css/tokens.css).
+Total compiled output: 494 CSS custom properties in [`css/tokens.css`](css/tokens.css).
 
 ## Biomimetic Adaptive Theme
 

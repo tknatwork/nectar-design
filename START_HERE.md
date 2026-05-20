@@ -49,7 +49,7 @@ cd nectar-design
 
 # 3. Install + build
 pnpm install
-pnpm build         # Generates tokens.css (474 vars) + echarts theme + GSAP + Framer presets
+pnpm build         # Generates tokens.css (494 vars) + echarts theme + GSAP + Framer presets
 
 # 4. Storybook dev
 pnpm storybook     # http://localhost:6006
@@ -68,7 +68,7 @@ computed from solar physics).
 
 ```text
 primitives.json → seed.json → map.json → semantic.json → components/*.json
-  → scripts/build-tokens-sd.mjs → css/tokens.css (474 CSS vars)
+  → scripts/build-tokens-sd.mjs → css/tokens.css (494 CSS vars)
                                 → dist/echarts-theme.json (light + dark)
   → scripts/build-motion-presets.mjs → dist/gsap/presets.js
                                      → dist/framer/variants.js
@@ -81,10 +81,10 @@ primitives.json → seed.json → map.json → semantic.json → components/*.js
 | Seed | 19 | Brand decisions (colorPrimary, controlHeight) |
 | Map | 96 | Derived via `color-mix(in oklch)` |
 | Semantic | 87 | Aliases (spacing, typography, grid, motion, a11y) |
-| Components | 57 (4 files: button, card, badge, input) | Per-component tokens |
+| Components | 77 (5 files: button, card, badge, input, glass) | Per-component tokens |
 | Themes | 33 each (light, dark, high-contrast) | Theme overrides |
 
-Total: **474 CSS custom properties** in `css/tokens.css`.
+Total: **494 CSS custom properties** in `css/tokens.css`.
 
 ---
 
