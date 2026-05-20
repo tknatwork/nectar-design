@@ -12,6 +12,17 @@
   "rangeStrategy": "bump",
   "prHourlyLimit": 2,
   "prConcurrentLimit": 3,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["dependencies", "security", "vulnerability-alert"],
+    "prCreation": "immediate",
+    "schedule": ["at any time"],
+    "groupName": "security-fixes",
+    "automerge": true,
+    "automergeType": "pr",
+    "platformAutomerge": true
+  },
+  "osvVulnerabilityAlerts": true,
   "packageRules": [
     {
       "description": "Group minor + patch updates weekly",
