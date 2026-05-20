@@ -470,6 +470,28 @@
     --card-paddingLG: var(--map-size-XL); /* Large padding (32px = p-8) */
     --card-hoverBorderColor: var(--map-color-primary-Base); /* Interactive variant hover border */
 
+    /* glass */
+    --glass-frostedBlurSurface: 8px; /* Frosted blur for shallow surfaces (containers, panels) */
+    --glass-frostedBlurRaised: 12px; /* Frosted blur for raised cards (default GlassCard depth) */
+    --glass-frostedBlurFloating: 18px; /* Frosted blur for floating overlays (dialogs, modals) */
+    --glass-frostedSaturate: 162%; /* Color saturation boost through the frosted layer. 162% validated in /tmp/glass-demo/ on 2026-05-21. */
+    --glass-frostedBg: rgba(85, 85, 85, 0.12); /* Frosted plate tint. 10-12% gray gives milky look without crushing legibility. */
+    --glass-frostedBorderLight: rgba(255, 255, 255, 0.28); /* Top edge highlight border in light mode */
+    --glass-frostedBorderDark: rgba(255, 255, 255, 0.10); /* Top edge highlight border in dark mode (reduced for contrast) */
+    --glass-frostedShadowSurface: 0 8px 24px rgba(0, 0, 0, 0.20); /* Drop shadow for surface depth */
+    --glass-frostedShadowRaised: 0 20px 60px rgba(0, 0, 0, 0.35); /* Drop shadow for raised depth */
+    --glass-frostedShadowFloating: 0 30px 80px rgba(0, 0, 0, 0.45); /* Drop shadow for floating depth */
+    --glass-frostedInsetTop: inset 0 1px 0 rgba(255, 255, 255, 0.30); /* Inset top highlight (light bleed simulation) */
+    --glass-frostedInsetBottom: inset 0 -1px 0 rgba(0, 0, 0, 0.15); /* Inset bottom shadow (depth anchor) */
+    --glass-liquidDisplacementScale: 10; /* feDisplacementMap scale. Subtle default — set 0 to disable. Tune via mp/app/layout.tsx <GlassFilterDefs/>. Demo /tmp/glass-demo/ used scale 20 — production keeps subtler so text stays readable. */
+    --glass-liquidNoiseFrequency: 0.012; /* feTurbulence baseFrequency. Lower = bigger ripples. */
+    --glass-liquidNoiseOctaves: 2; /* feTurbulence numOctaves. 2 = subtle, 4 = rougher. */
+    --glass-liquidFilterId: glass-liquid; /* SVG filter id consumed via filter: url(#glass-liquid). mp/app/layout.tsx must mount the <defs><filter id=...> matching this id. */
+    --glass-borderRadius: var(--map-borderRadius-XL); /* Glass surface radius (20-28px range) — slightly larger than standard card for the rounded-pill look from Migrim */
+    --glass-specularColor: rgba(255, 255, 255, 0.35); /* Specular peak color at cursor position */
+    --glass-specularMidColor: rgba(255, 255, 255, 0.08); /* Specular midtone (25% radius) */
+    --glass-specularMixBlend: overlay; /* Blend mode for specular layer (overlay = pops against any bg) */
+
     /* input */
     --input-controlHeight: var(--seed-controlHeight); /* Default height (md = 40px) */
     --input-controlHeightSM: var(--map-controlHeight-SM); /* Small height (sm = 32px) */
