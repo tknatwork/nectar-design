@@ -1,0 +1,44 @@
+{
+  "component": {
+    "glass": {
+      "$description": "Glass surface tokens — combined frosted (backdrop-filter blur+saturate) + liquid (SVG displacement filter). Three depth levels per the existing GlassCard.stories.tsx pattern.",
+
+      "$$_frosted": "_____ FROSTED LAYER (backdrop-filter) — Migrim-tuned defaults validated 2026-05-21 _____",
+
+      "frostedBlurSurface":      { "$value": "8px",                  "$type": "dimension",  "$description": "Frosted blur for shallow surfaces (containers, panels)" },
+      "frostedBlurRaised":       { "$value": "12px",                 "$type": "dimension",  "$description": "Frosted blur for raised cards (default GlassCard depth)" },
+      "frostedBlurFloating":     { "$value": "18px",                 "$type": "dimension",  "$description": "Frosted blur for floating overlays (dialogs, modals)" },
+
+      "frostedSaturate":         { "$value": "162%",                 "$type": "string",     "$description": "Color saturation boost through the frosted layer. 162% validated in /tmp/glass-demo/ on 2026-05-21." },
+
+      "frostedBg":               { "$value": "rgba(85, 85, 85, 0.12)", "$type": "color",    "$description": "Frosted plate tint. 10-12% gray gives milky look without crushing legibility." },
+
+      "frostedBorderLight":      { "$value": "rgba(255, 255, 255, 0.28)", "$type": "color", "$description": "Top edge highlight border in light mode" },
+      "frostedBorderDark":       { "$value": "rgba(255, 255, 255, 0.10)", "$type": "color", "$description": "Top edge highlight border in dark mode (reduced for contrast)" },
+
+      "frostedShadowSurface":    { "$value": "0 8px 24px rgba(0, 0, 0, 0.20)",  "$type": "shadow", "$description": "Drop shadow for surface depth" },
+      "frostedShadowRaised":     { "$value": "0 20px 60px rgba(0, 0, 0, 0.35)", "$type": "shadow", "$description": "Drop shadow for raised depth" },
+      "frostedShadowFloating":   { "$value": "0 30px 80px rgba(0, 0, 0, 0.45)", "$type": "shadow", "$description": "Drop shadow for floating depth" },
+
+      "frostedInsetTop":         { "$value": "inset 0 1px 0 rgba(255, 255, 255, 0.30)", "$type": "shadow", "$description": "Inset top highlight (light bleed simulation)" },
+      "frostedInsetBottom":      { "$value": "inset 0 -1px 0 rgba(0, 0, 0, 0.15)",      "$type": "shadow", "$description": "Inset bottom shadow (depth anchor)" },
+
+      "$$_liquid": "_____ LIQUID LAYER (SVG displacement filter) — static, no canvas regen _____",
+
+      "liquidDisplacementScale": { "$value": "10",                   "$type": "number",    "$description": "feDisplacementMap scale. Subtle default — set 0 to disable. Tune via mp/app/layout.tsx <GlassFilterDefs/>. Demo /tmp/glass-demo/ used scale 20 — production keeps subtler so text stays readable." },
+      "liquidNoiseFrequency":    { "$value": "0.012",                "$type": "number",    "$description": "feTurbulence baseFrequency. Lower = bigger ripples." },
+      "liquidNoiseOctaves":      { "$value": "2",                    "$type": "number",    "$description": "feTurbulence numOctaves. 2 = subtle, 4 = rougher." },
+      "liquidFilterId":          { "$value": "glass-liquid",         "$type": "string",    "$description": "SVG filter id consumed via filter: url(#glass-liquid). mp/app/layout.tsx must mount the <defs><filter id=...> matching this id." },
+
+      "$$_radius": "_____ SHAPE _____",
+
+      "borderRadius":            { "$value": "{map.borderRadius.XL}", "$type": "number",   "$description": "Glass surface radius (20-28px range) — slightly larger than standard card for the rounded-pill look from Migrim" },
+
+      "$$_specular": "_____ SPECULAR HIGHLIGHT (mouse-tracked, cheap radial gradient) _____",
+
+      "specularColor":           { "$value": "rgba(255, 255, 255, 0.35)", "$type": "color", "$description": "Specular peak color at cursor position" },
+      "specularMidColor":        { "$value": "rgba(255, 255, 255, 0.08)", "$type": "color", "$description": "Specular midtone (25% radius)" },
+      "specularMixBlend":        { "$value": "overlay",                   "$type": "string", "$description": "Blend mode for specular layer (overlay = pops against any bg)" }
+    }
+  }
+}
