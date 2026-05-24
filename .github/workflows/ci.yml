@@ -6,6 +6,7 @@ name: CI — nectar-design
   pull_request:
     branches:
       - dev
+      - main
   workflow_dispatch:
 permissions:
   contents: read
