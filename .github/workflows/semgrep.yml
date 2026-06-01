@@ -34,7 +34,7 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     timeout-minutes: 15
     container:
-      image: semgrep/semgrep:1.163.0
+      image: semgrep/semgrep:1.164.0
       # Pin to runner agent UID/GID — prevents root-owned-file leak
       # into the GHA-mounted workspace. Root cause diagnosed on mp PR
       # #861 (cross-Claude #862); mp's V29 enforces this on every
