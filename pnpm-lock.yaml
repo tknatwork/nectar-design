@@ -100,8 +100,8 @@ importers:
         specifier: ^10.4.1
         version: 10.4.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@testing-library/dom@10.4.1)(@types/react@19.2.15)(prettier@3.8.1)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       style-dictionary:
-        specifier: ^5.4.2
-        version: 5.4.2(tslib@2.8.1)
+        specifier: ^5.4.3
+        version: 5.4.3(tslib@2.8.1)
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(postcss@8.5.15)(typescript@6.0.3)
@@ -240,8 +240,8 @@ packages:
     resolution: {integrity: sha512-ctxtJ/eA+t+6q2++vj5j7FYX3nRu311q1wfYH3xjlLOsczhlhxAg2FWNUXhpGvAw3BWo1xBcvOV6/YLc2r5FJw==}
     hasBin: true
 
-  '@bundled-es-modules/deepmerge@4.3.1':
-    resolution: {integrity: sha512-Rk453EklPUPC3NRWc3VUNI/SSUjdBaFoaQvFRmNBNtMHVtOFD5AntiWg5kEE1hqcPqedYFDzxE3ZcMYPcA195w==}
+  '@bundled-es-modules/deepmerge@4.3.2':
+    resolution: {integrity: sha512-q8doe7ndrY2IolUOFIn0A0++JBX38pMhN7kFhTF4cnjIcILf6X6H2yWczInyv8ZFdR0lrE8088X8XS5efxXz8A==}
 
   '@bundled-es-modules/glob@13.0.6':
     resolution: {integrity: sha512-x9nR2e1pt8LF0yLPC6yz/aUoiN7qJJwZ1znLxIXCxGyH+8BI+yO/sklBdn1+QbUyWXQBM+CjfZz3IhqtgIoDVg==}
@@ -2346,8 +2346,8 @@ packages:
     resolution: {integrity: sha512-SlyRoSkdh1dYP0PzclLE7r0M9sgbFKKMFXpFRUMNuKhQSbC6VQIGzq3E0qsfvGJaUFJPGv6Ws1NZ/haTAjfbMA==}
     engines: {node: '>=12'}
 
-  style-dictionary@5.4.2:
-    resolution: {integrity: sha512-Mienm46H28PWnydBiLFN7nR1QXqTO2FA+Aa/W7jcBJV8N0QGDDTfPQbb10TqwRybdY0rvp1G4pjdVM2HklGI0g==}
+  style-dictionary@5.4.3:
+    resolution: {integrity: sha512-VpIXPFqIJXR5bLzWhV9PjB7NBteyAVHq9THk5Hyw6zRqAjgfJkH9zalC9szLthkQlS+S8szmmq6tlnLWFksmTQ==}
     engines: {node: '>=22.0.0'}
     hasBin: true
 
@@ -2823,7 +2823,7 @@ snapshots:
     dependencies:
       css-tree: 3.2.1
 
-  '@bundled-es-modules/deepmerge@4.3.1':
+  '@bundled-es-modules/deepmerge@4.3.2':
     dependencies:
       deepmerge: 4.3.1
 
@@ -4714,9 +4714,9 @@ snapshots:
 
   strip-indent@4.1.1: {}
 
-  style-dictionary@5.4.2(tslib@2.8.1):
+  style-dictionary@5.4.3(tslib@2.8.1):
     dependencies:
-      '@bundled-es-modules/deepmerge': 4.3.1
+      '@bundled-es-modules/deepmerge': 4.3.2
       '@bundled-es-modules/glob': 13.0.6
       '@bundled-es-modules/memfs': 4.17.0(tslib@2.8.1)
       '@zip.js/zip.js': 2.8.23
