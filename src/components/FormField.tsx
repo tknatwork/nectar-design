@@ -1,3 +1,5 @@
+'use client';
+
 import { useId, type ReactNode, cloneElement, isValidElement, type ReactElement } from 'react';
 import { cn } from '../cn';
 import { Label } from './Label';

@@ -1,0 +1,12 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../components';
+
+<Meta title="Tokens/Semantic" />
+
+# Semantic tokens
+
+The **semantic** tier names tokens by *role* (`--primary`, `--bg`, `--fg`,
+`--border`, …) — the surface app code and components consume. They alias the map
+tier, so changing a map value reshapes every semantic token that points at it.
+
+<TokenTable tier="Semantic" showVar />

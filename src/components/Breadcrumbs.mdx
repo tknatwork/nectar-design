@@ -1,0 +1,46 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as BreadcrumbsStories from './Breadcrumbs.stories';
+
+<Meta of={BreadcrumbsStories} />
+
+<Title />
+<Subtitle>Ancestor trail that shows where the current page sits in the hierarchy.</Subtitle>
+
+## Overview
+
+<Description of={BreadcrumbsStories} />
+
+<Primary />
+
+## Anatomy
+
+A breadcrumb is an ordered list inside a labelled `nav`. Each `items` entry is a link except
+the last, which renders as plain `current-page` text; an `aria-hidden` chevron separator sits
+between entries. Pass `separator` to swap the glyph.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — mirror the real navigation hierarchy and make every ancestor except the last a working link.
+- **Don't** — use a breadcrumb as the primary nav, or list steps in a flow (it reflects *location*, not *history*).
+
+## Accessibility
+
+- Wrapped in `<nav aria-label="Breadcrumb">` so assistive tech announces it as the breadcrumb landmark.
+- The final crumb carries `aria-current="page"` and is the only non-link entry.
+- Separators are `aria-hidden="true"` — decorative, never read aloud.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Breadcrumbs consumes **semantic** tokens through Tailwind utilities (`text-muted-fg`, `text-border`, `text-fg`):
+
+<TokenTable
+  names={[
+    '--muted-fg', '--border', '--fg',
+  ]}
+/>

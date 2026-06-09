@@ -1,0 +1,49 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as EyebrowStories from './Eyebrow.stories';
+
+<Meta of={EyebrowStories} />
+
+<Title />
+<Subtitle>The all-caps section kicker that sits above a title.</Subtitle>
+
+## Overview
+
+<Description of={EyebrowStories} />
+
+<Primary />
+
+## Anatomy
+
+An eyebrow is a single small-caps label: 11px, weight 600, uppercase, 0.14em
+tracking, in the accent colour. It renders a `<p>` — a typographic kicker, not a
+semantic heading — and pairs with the `Heading` (or hero title) directly beneath
+it.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — place one eyebrow directly above a section title to label the section ("Selected Work", "Practice").
+- **Don't** — use it as the heading itself, set body copy in it, or stack several eyebrows where a list belongs.
+
+## Accessibility
+
+- The eyebrow is a label/kicker, not a heading — make sure the section still has a real `Heading` so it isn't the only thing introducing the block.
+- Keep the pairing adjacent and in source order (eyebrow then title) so the relationship is clear without relying on the all-caps styling alone.
+- All-caps is a visual treatment only; write the text in normal case so assistive tech announces it naturally.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+The eyebrow's size, weight, and tracking come from Tailwind utilities
+(`text-[11px]`, `font-semibold`, `uppercase`, `tracking-[0.14em]`); its one
+semantic token is the accent colour:
+
+<TokenTable
+  names={[
+    '--accent',
+  ]}
+/>

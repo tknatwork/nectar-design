@@ -1,0 +1,33 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Getting Started/Introduction" />
+
+# nectar-design
+
+The Nectar design system — a single source of truth that flows into the app and
+case-study surfaces via design **tokens** + a small set of providers.
+
+## The 5-tier token pipeline
+
+1. **Primitives** — raw values.
+2. **Seed** — ~20 brand decisions. Change one, everything downstream shifts.
+3. **Map** — derived scales (`color-mix` ramps, sizing, radius, type).
+4. **Semantic** — role-named aliases (`--primary`, `--bg`, `--fg`).
+5. **Component** — per-component tokens (6 components) + light/dark themes.
+
+→ **Tokens/Pipeline** traces one token end-to-end, live. **Tokens/Overview** links
+the per-tier reference tables.
+
+## The engine + sub-brands
+
+Colour and motion adapt at runtime along two axes — **Heat** (warm ↔ cool) and
+**Depth** (light ↔ dark). The toolbar at the top of this Storybook drives them
+**live**; every token table and specimen repaints as you move them. **Sub-brands**
+(EAST, …) overlay scoped token overrides via `SubBrandProvider`.
+
+## Where to go next
+
+- **Getting Started** — install, CSS import order, usage.
+- **Foundations** — colour, typography, spacing, motion, theming.
+- **Tokens** — the per-tier reference (auto-generated from the build, always live).
+- **Components** — the component library.

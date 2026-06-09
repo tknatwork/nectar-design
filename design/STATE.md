@@ -53,9 +53,11 @@ For each item: what it is + where the truth actually lives. Confidence levels ar
 ### Component pattern (cva + cn + forwardRef)
 
 - Named export, `forwardRef` + `displayName`, `cva` variants, `cn()` for merging
-- Shipped components: `Button`, `Card`, `Badge`, `Input`, `Textarea`, `GlassCard`, `GlassToast`
-- Code: `Portfolio/app/components/ui/*.tsx`
-- The pattern is solid. Component coverage is partial — see OPEN.md.
+- Shipped components: 34 in nd (`Button`, `Card`, `Badge`, `Input`, `Textarea`,
+  `GlassToast`, `Dialog`, `Popover`, `Select`, `Tabs`, `Menu`, …). Glass is now a
+  CSS utility kit (`css/engine.css` `.glass--*`), not a `GlassCard` component.
+- Code: `Portfolio/packages/nectar-design/src/components/*.tsx`
+- The pattern is solid; every component has a Storybook story (consolidation P6).
 
 ### Animation tool split (the one rule that matters)
 
@@ -149,8 +151,8 @@ For each item: what it is + where the truth actually lives. Confidence levels ar
 |---|---|
 | Tokens | `tokens/core/*.json`, `tokens/components/*.json`, `tokens/themes/*.json` |
 | Compiled CSS | `css/tokens.css` (generated) |
-| Component code | `Portfolio/app/components/ui/*.tsx` |
-| Heat / Depth runtime | `Portfolio/app/hooks/useHeatEngine.ts`, `useDepthEngine.ts` |
+| Component code | `Portfolio/packages/nectar-design/src/components/*.tsx` |
+| Heat / Depth runtime | `Portfolio/packages/nectar-design/src/motion/`, `src/interaction/`, `src/provider/` (ADR 0028 engine, relocated into nd — consolidation P2/P4) |
 | Theme overrides | `Portfolio/app/globals.css` |
 | Motion patterns | `tokens/motion/patterns.json`, `src/engine/motion-deriver.ts` |
 | Decisions (the *why*) | `Portfolio/docs/decisions/*.md` (11 ADRs) |

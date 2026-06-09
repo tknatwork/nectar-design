@@ -321,12 +321,17 @@
       "tablet": {
         "$value": "768px",
         "$type": "dimension",
-        "$description": "Tablet — iPad Mini portrait"
+        "$description": "Tablet vertical — iPad Mini / iPad portrait"
       },
-      "desktop": {
+      "tabletHorizontal": {
         "$value": "1024px",
         "$type": "dimension",
-        "$description": "Desktop — laptops/iPad Pro landscape"
+        "$description": "Tablet horizontal — iPad / iPad Pro landscape"
+      },
+      "desktop": {
+        "$value": "1280px",
+        "$type": "dimension",
+        "$description": "Desktop / laptop — MacBook + standard 13–15\" panels"
       },
       "wide": {
         "$value": "1440px",
@@ -336,24 +341,24 @@
     },
     "container": {
       "sm": {
-        "$value": "640px",
+        "$value": "720px",
         "$type": "dimension",
-        "$description": "Small container max-width"
+        "$description": "Tablet content width (ADR 0027 device-class content-max)"
       },
       "md": {
-        "$value": "768px",
+        "$value": "1024px",
         "$type": "dimension",
-        "$description": "Medium container max-width"
+        "$description": "Tablet-landscape content width"
       },
       "lg": {
-        "$value": "1200px",
+        "$value": "1280px",
         "$type": "dimension",
-        "$description": "Desktop container max-width"
+        "$description": "Desktop content width (default)"
       },
       "xl": {
-        "$value": "1400px",
+        "$value": "1440px",
         "$type": "dimension",
-        "$description": "Wide container max-width"
+        "$description": "Wide content width"
       }
     },
     "typography": {
@@ -590,33 +595,40 @@
     },
     "motion": {
       "duration": {
+        "$description": "Duration scale. Alphabet = Ant's motionUnit×n derived scale (fast 100 / base 200 / slow 300, from seed.motionUnit 0.1s). Grammar = documented tuned exceptions for specific interactions (instant 50 / press 160 / slower 500).",
         "instant": {
           "$value": "50ms",
           "$type": "duration",
-          "$description": "Micro-interactions (button press)"
+          "$description": "Micro-interactions (taps) — grammar exception, below the ×1 grid"
         },
         "fast": {
-          "$value": "120ms",
+          "$value": "100ms",
           "$type": "duration",
-          "$description": "Quick transitions (hover, toggle)"
+          "$description": "Quick transitions (hover, toggle) — Ant alphabet, motionUnit×1 (0.1s)"
+        },
+        "press": {
+          "$value": "160ms",
+          "$type": "duration",
+          "$description": "Button press feedback — grammar exception (Emil Kowalski: 100–160ms for tactile :active feedback)"
         },
         "base": {
           "$value": "200ms",
           "$type": "duration",
-          "$description": "Standard transitions"
+          "$description": "Standard transitions — Ant alphabet, motionUnit×2 (0.2s)"
         },
         "slow": {
           "$value": "300ms",
           "$type": "duration",
-          "$description": "Complex transitions (expand, slide)"
+          "$description": "Complex transitions (expand, slide) — Ant alphabet, motionUnit×3 (0.3s)"
         },
         "slower": {
           "$value": "500ms",
           "$type": "duration",
-          "$description": "Page-level transitions"
+          "$description": "Page-level transitions — grammar exception, above the ×3 grid"
         }
       },
       "easing": {
+        "$description": "Easing vocabulary. Alphabet = the 8 canonical Ant Design cubic-beziers (easeOut, easeInOut, easeOutCirc, easeInOutCirc, easeOutBack, easeInBack, easeOutQuint, easeInQuint), kept value-exact for cross-engine identity (CSS / Motion / GSAP). Grammar = tuned additions (standard, easeInOutStrong, easeDrawer) selected per Emil Kowalski's framework.",
         "easeOut": {
           "$value": [
             0.215,
@@ -668,7 +680,12 @@
           "$description": "Bouncy overshoot — playful"
         },
         "easeInBack": {
-          "$value": "cubic-bezier(0.71, -0.46, 0.88, 0.6)",
+          "$value": [
+            0.71,
+            -0.46,
+            0.88,
+            0.6
+          ],
           "$type": "cubicBezier",
           "$description": "Anticipation pull-back"
         },
@@ -691,6 +708,133 @@
           ],
           "$type": "cubicBezier",
           "$description": "Slow start, fast end"
+        },
+        "standard": {
+          "$value": [
+            0.4,
+            0,
+            0.2,
+            1
+          ],
+          "$type": "cubicBezier",
+          "$description": "Material/Apple standard curve — symmetric ease for general state transitions, clip-path animations, theme cross-fades"
+        },
+        "easeInOutStrong": {
+          "$value": [
+            0.77,
+            0,
+            0.175,
+            1
+          ],
+          "$type": "cubicBezier",
+          "$description": "Emil Kowalski — stronger symmetric curve for on-screen movement (more punch than easeInOut)"
+        },
+        "easeDrawer": {
+          "$value": [
+            0.32,
+            0.72,
+            0,
+            1
+          ],
+          "$type": "cubicBezier",
+          "$description": "iOS-like drawer curve from Ionic — sheet/drawer slide-in/out"
+        }
+      },
+      "spring": {
+        "$description": "Spring approximations as cubic-bezier — grammar layer. Overshoot curves matching the Framer Motion springs used in production (within a few ms). Portable across CSS / Motion / GSAP per ADR 0027; true physics springs are Motion-bound and tagged separately.",
+        "card": {
+          "$value": [
+            0.34,
+            1.56,
+            0.64,
+            1
+          ],
+          "$type": "cubicBezier",
+          "$description": "Card lift / hover — approximates Framer spring k=300 d=20"
+        },
+        "button": {
+          "$value": [
+            0.34,
+            1.8,
+            0.64,
+            1
+          ],
+          "$type": "cubicBezier",
+          "$description": "Button press spring-back — approximates Framer spring k=500 d=25"
+        },
+        "nav": {
+          "$value": [
+            0.45,
+            1.2,
+            0.4,
+            1
+          ],
+          "$type": "cubicBezier",
+          "$description": "Nav / pill movement — approximates Framer spring k=200 d=30"
+        }
+      }
+    },
+    "engine": {
+      "$description": "Heat×Depth dynamic-engine gamut anchors (ADR 0028). Runtime interpolates: hue by --ui-heat (0–100), lightness + chroma by --ui-depth (0–100; lightMode = depth 0, darkMode = depth 100). Re-anchored to the honey base S/V (HSV 0.873/0.961) saturation per the opacity-model formula — vivid surfaces carry honey-level chroma (~0.28) across the blue→pink hue sweep; bg/surface stay deliberately subtle. Offset base from the component palette to stay concurrency-free. Values are formula-derived; fine-tune by eye via visual QA once Stage C makes them live.",
+      "hue": {
+        "rest": { "$value": 250, "$type": "number", "$description": "Hue (deg) at heat=0 — cool blue" },
+        "heatSpan": { "$value": 280, "$type": "number", "$description": "Degrees subtracted across heat 0→100 (heat=100 → 250−280 = −30 ≡ 330 pink)" }
+      },
+      "lightness": {
+        "$description": "Per-surface OKLCH lightness anchors (0–1). lightMode = depth 0, darkMode = depth 100.",
+        "bg":      { "lightMode": { "$value": 0.96, "$type": "number" }, "darkMode": { "$value": 0.15, "$type": "number" } },
+        "heading": { "lightMode": { "$value": 0.20, "$type": "number" }, "darkMode": { "$value": 0.95, "$type": "number" } },
+        "body":    { "lightMode": { "$value": 0.35, "$type": "number" }, "darkMode": { "$value": 0.68, "$type": "number" } },
+        "muted":   { "lightMode": { "$value": 0.50, "$type": "number" }, "darkMode": { "$value": 0.60, "$type": "number" } },
+        "accent":  { "lightMode": { "$value": 0.50, "$type": "number" }, "darkMode": { "$value": 0.72, "$type": "number" } },
+        "surface": { "lightMode": { "$value": 0.98, "$type": "number" }, "darkMode": { "$value": 0.18, "$type": "number" } },
+        "btnBg":   { "lightMode": { "$value": 0.45, "$type": "number" }, "darkMode": { "$value": 0.78, "$type": "number" } },
+        "btnFg":   { "lightMode": { "$value": 0.98, "$type": "number" }, "darkMode": { "$value": 0.15, "$type": "number" } }
+      },
+      "chroma": {
+        "$description": "Per-surface OKLCH chroma anchors (0–1). lightMode = depth 0, darkMode = depth 100.",
+        "bg":     { "lightMode": { "$value": 0.02, "$type": "number" }, "darkMode": { "$value": 0.16, "$type": "number" } },
+        "accent": { "lightMode": { "$value": 0.28, "$type": "number", "$description": "Honey-S/V vivid (re-anchored from 0.26)" }, "darkMode": { "$value": 0.28, "$type": "number", "$description": "Honey-S/V vivid (re-anchored from 0.20)" } }
+      }
+    },
+    "atmosphere": {
+      "$description": "Ambient atmosphere gamut (ADR 0028) — orbs + page-tint (dual-axis like the engine surfaces) plus the sunset transition bloom. Faithful tokenization of the prior globals.css atmosphere; offset base from the component palette to stay concurrency-free.",
+      "orb": {
+        "primary": {
+          "lightness": { "lightMode": { "$value": 0.55, "$type": "number" }, "darkMode": { "$value": 0.72, "$type": "number" } },
+          "chroma":    { "lightMode": { "$value": 0.28, "$type": "number" }, "darkMode": { "$value": 0.28, "$type": "number" } },
+          "opacity":   { "lightMode": { "$value": 0.55, "$type": "number" }, "darkMode": { "$value": 0.85, "$type": "number" } }
+        },
+        "secondary": {
+          "$description": "Secondary orb — hue offset from --dynamic-hue for complementary warmth.",
+          "hueOffset": { "$value": 40, "$type": "number", "$description": "Degrees added to --dynamic-hue" },
+          "lightness": { "lightMode": { "$value": 0.45, "$type": "number" }, "darkMode": { "$value": 0.65, "$type": "number" } },
+          "chroma":    { "lightMode": { "$value": 0.27, "$type": "number" }, "darkMode": { "$value": 0.27, "$type": "number" } },
+          "opacity":   { "lightMode": { "$value": 0.50, "$type": "number" }, "darkMode": { "$value": 0.80, "$type": "number" } }
+        }
+      },
+      "pageTint": {
+        "lightnessOffset": { "$value": 0.02, "$type": "number", "$description": "Added to --L-bg for the page-tint gradient lightness" },
+        "chroma": { "lightMode": { "$value": 0.14, "$type": "number" }, "darkMode": { "$value": 0.01, "$type": "number" } },
+        "alpha": { "$value": 0.85, "$type": "number" }
+      },
+      "sunset": {
+        "$description": "Golden midpoint bloom during the light↔dark depth sweep — a transition-only color-motion (Gaussian envelope over --ui-depth). The 'nectar' warm moment.",
+        "envelope": {
+          "peak": { "$value": 40, "$type": "number", "$description": "Depth at which the bloom peaks" },
+          "sigma": { "$value": 20, "$type": "number", "$description": "Gaussian σ over depth 0–100" }
+        },
+        "layer1": {
+          "lightness": { "$value": 0.75, "$type": "number" },
+          "chroma": { "$value": 0.18, "$type": "number" },
+          "hue": { "$value": 70, "$type": "number", "$description": "Golden yellow" },
+          "intensity": { "$value": 0.55, "$type": "number", "$description": "Peak alpha multiplier" }
+        },
+        "layer2": {
+          "lightness": { "$value": 0.78, "$type": "number" },
+          "chroma": { "$value": 0.16, "$type": "number" },
+          "hue": { "$value": 50, "$type": "number" },
+          "intensity": { "$value": 0.30, "$type": "number" }
         }
       }
     }

@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../components';
+
+<Meta title="Tokens/Map" />
+
+# Map tokens
+
+The **map** tier derives from seed via `color-mix()` and scale math — 10-state
+colour ramps, sizing, radius and type scales. The **Value** column shows the
+derivation (`var(--seed-…)` / `color-mix(…)`); **Resolved** is the live browser
+value under the current Heat / Depth / Brand.
+
+## Colour
+
+<TokenTable tier="Map" group="color" showVar />
+
+## Border radius
+
+<TokenTable tier="Map" group="borderRadius" showVar />
+
+## Font size
+
+<TokenTable tier="Map" group="fontSize" showVar />
+
+## Size
+
+<TokenTable tier="Map" group="size" showVar />

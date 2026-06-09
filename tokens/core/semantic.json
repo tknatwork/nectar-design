@@ -366,12 +366,12 @@
       "max-width-desktop": {
         "$value": "{seed.container.lg}",
         "$type": "dimension",
-        "$description": "1200px desktop container"
+        "$description": "1280px desktop container"
       },
       "max-width-wide": {
         "$value": "{seed.container.xl}",
         "$type": "dimension",
-        "$description": "1400px wide container"
+        "$description": "1440px wide container"
       }
     },
     "border": {
@@ -379,11 +379,6 @@
         "$value": "{seed.borderWidth.3}",
         "$type": "dimension",
         "$description": "Default thick border (neo-brutalist)"
-      },
-      "radius": {
-        "$value": "{seed.borderRadius.sm}",
-        "$type": "dimension",
-        "$description": "Small radius (4px) — structured, less bubbly"
       }
     },
     "shadow": {
@@ -391,6 +386,31 @@
         "$value": "{seed.shadow.md}",
         "$type": "shadow",
         "$description": "Default hard shadow"
+      },
+      "elevation1": {
+        "$value": "0 1px 2px oklch(0 0 0 / 0.08), 0 1px 4px oklch(0 0 0 / 0.04)",
+        "$type": "shadow",
+        "$description": "Subtle resting elevation — input fields, low-emphasis cards"
+      },
+      "elevation2": {
+        "$value": "0 2px 6px oklch(0 0 0 / 0.10), 0 4px 12px oklch(0 0 0 / 0.06)",
+        "$type": "shadow",
+        "$description": "Standard elevation — default cards, raised surfaces"
+      },
+      "elevation3": {
+        "$value": "0 4px 12px oklch(0 0 0 / 0.16), 0 8px 24px oklch(0 0 0 / 0.10)",
+        "$type": "shadow",
+        "$description": "Floating elevation — hover state, lifted cards"
+      },
+      "elevation4": {
+        "$value": "0 12px 48px oklch(0 0 0 / 0.32), 0 2px 8px oklch(0 0 0 / 0.18)",
+        "$type": "shadow",
+        "$description": "Menu/dropdown/popover elevation — strong drop on dark or bright backgrounds (was inline in GlassNav drop)"
+      },
+      "elevation5": {
+        "$value": "0 24px 64px oklch(0 0 0 / 0.40), 0 8px 16px oklch(0 0 0 / 0.20)",
+        "$type": "shadow",
+        "$description": "Modal/sheet elevation — full overlays"
       }
     },
     "a11y": {
@@ -416,6 +436,16 @@
       }
     },
     "motion": {
+      "ease": {
+        "standard": {
+          "$value": "cubic-bezier(0.4, 0, 0.2, 1)",
+          "$description": "Material/Apple standard curve — for animation-timing-function consumers (view-transition, @keyframes)"
+        },
+        "out": {
+          "$value": "cubic-bezier(0.215, 0.61, 0.355, 1)",
+          "$description": "Default exit deceleration — matches seed.motion.easing.easeOut"
+        }
+      },
       "transition": {
         "fast": {
           "$value": "{seed.motion.duration.instant} {seed.motion.easing.easeOutCirc}",
@@ -432,6 +462,14 @@
         "snap": {
           "$value": "{seed.motion.duration.fast} {seed.motion.easing.easeInOutCirc}",
           "$description": "Quick + symmetric — punchy, mechanical feel"
+        },
+        "standard": {
+          "$value": "{seed.motion.duration.base} {seed.motion.easing.standard}",
+          "$description": "Material/Apple standard — symmetric ease at base duration (200ms). For general state, theme cross-fades, clip-path. Composes from primitives now that ADR 0024 phase 8b unblocked the seed.motion path (was leaf/branch collision)."
+        },
+        "standardSlow": {
+          "$value": "{seed.motion.duration.slow} {seed.motion.easing.standard}",
+          "$description": "300ms standard ease — card hovers, glass surface interactions (was 280ms inline in mp). Composes from primitives now (phase 8b)."
         }
       }
     }

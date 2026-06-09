@@ -1,0 +1,49 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as DialogStories from './Dialog.stories';
+
+<Meta of={DialogStories} />
+
+<Title />
+<Subtitle>Modal dialog with backdrop, built on Base UI.</Subtitle>
+
+## Overview
+
+<Description of={DialogStories} />
+
+<Primary />
+
+## Anatomy
+
+A dialog is a compound component: `DialogTrigger` opens it, `DialogContent`
+portals a centred surface over a blurred `Backdrop`, and `DialogTitle` /
+`DialogDescription` / `DialogClose` compose the body. Open state is controlled
+or uncontrolled via `defaultOpen`; the surface scales and fades on each
+transition.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — reserve dialogs for focused, must-resolve tasks (confirm a delete, complete a short form) and give every one a clear title.
+- **Don't** — nest dialogs or stuff a whole page inside one; if it scrolls a lot, it wants its own route, not a modal.
+
+## Accessibility
+
+- Base UI traps focus inside the open popup and restores it to the trigger on close.
+- `Escape` and a backdrop click both dismiss; the backdrop is inert to the reader while `aria-modal` hides the page behind it.
+- `DialogTitle` / `DialogDescription` wire `aria-labelledby` / `aria-describedby` automatically — always render a title.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Dialog consumes **semantic** tokens through Tailwind utilities (`bg-surface`, `border-border`, `text-fg`, `ring-ring`, `rounded-lg`, …):
+
+<TokenTable
+  names={[
+    '--surface', '--border', '--fg', '--muted', '--muted-fg', '--ring',
+    '--radius-md', '--radius-lg',
+  ]}
+/>

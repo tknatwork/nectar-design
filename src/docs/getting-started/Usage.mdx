@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Getting Started/Usage" />
+
+# Usage
+
+## Components
+
+```tsx
+import { Button } from 'nectar-design';
+
+<Button intent="primary">Click me</Button>;
+```
+
+## Tokens via Tailwind utilities
+
+Component classes resolve to DS tokens — `bg-primary`, `text-fg`, `border-border`,
+`rounded-md`, `p-md`, `gap-lg`. The radius/spacing/colour scales all come from the
+token pipeline, so utilities stay on-system.
+
+## Sub-brands
+
+Scope a sub-brand's token overrides by wrapping a subtree:
+
+```tsx
+<div className="sub-brand-systems-thinking">
+  {/* --color-brand-accent, display family, radius-scale, … all shift here */}
+</div>
+```
+
+or drive it from context with `SubBrandProvider`. The engine (Heat/Depth) and the
+sub-brand overlay compose — see **Foundations/Theming**.

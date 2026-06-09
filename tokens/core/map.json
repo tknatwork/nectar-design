@@ -104,12 +104,14 @@
     },
 
     "borderRadius": {
-      "XS":  { "$value": "2",    "$type": "number", "$description": "Minimal rounding" },
-      "SM":  { "$value": "4",    "$type": "number", "$description": "Default (matches seed.borderRadius)" },
-      "MD":  { "$value": "8",    "$type": "number", "$description": "Medium rounding" },
-      "LG":  { "$value": "12",   "$type": "number", "$description": "Large rounding" },
-      "XL":  { "$value": "16",   "$type": "number", "$description": "Extra large rounding" },
-      "Full": { "$value": "9999", "$type": "number", "$description": "Pill shape" }
+      "none": { "$value": "0",      "$type": "dimension", "$description": "No rounding (rounded-none)" },
+      "XS":   { "$value": "2px",    "$type": "dimension", "$description": "Minimal rounding" },
+      "SM":   { "$value": "4px",    "$type": "dimension", "$description": "Small (rounded-sm) — matches seed.borderRadius" },
+      "MD":   { "$value": "8px",    "$type": "dimension", "$description": "Medium rounding (rounded-md)" },
+      "LG":   { "$value": "12px",   "$type": "dimension", "$description": "Large rounding (rounded-lg)" },
+      "XL":   { "$value": "16px",   "$type": "dimension", "$description": "Extra large rounding (rounded-xl)" },
+      "2XL":  { "$value": "24px",   "$type": "dimension", "$description": "Chrome / atmospheric surfaces — glass panels, GlassNav, AccessGate (rounded-2xl)" },
+      "Full": { "$value": "9999px", "$type": "dimension", "$description": "Pill shape (rounded-full)" }
     },
 
     "fontSize": {

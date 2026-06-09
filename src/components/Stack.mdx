@@ -1,0 +1,44 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import * as StackStories from './Stack.stories';
+
+<Meta of={StackStories} />
+
+<Title />
+<Subtitle>Flexbox stacking primitive — direction, gap, alignment.</Subtitle>
+
+## Overview
+
+<Description of={StackStories} />
+
+<Primary />
+
+## Anatomy
+
+A Stack is a single flex container around its children: it sets `flex-direction`,
+the `gap` between items, and the cross/main-axis alignment. It draws nothing of its
+own — children supply all the visible surface; the Stack only positions them.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — reach for Stack as the default one-axis layout: a vertical column of form
+  fields, or a horizontal row of buttons with a consistent `gap`.
+- **Don't** — nest Stacks to fake a two-dimensional grid; use `Grid` once you need
+  rows *and* columns to track together.
+
+## Accessibility
+
+- Stack imposes no semantics — it renders a plain `<div>`. Wrap it in the right
+  landmark (`<nav>`, `<ul>`, …) when the content needs one.
+- Source order is the reading and tab order; only `direction` flips the visual axis,
+  so keep children in a meaningful sequence.
+- For `dir="rtl"`, `horizontal` rows mirror automatically — author children in logical
+  (start-to-end) order, not visual.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Layout-only — Stack consumes spacing utilities (`gap-*`) and flex utilities, no colour tokens.

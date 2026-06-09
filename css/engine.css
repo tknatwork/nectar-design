@@ -1,105 +1,756 @@
 /*
- * nectar-design / engine.css — Heat × Depth runtime engine.
+ * nectar-design / engine.css — ADR 0028 dynamic color-motion engine, CSS half.
  *
- * Opt-in dual-axis oklch theme engine. Consumers that want the
- * adaptive, interaction-driven theme behaviour ship by this package
- * import this AFTER tokens.css + theme.css:
+ * Relocated VERBATIM from the consuming app's globals.css (consolidation P3)
+ * so nectar-design is the single source of truth for the engine's CSS
+ * surface — the @property registrations, the Heat × Depth :root vars, the
+ * glass material kit, the atmosphere orb/page-tint vars + drift keyframes,
+ * the dual-axis oklch palette utilities, and the rAF transition gate.
  *
+ * Glass + atmosphere are NOT independently consumable: both read engine vars
+ * (--dynamic-hue, --depth-mix, --L-*). They ship together by design.
+ *
+ * Import order (in the consuming app):
  *   @import "tailwindcss";
  *   @import "nectar-design/tokens.css" layer(tokens);
+ *   @import "nectar-design/sub-brands.css";   // unlayered — overrides win by specificity
  *   @import "nectar-design/theme.css";
- *   @import "nectar-design/engine.css";          // ← this file
- *   @import "nectar-design/circadian.css" layer(circadian);
+ *   @import "nectar-design/engine.css";        // ← this file (unlayered)
  *
- * Two axes:
- *   --ui-heat   0–100   (interaction → hue: cold blue → hot amber)
- *   --ui-depth  0–100   (toggle      → lightness: 0 = light, 100 = dark)
- *
- * Default ships at depth=100 (dark) to match the consuming app's
- * FOUC-prevention script. The bridge at the bottom overrides the
- * semantic color tokens (--bg, --fg, --primary, --surface, --muted-fg,
- * --border, --ring, --input, --shadow-color) with engine-driven oklch
- * values so every Tailwind utility (bg-bg, text-fg, border-border, etc.)
- * automatically responds to heat + depth on glass and non-glass pages
- * alike.
- *
- * If your app overrides the engine variables itself (myportfolio does
- * this in app/globals.css), this file is a no-op duplicate — keep it
- * in package consumers that want the engine without copy-pasting.
+ * Unlayered on purpose: the bridge (--bg/--fg/...) and the .glass--chrome
+ * recipe must beat Tailwind's @layer theme + utilities. The app keeps body{},
+ * html{}, .bg-layer-container, and its @theme bridges (next/font) app-side —
+ * it APPLIES these vars to its own shell; nd just provides them.
  */
 
+/* ─── Engine variable registration =====================================
+ * @property registers --ui-* and --golden-* as REAL NUMBERS, not the
+ * default string substitution. Without this, Chrome was sometimes
+ * caching computed oklch() colors derived from --ui-depth — when JS
+ * RAF wrote new --ui-depth values, the cached text/bg colors would NOT
+ * invalidate until a reload forced fresh style computation.
+ *
+ * With registration:
+ *   - dependent calc() chains re-evaluate on every var write
+ *   - colors derived via oklch(var(--L-x) ...) repaint live during sweep
+ *   - the engine variables can also CSS-transition natively if needed
+ *     (currently we drive them in JS, but registration enables both)
+ *
+ * `inherits: true` lets descendants read the same value (which they do
+ * via :root scope). `initial-value` matches the :root defaults below. */
+@property --ui-heat              { syntax: "<number>"; inherits: true; initial-value: 0;   }
+@property --ui-depth             { syntax: "<number>"; inherits: true; initial-value: 100; }
+@property --golden-hue-shift     { syntax: "<number>"; inherits: true; initial-value: 0;   }
+@property --golden-chroma-boost  { syntax: "<number>"; inherits: true; initial-value: 0;   }
+/* --sunset-intensity (May 2026): drives the yellow midpoint overlay
+   that the body background-image layers on top of the cool-family
+   bg-color transition. 0 at depth=0 and depth=100; peaks at depth=40
+   via Gaussian. */
+@property --sunset-intensity     { syntax: "<number>"; inherits: true; initial-value: 0;   }
+
+/* Tier 2: derived L/C/hue vars consumed in oklch() across many surfaces.
+   Registering these forces Chrome to flow value changes from upstream
+   --ui-depth through to consumer paint, instead of caching the resolved
+   oklch() at intermediate sweep frames. */
+@property --L-bg                 { syntax: "<number>"; inherits: true; initial-value: 0.15;  }
+@property --L-heading            { syntax: "<number>"; inherits: true; initial-value: 0.95;  }
+@property --L-body               { syntax: "<number>"; inherits: true; initial-value: 0.68;  }
+@property --L-muted              { syntax: "<number>"; inherits: true; initial-value: 0.60;  }
+@property --L-accent             { syntax: "<number>"; inherits: true; initial-value: 0.72;  }
+@property --L-btn-bg             { syntax: "<number>"; inherits: true; initial-value: 0.78;  }
+@property --L-btn-fg             { syntax: "<number>"; inherits: true; initial-value: 0.15;  }
+@property --L-surface            { syntax: "<number>"; inherits: true; initial-value: 0.18;  }
+@property --C-bg                 { syntax: "<number>"; inherits: true; initial-value: 0.08;  }
+@property --C-accent             { syntax: "<number>"; inherits: true; initial-value: 0.14;  }
+@property --dynamic-hue          { syntax: "<number>"; inherits: true; initial-value: 250;   }
+@property --depth-mix            { syntax: "<number>"; inherits: true; initial-value: 1;     }
+
+/* ─── Dual-Axis Theme: Heat (hue) × Depth (lightness) ─── */
 :root {
-  --ui-heat: 0;
-  --ui-depth: 100;
-  --golden-hue-shift: 0;          /* circadian module sets this */
-  --golden-chroma-boost: 0;       /* circadian module sets this */
-  --dynamic-hue: calc(250 - (var(--ui-heat) * 2.1) + var(--golden-hue-shift));
+  --ui-heat: 0;       /* 0-100: interaction → hue (cold blue → hot amber) */
+  --ui-depth: 100;    /* 0-100: toggle → lightness (0=light sky, 100=dark deep) */
+  --golden-hue-shift: 0;       /* set by depth engine during transition */
+  --golden-chroma-boost: 0;    /* set by depth engine during transition */
+  /* Heat axis trajectory: extended original (blue→cyan→green→yellow→
+     orange→red→pink) with deeper blue at rest + pink at high heat.
+     Reverted from the +0.8 (purple corridor) approach the user rejected;
+     now extends the ORIGINAL formula past the orange-amber endpoint
+     into red and continues to pink-magenta. Per user direction:
+     "revert back to the earlier colour sets. in those sets extend the
+     end to pink and a deeper blue in the color scale of the heat engine."
 
-  /* Lightness anchors — interpolate light → dark as depth 0 → 100 */
-  --L-bg:      calc(0.96 - (var(--ui-depth) / 100) * 0.81);  /* 0.96 → 0.15 */
-  --L-heading: calc(0.20 + (var(--ui-depth) / 100) * 0.75);  /* 0.20 → 0.95 */
-  --L-body:    calc(0.35 + (var(--ui-depth) / 100) * 0.33);  /* 0.35 → 0.68 */
-  --L-muted:   calc(0.50 + (var(--ui-depth) / 100) * 0.10);  /* 0.50 → 0.60 */
-  --L-accent:  calc(0.50 + (var(--ui-depth) / 100) * 0.22);  /* 0.50 → 0.72 */
-  --L-btn-bg:  calc(0.45 + (var(--ui-depth) / 100) * 0.33);  /* 0.45 → 0.78 */
-  --L-btn-fg:  calc(0.98 - (var(--ui-depth) / 100) * 0.83);  /* 0.98 → 0.15 */
-  --L-surface: calc(0.98 - (var(--ui-depth) / 100) * 0.80);  /* 0.98 → 0.18 */
+     Coefficient bumped 2.1 → 2.8 so the full sweep covers ~280° of the
+     hue wheel:
+       heat=0:    hue=250 (deep blue, base)
+       heat=20:   hue=194 (cyan)
+       heat=40:   hue=138 (green-cyan)
+       heat=60:   hue=82  (yellow-green)
+       heat=80:   hue=26  (orange-red)
+       heat=100:  hue=-30 = 330 (pink-magenta)
 
-  /* Chroma — subtle in light, vivid in dark, plus golden-hour boost.
-     Taper at the warm end (heat > 60) so sand tones don't bloom orange. */
-  --C-bg:     calc(0.02 + (var(--ui-depth) / 100) * 0.06 + var(--golden-chroma-boost));
-  --C-accent: calc(0.18 - (var(--ui-depth) / 100) * 0.04
-                   - max(0, (var(--ui-heat) - 60)) * 0.0015
-                   + var(--golden-chroma-boost));
+     OKLCH normalizes negative hues mod 360, so -30 renders as pink. */
+  /* ADR 0028 Stage E — re-sourced from the tokenized engine gamut
+     (--seed-engine-*, Stage B). Heat coefficient = hue-heatSpan/100 = 2.8.
+     The 149-166 comment above still describes the (unchanged) trajectory. */
+  --dynamic-hue: calc(
+    var(--seed-engine-hue-rest)
+    - (var(--ui-heat) * (var(--seed-engine-hue-heatSpan) / 100))
+    + var(--golden-hue-shift)
+  );
 
-  /* Glass borders — depth-responsive (dark edges in light, white edges in dark) */
-  --glass-border-top:    oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.04 + var(--ui-depth) / 100 * 0.16));
-  --glass-border-left:   oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.02 + var(--ui-depth) / 100 * 0.08));
-  --glass-border-right:  oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.01 + var(--ui-depth) / 100 * 0.03));
+  /* Depth-interpolated lightness anchors, re-sourced from tokens. Same
+     formula: value = lightMode + (depth/100) * (darkMode − lightMode), so
+     decreasing surfaces fall out when darkMode < lightMode. Inline magic
+     numbers are gone — the engine now has Figma parity. */
+  --L-bg:      calc(var(--seed-engine-lightness-bg-lightMode)      + (var(--ui-depth) / 100) * (var(--seed-engine-lightness-bg-darkMode)      - var(--seed-engine-lightness-bg-lightMode)));
+  --L-heading: calc(var(--seed-engine-lightness-heading-lightMode) + (var(--ui-depth) / 100) * (var(--seed-engine-lightness-heading-darkMode) - var(--seed-engine-lightness-heading-lightMode)));
+  --L-body:    calc(var(--seed-engine-lightness-body-lightMode)    + (var(--ui-depth) / 100) * (var(--seed-engine-lightness-body-darkMode)    - var(--seed-engine-lightness-body-lightMode)));
+  --L-muted:   calc(var(--seed-engine-lightness-muted-lightMode)   + (var(--ui-depth) / 100) * (var(--seed-engine-lightness-muted-darkMode)   - var(--seed-engine-lightness-muted-lightMode)));
+  --L-accent:  calc(var(--seed-engine-lightness-accent-lightMode)  + (var(--ui-depth) / 100) * (var(--seed-engine-lightness-accent-darkMode)  - var(--seed-engine-lightness-accent-lightMode)));
+  --L-btn-bg:  calc(var(--seed-engine-lightness-btnBg-lightMode)   + (var(--ui-depth) / 100) * (var(--seed-engine-lightness-btnBg-darkMode)   - var(--seed-engine-lightness-btnBg-lightMode)));
+  --L-btn-fg:  calc(var(--seed-engine-lightness-btnFg-lightMode)   + (var(--ui-depth) / 100) * (var(--seed-engine-lightness-btnFg-darkMode)   - var(--seed-engine-lightness-btnFg-lightMode)));
+  --L-surface: calc(var(--seed-engine-lightness-surface-lightMode) + (var(--ui-depth) / 100) * (var(--seed-engine-lightness-surface-darkMode) - var(--seed-engine-lightness-surface-lightMode)));
+
+  /* Depth-interpolated chroma — re-sourced + re-anchored to the honey-S/V
+     vivid gamut (chroma-accent is now 0.28 flat vs the old 0.26→0.20, so
+     accent surfaces read as a richer pink/amber, strongest in dark). */
+  --C-bg:      calc(var(--seed-engine-chroma-bg-lightMode)     + (var(--ui-depth) / 100) * (var(--seed-engine-chroma-bg-darkMode)     - var(--seed-engine-chroma-bg-lightMode))     + var(--golden-chroma-boost));
+  --C-accent:  calc(var(--seed-engine-chroma-accent-lightMode) + (var(--ui-depth) / 100) * (var(--seed-engine-chroma-accent-darkMode) - var(--seed-engine-chroma-accent-lightMode)) + var(--golden-chroma-boost));
+
+  /* Depth-responsive glass borders (light=dark edges, dark=white edges) */
+  --glass-border-top: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.04 + var(--ui-depth) / 100 * 0.16));
+  --glass-border-left: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.02 + var(--ui-depth) / 100 * 0.08));
+  --glass-border-right: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.01 + var(--ui-depth) / 100 * 0.03));
   --glass-border-bottom: oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.005 + var(--ui-depth) / 100 * 0.015));
-  --glass-specular:      oklch(var(--L-heading) 0.01 var(--dynamic-hue) / calc(0.02 + var(--ui-depth) / 100 * 0.06));
 
-  /* Bridge — override the semantic token tier so Tailwind utilities
-     resolve to engine values across the whole app. */
-  --bg:           oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue));
-  --fg:           oklch(var(--L-body) 0.03 var(--dynamic-hue));
-  --surface:      oklch(var(--L-surface) 0.02 var(--dynamic-hue));
-  --surface-fg:   oklch(var(--L-heading) 0.01 var(--dynamic-hue));
-  --muted:        oklch(var(--L-surface) 0.01 var(--dynamic-hue));
-  --muted-fg:     oklch(var(--L-muted) 0.03 var(--dynamic-hue));
-  --primary:      oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
-  --primary-fg:   oklch(var(--L-btn-fg) 0.02 var(--dynamic-hue));
-  --border:       oklch(var(--L-muted) 0.02 var(--dynamic-hue) / 0.3);
-  --ring:         oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
-  --input:        oklch(var(--L-surface) 0.02 var(--dynamic-hue));
+  /* Glass kit — single source of truth (post-Wave-C unification).
+   *
+   * What changed from earlier Wave C
+   * --------------------------------
+   * - Honey hue 80° lock REMOVED. All glass surfaces now follow
+   *   `--dynamic-hue` so cards / nav / panels track the engine's
+   *   heat axis and don't look like a separate system on warm/cool
+   *   shifts. The Wave C "honey resin" decision was a pre-engine
+   *   choice; the engine is now the canonical color authority.
+   * - Lightness anchored to `--L-surface` instead of a separate
+   *   curve, so glass cards sit at the same lightness as everything
+   *   else at any depth.
+   * - Alpha + blur are now depth-modulated: lighter & MORE OPAQUE
+   *   on dark mode (canvas stars/comets blur cleanly behind for
+   *   "thicker glass" feel), more translucent on light (orbs visible).
+   * - Tier hierarchy preserved (Wave C extra): card-surface <
+   *   card-raised < card-floating, each with its own blur depth so
+   *   GlassCard cva variants still differentiate visually.
+   * - Mobile @media still scales blur down for perf (Wave C extra),
+   *   using the same depth-modulated formula at smaller magnitudes.
+   * - Specular highlight (Wave C extra) preserved via .glass--specular
+   *   in kit-home.css; not part of these tokens.
+   *
+   * Density tuning per user feedback "make components more dense and
+   * blur the content behind it" — alpha runs 0.45 light → 0.74 dark,
+   * blur runs 28-48px light → 56-72px dark across tiers.
+   */
+  /* === Depth interpolation factor =====================================
+     Single LERP factor used by glass/orb/tint tokens below. 0 in light
+     mode, 1 in dark mode, smooth in between. Reading
+       calc(var(--depth-mix) * (DARK - LIGHT) + LIGHT)
+     replaces the verbose hand-written `(--ui-depth/100) * (X - Y) + Y`
+     pattern that was repeated ~10 times. */
+  --depth-mix: calc(var(--ui-depth) / 100);
+
+  /* === Glass surfaces (per ADR 0016 Phase 2 — per-tier opacity) =======
+     Apple's Liquid Glass uses different opacity per material thickness:
+     thin (background cards) is most translucent; thick (modal panels)
+     is near-opaque. We model the same hierarchy via per-tier alpha.
+
+     Why per-tier: a single --glass-alpha was too tight a constraint —
+     dropping it to 0.20 made kit-home tiles look beautifully
+     translucent (orbs bleed through) BUT made the nav unreadable in
+     light mode AND made the resume modal show the backdrop scrim
+     through its own content. Per-tier solves all three. */
+
+  /* ADR 0024 phase 3: per-tier alpha primitives now live in
+     packages/nectar-design/tokens/components/glass.json as
+     --glass-alpha{Surface,Raised,Floating,Chrome,Solid}{Light,Dark}.
+     mp aliases preserve --glass-alpha-{tier}-{mode} consumers
+     (kit-home + composed runtime values below). */
+  --glass-alpha-surface-light:  var(--glass-alphaSurfaceLight);
+  --glass-alpha-surface-dark:   var(--glass-alphaSurfaceDark);
+  --glass-alpha-raised-light:   var(--glass-alphaRaisedLight);
+  --glass-alpha-raised-dark:    var(--glass-alphaRaisedDark);
+  --glass-alpha-floating-light: var(--glass-alphaFloatingLight);
+  --glass-alpha-floating-dark:  var(--glass-alphaFloatingDark);
+  --glass-alpha-chrome-light:   var(--glass-alphaChromeLight);
+  --glass-alpha-chrome-dark:    var(--glass-alphaChromeDark);
+  --glass-alpha-solid-light:    var(--glass-alphaSolidLight);
+  --glass-alpha-solid-dark:     var(--glass-alphaSolidDark);
+
+  /* Legacy aliases — preserve --glass-alpha consumers (.glass-surface,
+     kit-home selectors). Map to surface tier so existing pages render
+     identically. */
+  --glass-alpha-light: var(--glass-alpha-surface-light);
+  --glass-alpha-dark:  var(--glass-alpha-surface-dark);
+
+  /* Saturation amplification — same regardless of tier. Light mode
+     boosted (2.4) because backdrop sampling has low color contrast
+     (cream-on-cream); amplification surfaces hue shifts. */
+  --glass-saturate-light: 2.4;
+  --glass-saturate-dark:  1.8;
+  --glass-alpha:    calc(var(--depth-mix) * (var(--glass-alpha-dark) - var(--glass-alpha-light)) + var(--glass-alpha-light));
+  --glass-saturate: calc(var(--depth-mix) * (var(--glass-saturate-dark) - var(--glass-saturate-light)) + var(--glass-saturate-light));
+
+  /* Per-tier resolved alpha (lerp light↔dark via --depth-mix) */
+  --glass-alpha-surface:  calc(var(--depth-mix) * (var(--glass-alpha-surface-dark)  - var(--glass-alpha-surface-light))  + var(--glass-alpha-surface-light));
+  --glass-alpha-raised:   calc(var(--depth-mix) * (var(--glass-alpha-raised-dark)   - var(--glass-alpha-raised-light))   + var(--glass-alpha-raised-light));
+  --glass-alpha-floating: calc(var(--depth-mix) * (var(--glass-alpha-floating-dark) - var(--glass-alpha-floating-light)) + var(--glass-alpha-floating-light));
+  --glass-alpha-chrome:   calc(var(--depth-mix) * (var(--glass-alpha-chrome-dark)   - var(--glass-alpha-chrome-light))   + var(--glass-alpha-chrome-light));
+  --glass-alpha-solid:    calc(var(--depth-mix) * (var(--glass-alpha-solid-dark)    - var(--glass-alpha-solid-light))    + var(--glass-alpha-solid-light));
+
+  /* Per-tier resolved bg colors. Chroma now comes from
+     `--glass-frostedChroma` (nd token, default 0.012) instead of the
+     hard-coded `0.02` we used to inline here — matches the NavPill
+     recipe and lets the design-system glass theme tune chroma in one
+     place. */
+  --glass-bg:          oklch(var(--L-surface) var(--glass-frostedChroma) var(--dynamic-hue) / var(--glass-alpha));
+  --glass-bg-surface:  oklch(var(--L-surface) var(--glass-frostedChroma) var(--dynamic-hue) / var(--glass-alpha-surface));
+  --glass-bg-raised:   oklch(var(--L-surface) var(--glass-frostedChroma) var(--dynamic-hue) / var(--glass-alpha-raised));
+  --glass-bg-floating: oklch(var(--L-surface) var(--glass-frostedChroma) var(--dynamic-hue) / var(--glass-alpha-floating));
+  --glass-bg-chrome:   oklch(var(--L-surface) var(--glass-frostedChroma) var(--dynamic-hue) / var(--glass-alpha-chrome));
+  --glass-bg-solid:    oklch(var(--L-surface) var(--glass-frostedChroma) var(--dynamic-hue) / var(--glass-alpha-solid));
+
+  /* Blur radii — Migrim recipe (user-validated 2026-05-21 via in-session
+     /glass-preview comparison: "current one looks way better with blur-12").
+     Was 36-76px depth-modulated → now flat 8/12/18 (surface/raised/floating).
+     Saturate flat 162% (was amplified via --glass-saturate 1.8-2.4).
+     Bridges to nd's tokens/components/glass.json (--glass-frostedBlur* +
+     --glass-frostedSaturate). */
+  --glass-blur-card-surface:  blur(var(--glass-frostedBlurSurface)) saturate(var(--glass-frostedSaturate));
+  --glass-blur-card-raised:   blur(var(--glass-frostedBlurRaised)) saturate(var(--glass-frostedSaturate));
+  --glass-blur-card-floating: blur(var(--glass-frostedBlurFloating)) saturate(var(--glass-frostedSaturate));
+  --glass-blur-chrome:        blur(var(--glass-frostedBlurRaised)) saturate(var(--glass-frostedSaturate));
+
+  /* Per-tier shadows (Apple Liquid Glass parity Phase 2):
+     surface  = no shadow (tile flush with page)
+     raised   = subtle drop (popover lift)
+     floating = strong drop (hero cards float)
+     solid    = strongest drop (modals sit ABOVE everything)
+     base --glass-shadow = chrome-tier (current value, unchanged) */
+  --glass-shadow:
+    0 1px 4px oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.04),
+    inset 0 1px 0 oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08),
+    inset 0 -1px 4px oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.05);
+  --glass-shadow-surface:  none;
+  --glass-shadow-raised:
+    0 4px 12px oklch(0 0 0 / calc(0.10 + var(--ui-depth) / 100 * 0.08)),
+    inset 0 1px 0 oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.08);
+  --glass-shadow-floating:
+    0 12px 36px oklch(0 0 0 / calc(0.18 + var(--ui-depth) / 100 * 0.12)),
+    0 4px 12px oklch(0 0 0 / calc(0.08 + var(--ui-depth) / 100 * 0.06)),
+    inset 0 1px 0 oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.10);
+  --glass-shadow-solid:
+    0 32px 80px oklch(0 0 0 / calc(0.32 + var(--ui-depth) / 100 * 0.18)),
+    0 6px 20px oklch(0 0 0 / calc(0.18 + var(--ui-depth) / 100 * 0.10)),
+    inset 0 1px 0 oklch(var(--L-heading) 0.01 var(--dynamic-hue) / 0.12);
+
+  /* Bottom-edge specular underline (Apple's polished refraction effect).
+     Layers below the top-edge sheen: simulates light bouncing off the
+     glass's lower edge, giving the surface depth via TWO highlights
+     instead of one. Lower opacity than top sheen since refracted light
+     is dimmer than glancing-incident light. */
+  --glass-specular-bottom: oklch(1 0 0 / calc(0.03 + var(--ui-depth) / 100 * 0.025));
+
+  --glass-radius: var(--glass-radiusMobile); /* ADR 0024 phase 3: was 24px, now var */
+
+  /* Specular highlight — top-edge sheen mimicking glancing light off a
+     real glass surface. The kit's signature; opt-in via `.glass--specular`.
+     0.06 alpha in light mode, 0.10 alpha in dark mode (more visible vs
+     darker bg). */
+  --glass-specular: oklch(1 0 0 / calc(0.06 + var(--ui-depth) / 100 * 0.04));
+
+  /* Vibrancy text tokens — text inside glass containers needs slight
+     contrast amplification to stay legible against the noise of content
+     showing through the glass. Same pattern Apple's Liquid Glass uses
+     in Vibrancy mode. Pulls lightness ~5% toward heading + bumps chroma
+     ~1-2% on body/muted tracks. Use via `.glass-*` parent containers
+     (auto-applied to descendants via the .glass class chain below).
+     Per ADR 0016. */
+  --glass-text-fg:    oklch(calc(var(--L-body) - 0.05) calc(0.03 + var(--ui-depth) / 100 * 0.02) var(--dynamic-hue));
+  --glass-text-muted: oklch(calc(var(--L-muted) - 0.05) calc(0.04 + var(--ui-depth) / 100 * 0.02) var(--dynamic-hue));
+
+  /* === Atmosphere orbs (consumed by AtmosphereOrbs.tsx) ===============
+     Each orb has L/C/opacity that LERP between light and dark knobs via
+     --depth-mix. Boosting C in light mode (0.22 → 0.26) makes the orbs
+     more vivid so the glass blur reads visibly even when overall
+     contrast is low. */
+  --orb-L-light:       var(--seed-atmosphere-orb-primary-lightness-lightMode);
+  --orb-L-dark:        var(--seed-atmosphere-orb-primary-lightness-darkMode);
+  --orb-C-light:       var(--seed-atmosphere-orb-primary-chroma-lightMode);   /* re-anchored 0.26 → 0.28 */
+  --orb-C-dark:        var(--seed-atmosphere-orb-primary-chroma-darkMode);    /* re-anchored 0.22 → 0.28 */
+  --orb-opacity-light: var(--seed-atmosphere-orb-primary-opacity-lightMode);
+  --orb-opacity-dark:  var(--seed-atmosphere-orb-primary-opacity-darkMode);
+  --orb-primary-color: oklch(
+    calc(var(--depth-mix) * (var(--orb-L-dark) - var(--orb-L-light)) + var(--orb-L-light))
+    calc(var(--depth-mix) * (var(--orb-C-dark) - var(--orb-C-light)) + var(--orb-C-light))
+    var(--dynamic-hue)
+  );
+  --orb-primary-opacity: calc(var(--depth-mix) * (var(--orb-opacity-dark) - var(--orb-opacity-light)) + var(--orb-opacity-light));
+
+  /* Secondary orb — hue offset +40° for complementary warmth.
+     Slightly lower L + C than primary so it doesn't compete. */
+  --orb-secondary-L-light:       var(--seed-atmosphere-orb-secondary-lightness-lightMode);
+  --orb-secondary-L-dark:        var(--seed-atmosphere-orb-secondary-lightness-darkMode);
+  --orb-secondary-C-light:       var(--seed-atmosphere-orb-secondary-chroma-lightMode);   /* re-anchored 0.24 → 0.27 */
+  --orb-secondary-C-dark:        var(--seed-atmosphere-orb-secondary-chroma-darkMode);    /* re-anchored 0.20 → 0.27 */
+  --orb-secondary-opacity-light: var(--seed-atmosphere-orb-secondary-opacity-lightMode);
+  --orb-secondary-opacity-dark:  var(--seed-atmosphere-orb-secondary-opacity-darkMode);
+  --orb-secondary-color: oklch(
+    calc(var(--depth-mix) * (var(--orb-secondary-L-dark) - var(--orb-secondary-L-light)) + var(--orb-secondary-L-light))
+    calc(var(--depth-mix) * (var(--orb-secondary-C-dark) - var(--orb-secondary-C-light)) + var(--orb-secondary-C-light))
+    calc(var(--dynamic-hue) + var(--seed-atmosphere-orb-secondary-hueOffset))
+  );
+  --orb-secondary-opacity: calc(var(--depth-mix) * (var(--orb-secondary-opacity-dark) - var(--orb-secondary-opacity-light)) + var(--orb-secondary-opacity-light));
+
+  /* === Page tint (consumed by body background-image) =================
+     Light mode: high chroma (0.14) — strong heat shift visible behind
+     glass, gives backdrop-filter a clear gradient to blur. Dark: near
+     zero — body --C-bg carries the hue. */
+  --page-tint-L-offset:     var(--seed-atmosphere-pageTint-lightnessOffset);
+  --page-tint-C-light:      var(--seed-atmosphere-pageTint-chroma-lightMode);
+  --page-tint-C-dark:       var(--seed-atmosphere-pageTint-chroma-darkMode);
+  --page-tint-alpha:        var(--seed-atmosphere-pageTint-alpha);
+  --page-tint-C: calc(var(--depth-mix) * (var(--page-tint-C-dark) - var(--page-tint-C-light)) + var(--page-tint-C-light));
+  --page-tint-color: oklch(
+    calc(var(--L-bg) + var(--page-tint-L-offset))
+    var(--page-tint-C)
+    var(--dynamic-hue)
+    / var(--page-tint-alpha)
+  );
+
+  /* Bridge: override token color vars with dual-axis oklch values.
+     This makes bg-bg, text-fg, bg-surface, text-muted-fg, border-border
+     etc. respond to heat + depth on ALL pages (glass and non-glass).
+     `--accent` and `--accent-fg` are also overridden here so the
+     Tailwind utility `text-accent` (auto-generated via theme.css's
+     `--color-accent: var(--accent)`) and the manually-defined
+     `.text-accent` class both produce the same engine value. Without
+     these two overrides they were diverging — see audit §1. */
+  --bg: oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue));
+  --fg: oklch(var(--L-body) 0.03 var(--dynamic-hue));
+  --surface: oklch(var(--L-surface) 0.02 var(--dynamic-hue));
+  --surface-fg: oklch(var(--L-heading) 0.01 var(--dynamic-hue));
+  --muted: oklch(var(--L-surface) 0.01 var(--dynamic-hue));
+  --muted-fg: oklch(var(--L-muted) 0.03 var(--dynamic-hue));
+  --primary: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+  --primary-fg: oklch(var(--L-btn-fg) 0.02 var(--dynamic-hue));
+  --accent: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+  --accent-fg: oklch(var(--L-btn-fg) 0.02 var(--dynamic-hue));
+  --border: oklch(var(--L-muted) 0.02 var(--dynamic-hue) / 0.3);
+  --ring: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue));
+  --input: oklch(var(--L-surface) 0.02 var(--dynamic-hue));
   --shadow-color: oklch(var(--L-bg) 0.04 var(--dynamic-hue) / 0.3);
+
+  /* Action surface — used by the home HeroSection's primary CTA pair
+     (.bg-action + .text-action manual classes). The `0.16` chroma here is
+     unique to action buttons (not shared with --primary which uses the
+     dynamic --C-accent). Lifting this into a named var lets the manual
+     class consume `var(--action-bg)` instead of inlining the oklch
+     expression — single source of truth for the action surface. The
+     foreground stays as var(--primary-fg) since that's already the same
+     value (oklch(var(--L-btn-fg) 0.02 var(--dynamic-hue))). */
+  --action-bg: oklch(var(--L-btn-bg) 0.16 var(--dynamic-hue));
 }
 
-/* Light-mode shorthand — same engine, depth=0 */
-[data-theme="light"], :root[data-theme="light"] { --ui-depth: 0; }
-
-/* Body-level cross-fade so theme + heat changes feel like the page is
-   breathing, not snapping. Consumers can override duration via
-   --dur-cross (defined in motion.css). */
-body {
-  background-color: oklch(var(--L-bg) var(--C-bg) var(--dynamic-hue));
-  color:            oklch(var(--L-body) 0.03 var(--dynamic-hue));
-  transition:
-    background-color var(--dur-cross, 800ms) ease-out,
-    color            var(--dur-cross, 800ms) ease-out;
+/* ─── Accessibility default: SOLID surfaces (user decision 2026-06-08) ──────
+   Translucent glass (alpha < 1 + backdrop-filter blur) compromised text
+   contrast/legibility, so OPAQUE is now the global default for every glass
+   tier — including Storybook. Depth is still read from borders + per-tier
+   shadows; only the see-through + blur are dropped. The frosted-glass recipe
+   is preserved verbatim in the main :root above and revived as a whole by
+   opting in: set `data-glass-effect="on"` on a root/scope once an accessible
+   glass implementation is decided. The `:not()` makes solid the default and
+   out-specifies the base :root, so flipping the flag restores translucency.
+   Sub-brands (e.g. EAST) set their own `background` on `.glass--chrome` and
+   are unaffected — their material is their own dedicated control. */
+:root:not([data-glass-effect="on"]) {
+  --glass-alpha:          1;
+  --glass-alpha-surface:  1;
+  --glass-alpha-raised:   1;
+  --glass-alpha-floating: 1;
+  --glass-alpha-chrome:   1;
+  --glass-alpha-solid:    1;
+  --glass-blur-card-surface:  none;
+  --glass-blur-card-raised:   none;
+  --glass-blur-card-floating: none;
+  --glass-blur-chrome:        none;
 }
 
-/* Engine-driven utility classes — mirror what consumers will reach for.
-   Naming follows the two semantic axes: text-* + bg-*. */
-.text-accent      { color: oklch(var(--L-accent) var(--C-accent) var(--dynamic-hue)); transition: color var(--dur-cross, 800ms) ease-out; }
-.text-heading     { color: oklch(var(--L-heading) 0.01 var(--dynamic-hue));            transition: color var(--dur-cross, 800ms) ease-out; }
-.text-body        { color: oklch(var(--L-body) 0.03 var(--dynamic-hue));               transition: color var(--dur-cross, 800ms) ease-out; }
-.text-muted       { color: oklch(var(--L-muted) 0.03 var(--dynamic-hue));              transition: color var(--dur-cross, 800ms) ease-out; }
-.text-action      { color: oklch(var(--L-btn-fg) 0.02 var(--dynamic-hue));             transition: color var(--dur-cross, 800ms) ease-out; }
-.bg-action        { background-color: oklch(var(--L-btn-bg) 0.16 var(--dynamic-hue));  transition: background-color var(--dur-cross, 800ms) ease-out; }
+/* Glass kit responsive overrides (kept below :root so they cascade correctly).
+   Mobile blur is scaled down for perf — backdrop-filter is expensive on
+   small GPUs — while preserving the same depth-modulation formula so
+   the dark-mode "thicker glass" feel holds. Saturate stays at 1.8 to
+   keep the recipe consistent with desktop. Chrome blur also scales
+   down on mobile (was a constant 16px — now ~half desktop magnitudes
+   so the engine recipe stays uniform). */
+@media (max-width: 767px) {
+  :root {
+    /* Mobile keeps same Migrim recipe as desktop — values are already
+       low enough (8/12/18) that no further mobile reduction needed for
+       perf. Was 14-34px depth-modulated → now flat 8/12/18 to match
+       desktop user-validated choice. */
+    --glass-blur-card-surface:  blur(var(--glass-frostedBlurSurface)) saturate(var(--glass-frostedSaturate));
+    --glass-blur-card-raised:   blur(var(--glass-frostedBlurRaised)) saturate(var(--glass-frostedSaturate));
+    --glass-blur-card-floating: blur(var(--glass-frostedBlurFloating)) saturate(var(--glass-frostedSaturate));
+    --glass-blur-chrome:        blur(var(--glass-frostedBlurRaised)) saturate(var(--glass-frostedSaturate));
+  }
+}
+@media (min-width: 768px) {
+  :root {
+    --glass-radius: var(--glass-radiusDesktop); /* ADR 0024 phase 3: was 36px, now var */
+  }
+}
+/* ─── Atmosphere Orb Drift Animations ─── */
+@keyframes drift-a {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(60px, 40px) scale(1.12); }
+}
+@keyframes drift-b {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-50px, -30px) scale(1.08); }
+}
+.animate-drift-a { animation: drift-a 12s ease-in-out infinite alternate; }
+.animate-drift-b { animation: drift-b 15s ease-in-out infinite alternate; }
+@media (max-width: 767px) {
+  .animate-drift-a,
+  .animate-drift-b { display: none !important; }
+}
 
-/* Reduced motion — kill the cross-fade entirely. */
+/* ─── Dual-Axis oklch Color Palette ─── */
+/* Each class references an engine semantic var instead of re-inlining the
+   oklch expression. The vars (--accent, --surface-fg, --fg, --muted-fg,
+   --primary-fg, --action-bg) live in :root above and are the single
+   source of truth for these color values. Wave F dedup.
+
+   Why these classes still exist (vs migrating to Tailwind's auto-
+   generated utilities for the same names): they carry the
+   `transition: color var(--dur-theme-fade) ease-out` that's essential
+   for the smooth depth-toggle cross-fade. Tailwind v4's auto-generated
+   color utilities don't include transitions; these manual classes
+   provide the base state + the engine cross-fade. The Tailwind
+   utilities (text-accent, bg-accent, etc.) work alongside for modifier
+   composition (hover:, dark:, motion-reduce:). */
+/* No CSS transitions on these utilities — the JS Depth Engine in
+   useDepthEngine sweeps the engine vars; CSS transitions would either
+   fight the RAF (stuck mid-flight) or lag behind instant-mode swaps. */
+.text-accent  { color: var(--accent);     }
+.text-heading { color: var(--surface-fg); }
+.text-body    { color: var(--fg);         }
+.text-muted   { color: var(--muted-fg);   }
+.text-action  { color: var(--primary-fg); }
+.bg-action    { background-color: var(--action-bg); }
+
+/* ─── Glass utility set — per ADR 0016 (Apple Liquid Glass parity) ───
+
+   Single source of truth for glass surfaces. Composable modifiers:
+
+     .glass               — base recipe (bg + 4 borders + radius + position)
+     .glass--surface      — Thin tier (translucent bg, no shadow, no blur)
+     .glass--raised       — Regular tier (denser bg, subtle shadow, blur)
+     .glass--floating     — Thick tier (denser bg, strong shadow, blur)
+     .glass--chrome       — Chrome tier (high opacity for nav legibility, blur)
+     .glass--solid        — Modal tier (near-opaque, strongest shadow)
+     .glass--specular     — Top + bottom edge sheen via ::before / ::after
+     .glass--inset        — Single top-edge variant (replaces 4 borders)
+
+   Tier-to-use-case map (DO use this for new components):
+     surface  → cards inside the page flow (project cards, list items, kit-home)
+     raised   → popovers, dropdowns
+     floating → hero cards, full-bleed feature cards, sheets
+     chrome   → fixed nav surfaces (top pill, bottom tab bar)
+     solid    → modals (resume modal, dialogs) — backdrop scrim safe
+
+   Each tier composes its OWN bg-color (per-tier alpha) AND blur AND
+   shadow, so future components only need to pick the tier — no need
+   to know the underlying values.
+
+   Phase 2 (this commit): per-tier bg/shadow + .glass--solid + bottom
+   specular + prefers-reduced-transparency.
+   Phase 3 (future): motion-aware blur via JS hook. */
+
+/* Base — every glass surface gets edge + radius + shadow. Tier
+   modifiers override bg + shadow per their density level.
+   Note: `position` is INTENTIONALLY OMITTED here. An earlier version
+   set `position: relative` to give specular pseudos a positioning
+   context. But that rule lives in the outer (default) cascade layer
+   while Tailwind's `.fixed` / `.absolute` utilities live in the
+   `utilities` layer — outer beats named layers per CSS cascade
+   rules. Result: `<motion.nav className="fixed glass ...">` was
+   rendered with `position: relative`, making the nav scroll with
+   the page instead of staying fixed (user report 2026-05-07: "nav
+   bar also gets scrolled during scrolling which should not have
+   happened.").
+   The `position: relative` is now scoped to `.glass--specular`
+   ONLY — that's the modifier that needs a positioning context for
+   its `::before` / `::after` pseudos. Other modifiers compose
+   freely with Tailwind's position utilities. */
+.glass {
+  background: var(--glass-bg);
+  border-radius: var(--glass-radius);
+  /* Border width consumed from the nd token (--glass-frostedBorderWidth,
+     default 1.5px) so the design-system glass theme controls it in one
+     place. Was hard-coded 1px before the 2026-05-26 NavPill-recipe sweep. */
+  border-top:    var(--glass-frostedBorderWidth) solid var(--glass-border-top);
+  border-left:   var(--glass-frostedBorderWidth) solid var(--glass-border-left);
+  border-right:  var(--glass-frostedBorderWidth) solid var(--glass-border-right);
+  border-bottom: var(--glass-frostedBorderWidth) solid var(--glass-border-bottom);
+  box-shadow: var(--glass-shadow);
+  /* Hover lift — matches `.kit-home .case`. Only transform transitions;
+     bg/color stays locked to engine sweep so we don't fight RAF. */
+  transition: transform var(--transition-standardSlow);
+}
+
+/* Tier modifiers — bg + blur + shadow composed per tier.
+
+   Note: `will-change: backdrop-filter` is intentionally NOT used here.
+   It forced a sticky GPU compositor layer that cached the backdrop
+   sample at intermediate sweep frames, causing body bg to settle at
+   the wrong value after theme toggle (Wave-C debugging trade-off). */
+
+/* Surface tier — most translucent, no blur, no shadow. Page-flow cards
+   like kit-home tiles. Matches the original .glass-surface recipe. */
+.glass--surface {
+  background: var(--glass-bg-surface);
+  box-shadow: var(--glass-shadow-surface);
+  /* Added 2026-05-21: surface tier was "no blur" per prior direction.
+     User now wants blur on all glass surfaces (Migrim recipe, blur 8). */
+  backdrop-filter: var(--glass-blur-card-surface);
+  -webkit-backdrop-filter: var(--glass-blur-card-surface);
+}
+
+/* Raised tier — popovers/dropdowns. Subtle drop shadow + blur. */
+.glass--raised {
+  background: var(--glass-bg-raised);
+  box-shadow: var(--glass-shadow-raised);
+  backdrop-filter: var(--glass-blur-card-raised);
+  -webkit-backdrop-filter: var(--glass-blur-card-raised);
+}
+
+/* Floating tier — hero cards, sheets. Strong drop shadow + blur. */
+.glass--floating {
+  background: var(--glass-bg-floating);
+  box-shadow: var(--glass-shadow-floating);
+  backdrop-filter: var(--glass-blur-card-floating);
+  -webkit-backdrop-filter: var(--glass-blur-card-floating);
+}
+
+/* Chrome tier — nav surfaces. Higher opacity so labels stay legible
+   when content scrolls underneath in light mode. Shadow is the NavPill
+   recipe — drop + soft inset rim that lifts the chrome cleanly off
+   whatever sits behind it (2026-05-26 glass-token unification). */
+.glass--chrome {
+  background: var(--glass-bg-chrome);
+  backdrop-filter: var(--glass-blur-chrome);
+  -webkit-backdrop-filter: var(--glass-blur-chrome);
+  box-shadow:
+    0 8px 32px oklch(0.1 0.02 var(--dynamic-hue) / 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Solid / Modal tier — near-opaque. Backdrop scrim is BEHIND the modal
+   panel, so panel content stays bright regardless of scrim. Strongest
+   shadow to lift the modal above everything. NO blur (panel is opaque
+   enough that backdrop blur would be wasted GPU work). */
+.glass--solid {
+  background: var(--glass-bg-solid);
+  box-shadow: var(--glass-shadow-solid);
+}
+
+/* Specular — top + bottom edge highlights via TWO pseudos, simulating
+   real glass refraction. Top sheen (::after) is the strongest — glancing
+   light hitting the upper edge. Bottom underline (::before) is dimmer —
+   refracted light at the lower edge.
+
+   Per Apple's Liquid Glass: this two-edge approach gives glass surfaces
+   their characteristic depth without resorting to heavy gradients.
+
+   Position handling: `.glass--specular:not(.fixed):not(.absolute):
+   not(.sticky)` gets `position: relative` so its absolutely-positioned
+   pseudos have a positioning context. When the element ALSO carries
+   a Tailwind position utility (e.g., GlassNav has `.fixed`), the
+   rule doesn't apply — the Tailwind utility's positioning carries
+   through, AND the element is still a positioned ancestor for its
+   pseudos (because `position: fixed` also creates a positioning
+   context). Either way, the pseudos render correctly. */
+.glass--specular:not(.fixed):not(.absolute):not(.sticky) {
+  position: relative;
+}
+.glass--specular::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--glass-specular), transparent 40%);
+  border-radius: inherit;
+}
+.glass--specular::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(0deg, var(--glass-specular-bottom), transparent 30%);
+  border-radius: inherit;
+}
+
+/* Inset variant — single top-edge instead of full 4-border ring.
+   For panels embedded into a page section (.now, .skills) where the
+   outer card already has a border. */
+.glass--inset {
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+/* Vibrancy — text inside glass containers gets the contrast-preserved
+   color tokens. Auto-applied via descendant selectors so component
+   authors don't have to remember. Per ADR 0016. */
+.glass .text-body, .glass-surface .text-body { color: var(--glass-text-fg); }
+.glass .text-muted, .glass-surface .text-muted { color: var(--glass-text-muted); }
+
+/* Phase 3: prefers-reduced-transparency — drops blur entirely and
+   bumps every tier to near-opaque. Some users (vestibular sensitivity,
+   cognitive load) prefer flat surfaces to translucent ones; this
+   honors that without removing the visual hierarchy. Borders + shadows
+   remain so depth is still readable. */
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass--surface,
+  .glass--raised,
+  .glass--floating,
+  .glass--chrome,
+  .glass--solid {
+    background: oklch(var(--L-surface) 0.02 var(--dynamic-hue) / 0.96);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .glass--specular::before,
+  .glass--specular::after {
+    display: none;
+  }
+}
+
+/* ─── Legacy alias: .glass-surface ──────────────────────────────────
+   Pre-ADR-0016 components used `.glass-surface` as the only utility.
+   It composes `.glass + overflow:hidden` (the old recipe added
+   `overflow: hidden` to match `.kit-home .case` for card-style
+   content). Keeping as alias for backwards compat; new components
+   should use `.glass` + modifiers per ADR 0016.
+   Per user direction: components on other pages should look identical
+   to homepage. The .glass-surface recipe still ships WITHOUT blur to
+   match the homepage tiles' translucent-no-blur appearance. */
+.glass-surface {
+  background: var(--glass-bg);
+  border-radius: var(--radius-2xl); /* single tight scale — was --radius-glass-lg fallback 28px */
+  border-top: 1px solid var(--glass-border-top);
+  border-left: 1px solid var(--glass-border-left);
+  border-right: 1px solid var(--glass-border-right);
+  border-bottom: 1px solid var(--glass-border-bottom);
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
+  transition: transform var(--transition-standardSlow);
+}
+
+/* ─── Depth-animating gate ──────────────────────────────────────────────
+   While the JS Depth Engine is actively writing engine vars in a 450ms
+   RAF loop, we want CSS theme-fade transitions to GET OUT OF THE WAY.
+   Otherwise the CSS 800ms cross-fade keeps RESTARTING from the current
+   point on every var update (60fps), which pins the body background
+   mid-flight and the user perceives the theme switch as "stuck."
+
+   When the JS sweep is OFF (instant-mode toggle, anim disabled), the
+   class isn't applied — the CSS 800ms cross-fade handles the transition
+   smoothly with one var write + one transition.
+
+   The Nectar depth engine claims `color` on <html> for the duration of a
+   sweep — the central gate stamps `data-nectar-raf="color"` (ADR 0028 Stage
+   C/F, generalizing the old `depth-animating` class). Selectors below override
+   the theme-fade transitions to none while that claim is held.
+   ────────────────────────────────────────────────────────────────────── */
+/* Gate EVERY color/border transition while the JS engine is sweeping.
+   Earlier we only listed body / .text-* / .glass-surface, but inline-
+   styled surfaces (GlassNav's topGlass / bottomGlass, motion.nav, kit
+   home cards) also carry var(--dur-theme-fade) transitions and were
+   still fighting the RAF — the body would visibly stick mid-flight.
+   The wildcard kills color transitions for the 450ms window. We keep
+   transform / opacity transitions so framer hover scale + AnimatePresence
+   icon swap on the depth toggle still feel snappy.
+
+   CRITICAL FIX (May 2026): any inherited `html`-level transition lags
+   user-driven engine writes. (nectar-design's circadian.css once added
+   a 60s html drift transition — removed in ADR 0028 Stage A.) The
+   THREE writes that must stay instant:
+     1. Depth toggle (JS RAF sweep, 450ms) — bg locked at intermediate
+        state for an entire minute
+     2. Heat axis (mouse move → --ui-heat → --dynamic-hue → --bg) —
+        every cursor movement triggers a 60s color drift, making the
+        UI feel sluggish to follow the cursor
+     3. Bird flock interaction (canvas reads engine vars per frame) —
+        flock visualization lags behind cursor by the 60s transition
+
+   Solution: kill the html-level transition entirely. Circadian time-
+   of-day color drift is a slow background process; abrupt step changes
+   on its periodic writes (typically every minute) are perceptually
+   indistinguishable from smooth interpolation at that timescale.
+   But user-driven changes (toggle, cursor) MUST be instant.
+
+   Earlier fix only used `html.depth-animating` (gated to depth toggle).
+   That left the heat axis + bird flock still locked at 60s. Broadening
+   to `html` (no class) fixes all three at once. */
+html {
+  transition: none !important;
+}
+:root[data-nectar-raf~="color"] *,
+:root[data-nectar-raf~="color"] *::before,
+:root[data-nectar-raf~="color"] *::after {
+  transition-property: transform, opacity !important;
+}
+:root[data-nectar-raf~="color"] body,
+:root[data-nectar-raf~="color"] .text-accent,
+:root[data-nectar-raf~="color"] .text-heading,
+:root[data-nectar-raf~="color"] .text-body,
+:root[data-nectar-raf~="color"] .text-muted,
+:root[data-nectar-raf~="color"] .text-action,
+:root[data-nectar-raf~="color"] .bg-action,
+:root[data-nectar-raf~="color"] .glass-surface {
+  transition: none !important;
+}
+
+/* ─── View Transition: Depth Toggle (circular reveal) ─── */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--seed-durationSlow);
+  animation-timing-function: var(--motion-ease-standard);
+}
+
+::view-transition-new(root) {
+  animation-name: depth-reveal;
+}
+
+@keyframes depth-reveal {
+  from { clip-path: circle(0% at var(--toggle-x, 95%) var(--toggle-y, 3%)); }
+  to   { clip-path: circle(150% at var(--toggle-x, 95%) var(--toggle-y, 3%)); }
+}
+
+/* ─── Reduced Motion ─── */
 @media (prefers-reduced-motion: reduce) {
-  body, .text-accent, .text-heading, .text-body, .text-muted,
+  .animate-drift-a,
+  .animate-drift-b { animation: none; }
+  body { transition: none; }
+  .text-accent, .text-heading, .text-body, .text-muted,
   .text-action, .bg-action { transition: none; }
+  /* Skip view transition animation */
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none; }
 }
+
+/* Typography is static (retired from any engine 2026-05-24) — body / h1–h6
+   no longer subscribe to runtime weight/tracking/leading. Colour + hue
+   remain the only interaction-driven paint changes. */

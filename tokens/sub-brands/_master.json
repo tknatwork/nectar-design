@@ -1,0 +1,39 @@
+{
+  "$description": "Master brand baseline for the Branded House sub-brand system (ADR 0026). Defines the default value for every one of the 12 bounded override knobs. Emitted at :root by scripts/build-sub-brands.mjs. Sub-brands in this directory override a subset; everything they omit falls back to these defaults. This file is the ONLY place master-level knob defaults live — it does NOT touch the protected 5-tier pipeline (tokens/core, tokens/components, tokens/themes).",
+
+  "headingRhythmPresets": {
+    "$description": "Named rhythm presets a sub-brand can select by name (typography.heading-rhythm: \"tight-editorial\"). A sub-brand may also override explicitly with { line-height, letter-spacing }.",
+    "tight-editorial": { "line-height": "1.05", "letter-spacing": "-0.02em" },
+    "standard":        { "line-height": "1.15", "letter-spacing": "-0.01em" },
+    "airy-display":    { "line-height": "1.25", "letter-spacing": "0em" }
+  },
+
+  "defaults": {
+    "color": {
+      "brand-accent": "{seed.colorAccent}",
+      "brand-tint":   "{seed.colorPrimary}",
+      "eyebrow-tone": "{seed.colorAccent}"
+    },
+    "typography": {
+      "display-family": "{seed.fontFamilyDisplay}",
+      "heading-rhythm": "standard"
+    },
+    "motion": {
+      "intensity-scale": 1
+    },
+    "surface": {
+      "glass-tint":   "transparent",
+      "radius-scale": 1
+    },
+    "atmosphere": {
+      "preset": "orbs"
+    },
+    "hero": {
+      "composition": "default"
+    }
+  },
+
+  "voice": {
+    "tagline": null
+  }
+}

@@ -78,18 +78,20 @@ Pipeline: `(time, lat, lng) → solar position → CircadianState → palette + 
 
 The public design catalog at [design.tusharkantnaik.com](https://design.tusharkantnaik.com) is served from the **unified Storybook in [tknatwork/myportfolio](https://github.com/tknatwork/myportfolio)** ([ADR 0015](https://github.com/tknatwork/myportfolio/blob/main/docs/decisions/0015-unified-storybook-from-mp.md), live 2026-05-07). This repo's standalone Storybook still exists for nd-only iteration (`pnpm storybook` here), but does not deploy publicly — the nd-side Vercel project was decommissioned in the Path F migration.
 
-How nd changes reach the deployed catalog:
+How nd changes reach the deployed catalog (post-[ADR 0024](https://github.com/tknatwork/myportfolio/blob/main/docs/decisions/0024-monorepo-nd-native.md)):
 
-1. nd-feature → nd-dev → nd-main (PR flow in this repo)
-2. mp bumps submodule pointer to new nd-main HEAD (separate PR in `tknatwork/myportfolio`)
-3. Vercel rebuilds unified Storybook from mp-main and deploys
+1. Edit `packages/nectar-design/**` in `tknatwork/myportfolio` (mp is the source of truth).
+2. Feature branch → mp-dev → mp-main (single PR covers both nd + app changes).
+3. Vercel rebuilds unified Storybook from mp-main and deploys.
+4. This standalone `tknatwork/nectar-design` repo receives a periodic one-way sync from mp (mirror only — do not develop here).
 
 ## Relationship to myportfolio
 
-- **Consumed via git submodule** at `packages/nectar-design/` in [tknatwork/myportfolio](https://github.com/tknatwork/myportfolio); pointer always tracks nd-main
-- **Independent install graph** — nd has its own `pnpm-lock.yaml` (uses `pnpm install --ignore-workspace` in standalone CI)
-- **Coordinated dep bumps** follow the 4-branch protocol: see [submodule.md in mp](https://github.com/tknatwork/myportfolio/blob/main/docs/system/submodule.md)
-- **Cross-repo compat matrix** in mp's [`config/integration-compat.yaml`](https://github.com/tknatwork/myportfolio/blob/main/config/integration-compat.yaml) constrains nd's React / Tailwind / TypeScript / Chromatic versions
+- **Post-[ADR 0024](https://github.com/tknatwork/myportfolio/blob/main/docs/decisions/0024-monorepo-nd-native.md):** `packages/nectar-design/` is a **native pnpm workspace package** committed in-tree to [tknatwork/myportfolio](https://github.com/tknatwork/myportfolio). The git-submodule relationship is retired.
+- **This standalone repo is a one-way sync target** — kept around for consumers who want to inspect nd in isolation. Do not commit edits here; they will be overwritten by the next sync from mp.
+- **Single install graph** — mp's root `pnpm-lock.yaml` covers both `app/` and `packages/nectar-design/`. The standalone copy still ships a `pnpm-lock.yaml` for self-contained reads.
+- **Dep bumps land in one feature branch** in mp — no 4-branch protocol.
+- **Cross-repo compat matrix** in mp's [`config/integration-compat.yaml`](https://github.com/tknatwork/myportfolio/blob/main/config/integration-compat.yaml) still constrains nd's React / Tailwind / TypeScript / Chromatic versions.
 
 ## Documentation
 

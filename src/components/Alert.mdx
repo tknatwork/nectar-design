@@ -1,0 +1,57 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { Alert } from './Alert';
+import * as AlertStories from './Alert.stories';
+
+<Meta of={AlertStories} />
+
+<Title />
+<Subtitle>Contextual feedback banner — 4 semantic variants for in-flow messages.</Subtitle>
+
+## Overview
+
+<Description of={AlertStories} />
+
+<Primary />
+
+## Anatomy
+
+An alert is a bordered, tinted region holding an optional leading icon, an
+`AlertTitle`, and an `AlertDescription`. The border, tint, and text colour are
+locked per `variant`; the icon is auto-inset when present. It renders a `<div>`
+carrying `role="alert"`.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={Alert}
+  rows={{ prop: 'variant', values: ['default', 'success', 'warning', 'destructive'] }}
+  baseArgs={{ children: 'Message text' }}
+/>
+
+## Usage
+
+- **Do** — match the `variant` to the message's severity, and pair a title with a one-line description that says what to do next.
+- **Don't** — use `destructive` for routine confirmations, or rely on tint alone — the title should name the state ("Error", "Saved").
+
+## Accessibility
+
+- `role="alert"` announces the banner immediately; for non-urgent status use a quieter `role="status"` region instead.
+- Severity is never colour-only — the `AlertTitle` text carries the meaning for non-sighted and colour-blind users.
+- Keep the message terse; screen readers read the entire alert on insertion.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Alert consumes **semantic** tokens through Tailwind utilities (`bg-surface`, `text-destructive`, `border-border`, `rounded-md`, …):
+
+<TokenTable
+  names={[
+    '--surface', '--surface-fg', '--destructive', '--success', '--warning',
+    '--border', '--fg', '--radius-md',
+  ]}
+/>

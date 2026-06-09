@@ -1,0 +1,40 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import * as NavPillStories from './NavPill.stories';
+
+<Meta of={NavPillStories} />
+
+<Title />
+<Subtitle>Floating site-nav pill — brand mark, links with a sliding active indicator, and a depth toggle.</Subtitle>
+
+## Overview
+
+<Description of={NavPillStories} />
+
+<Primary />
+
+## Anatomy
+
+NavPill is a fully-rounded `nav` with a blinking brand mark, a row of `items` links, and an
+engine-aware depth toggle. The host owns routing: it supplies `items` (and which one is `active`),
+plus an optional `LinkComponent` so nd stays framework-agnostic. The active item shows a shared
+sliding pill animated with a Framer `layoutId`. Sub-brand theming arrives automatically through
+the `--nav-*` CSS variables under a `.sub-brand-{slug}` scope.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — feed it the host's router (`LinkComponent`) and compute `active` from the current route so the sliding pill tracks the live page.
+- **Don't** — set more than one `active` item, or rely on this primitive for positioning — the host wrapper owns placement and centring.
+
+## Accessibility
+
+- Rendered as `<nav aria-label="Site navigation">` so it is announced as the site-navigation landmark.
+- The active link carries `aria-current="page"`; the sliding pill behind it is `aria-hidden`.
+- The depth toggle is a real `<button type="button">` with an `aria-label` that flips between "Switch to dark mode" / "Switch to light mode".
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+NavPill derives its colours from the runtime engine (`oklch(var(--L-*) …)`) and `--nav-*` sub-brand
+overrides rather than the static semantic-token family, so there is no semantic token table here.

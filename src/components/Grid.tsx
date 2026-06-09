@@ -14,8 +14,8 @@ const gridVariants = cva('grid', {
     responsive: {
       none: '',
       tablet: 'grid-cols-1 tablet:grid-cols-2',
-      desktop: 'grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3',
-      wide: 'grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3 wide:grid-cols-4',
+      desktop: 'grid-cols-1 tablet:grid-cols-2 tablet-landscape:grid-cols-3',
+      wide: 'grid-cols-1 tablet:grid-cols-2 tablet-landscape:grid-cols-3 desktop:grid-cols-4',
     },
     gap: {
       none: 'gap-0',

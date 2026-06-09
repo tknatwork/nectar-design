@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tokens/Overview" />
+
+# Token reference
+
+Every token below is **generated** into `css/tokens.css` by `build-tokens-sd.mjs`
+from W3C-DTCG JSON, then registered into Tailwind via `@theme`. These reference
+pages read that generated CSS directly, so they can **never drift** from what
+ships — and every value resolves **live** under the current Heat / Depth / Brand.
+
+| Tier | What it holds | Reference |
+| --- | --- | --- |
+| **Seed** | ~20 raw brand decisions | [Tokens/Seed](?path=/docs/tokens-seed--docs) |
+| **Map** | derived scales — colour ramps (`color-mix`), sizing, radius, type | [Tokens/Map](?path=/docs/tokens-map--docs) |
+| **Semantic** | role-named aliases (`--primary`, `--bg`, `--fg`) | [Tokens/Semantic](?path=/docs/tokens-semantic--docs) |
+| **Component** | per-component tokens (6 components) | [Tokens/Component](?path=/docs/tokens-component--docs) |
+
+**[Tokens/Pipeline](?path=/docs/tokens-pipeline--docs)** traces one token end-to-end.
+**[Tokens/Typography](?path=/docs/tokens-typography--docs)** and
+**[Tokens/Scale](?path=/docs/tokens-scale--docs)** add live type + spacing/radius specimens.

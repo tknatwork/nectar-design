@@ -1,0 +1,43 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as FormFieldStories from './FormField.stories';
+
+<Meta of={FormFieldStories} />
+
+<Title />
+<Subtitle>Label + control + hint/error, wired together with generated IDs.</Subtitle>
+
+## Overview
+
+<Description of={FormFieldStories} />
+
+<Primary />
+
+## Anatomy
+
+A vertical stack: a `<Label>` on top, the child control in the middle, and an optional
+hint or error message below. It clones the single child element to inject a generated
+`id`, `aria-describedby`, `aria-required`, and `disabled` — so the parts stay associated
+without you threading IDs by hand. `error` takes precedence over `hint`.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — pass exactly one control as `children`; let `FormField` own the `id` and `aria-describedby` wiring.
+- **Don't** — also hand-set `id` or `aria-describedby` on the child; the clone overrides them and the two will drift.
+
+## Accessibility
+
+- The label's `htmlFor` is auto-linked to the cloned control's generated `id`.
+- `error` renders with `role="alert"` and is linked via `aria-describedby` so assistive tech announces it.
+- `required` sets `aria-required` on the control and shows the `Label`'s asterisk; `disabled` propagates to both label and control.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+FormField composes `Label` and adds the hint/error text colours:
+
+<TokenTable names={['--fg', '--destructive', '--muted-fg']} />

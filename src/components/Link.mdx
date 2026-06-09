@@ -1,0 +1,57 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { Link } from './Link';
+import * as LinkStories from './Link.stories';
+
+<Meta of={LinkStories} />
+
+<Title />
+<Subtitle>Styled anchor — three variants, with an optional external cue.</Subtitle>
+
+## Overview
+
+<Description of={LinkStories} />
+
+<Primary />
+
+## Anatomy
+
+A link is a native `<a>`: a text label, an optional trailing external-link
+glyph, and a focus ring. The `variant` sets colour and underline treatment;
+`external` adds `target="_blank"`, the safe `rel`, and the arrow icon. It always
+renders inline.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={Link}
+  rows={{ prop: 'variant', values: ['default', 'muted', 'nav'] }}
+  baseArgs={{ children: 'Link label', href: '#' }}
+/>
+
+## Usage
+
+- **Do** — use `default` for inline prose links, `muted` for secondary references, and `nav` (no underline) inside navigation bars; set `external` for off-site destinations.
+- **Don't** — drop the underline on inline body links (`nav` is for nav bars only), or write bare "click here" labels that don't describe the destination.
+
+## Accessibility
+
+- Discernible text — the label should make sense out of context; avoid "here"/"this link".
+- Focus-visible ring via `--ring` with a 2px offset, so keyboard focus is always visible across all variants.
+- `external` opens a new tab and sets `rel="noopener noreferrer"`; the trailing arrow is `aria-hidden`, so name the destination in the text (e.g. "… (opens in a new tab)") when the new-window behaviour matters.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Link consumes **semantic** tokens through Tailwind utilities (`text-primary`,
+`text-muted-fg`, `ring-ring`, …):
+
+<TokenTable
+  names={[
+    '--primary', '--muted-fg', '--fg', '--ring',
+  ]}
+/>

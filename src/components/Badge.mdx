@@ -1,0 +1,52 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { Badge } from './Badge';
+import * as BadgeStories from './Badge.stories';
+
+<Meta of={BadgeStories} />
+
+<Title />
+<Subtitle>Inline status label — 6 intents × 3 sizes.</Subtitle>
+
+## Overview
+
+<Description of={BadgeStories} />
+
+<Primary />
+
+## Anatomy
+
+A badge is a single non-interactive `<span>`: a short text label inside a tinted
+pill. Geometry (height, padding, radius) is locked per `size`; the tint — a 10%
+wash of the intent colour over matching foreground text — is set per `intent`.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={Badge}
+  rows={{ prop: 'intent', values: ['default', 'primary', 'accent', 'success', 'warning', 'destructive'] }}
+  cols={{ prop: 'size', values: ['sm', 'md', 'lg'] }}
+  baseArgs={{ children: 'Label' }}
+/>
+
+## Usage
+
+- **Do** — pick the `intent` that matches the meaning (`success` for healthy, `warning` for attention, `destructive` for failure) so colour reinforces the label.
+- **Don't** — use a badge as a button; it has no focus ring or hit target. For an interactive pill use `Tag` (removable) or `Button`.
+
+## Accessibility
+
+- A badge is decorative text — the label itself carries the meaning, so screen readers read it as ordinary content.
+- Never signal state by colour alone; the word (`Active`, `Failed`) must say it too, for colour-blind and monochrome contexts.
+- The 10% intent wash keeps text/background contrast high — keep custom overrides above 4.5:1.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Badge owns a dedicated **component** token tier (resolved live below):
+
+<TokenTable prefix="--badge-" />

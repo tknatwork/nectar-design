@@ -1,0 +1,52 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { Input } from './Input';
+import * as InputStories from './Input.stories';
+
+<Meta of={InputStories} />
+
+<Title />
+<Subtitle>Single-line text field — 3 sizes × default/error.</Subtitle>
+
+## Overview
+
+<Description of={InputStories} />
+
+<Primary />
+
+## Anatomy
+
+A single native `<input>` with placeholder text, a focus ring, and a border whose
+colour flips to `destructive` in the `error` variant. Height, padding, and radius are
+locked per `size`; it forwards its ref so form libraries can register it.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={Input}
+  rows={{ prop: 'variant', values: ['default', 'error'] }}
+  cols={{ prop: 'size', values: ['sm', 'md', 'lg'] }}
+  baseArgs={{ placeholder: 'reviewer@company.com' }}
+/>
+
+## Usage
+
+- **Do** — pair every input with a `<Label>` (or wrap it in `<FormField>`) so the control has an accessible name.
+- **Don't** — use the `error` variant for colour alone; surface a written message next to it via `FormField`'s `error` prop.
+
+## Accessibility
+
+- The `error` variant sets `aria-invalid="true"`; associate the message with `aria-describedby`.
+- Always give it a programmatic label — a visible `<Label htmlFor>` or `aria-label`; placeholder text is not a label.
+- `disabled` removes it from the tab order and dims it; the value is excluded from form submission.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Input owns a dedicated **component** token tier (geometry + colour), resolved live below:
+
+<TokenTable prefix="--input-" />

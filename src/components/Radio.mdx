@@ -1,0 +1,59 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { RadioGroup } from './Radio';
+import * as RadioStories from './Radio.stories';
+
+<Meta of={RadioStories} />
+
+<Title />
+<Subtitle>One-of-many radio group — vertical or horizontal, 3 sizes.</Subtitle>
+
+## Overview
+
+<Description of={RadioStories} />
+
+<Primary />
+
+## Anatomy
+
+A `RadioGroup` renders one labelled circular control per `options` entry. The selected
+ring borders in `primary` and fills with a `primary` dot; the group lays out vertically
+by default or horizontally via `orientation`. Per-option `disabled` dims a single choice;
+group-level `disabled` dims them all.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={RadioGroup}
+  rows={{ prop: 'size', values: ['sm', 'md', 'lg'] }}
+  baseArgs={{
+    options: [
+      { value: 'free', label: 'Free' },
+      { value: 'pro', label: 'Pro' },
+    ],
+    defaultValue: 'free',
+    'aria-label': 'Select a plan',
+  }}
+/>
+
+## Usage
+
+- **Do** — use a radio group when exactly one of several visible options must be chosen, and pre-select a sensible `defaultValue`.
+- **Don't** — use it for independent toggles (use `Checkbox`) or for long option lists that would scroll (use `Select`).
+
+## Accessibility
+
+- Built on Base UI's `RadioGroup`: arrow keys move selection within the group, which is a single Tab stop.
+- Name the group with `aria-label` (or an associated heading); each control inherits its option `label` as its accessible name.
+- `disabled` (per-option or group-wide) is reflected to assistive tech, not just dimmed visually.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Radio consumes **semantic** tokens — neutral ring, `primary` when selected, `fg` for option labels:
+
+<TokenTable names={['--border', '--primary', '--ring', '--fg']} />

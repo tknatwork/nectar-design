@@ -1,0 +1,19 @@
+{
+  "component": {
+    "toast": {
+      "$description": "Toast notification colors — ephemeral overlays favoring attention-grabbing brightness over brand cohesion. Distinct from static --success/--warning/--destructive semantic vars (used for in-flow UI like form errors). Toasts are transient and want pop, not subtlety. ADR 0024 phase 6: moved from mp/globals.css to centralize.",
+
+      "$$_static": "_____ STATIC SUCCESS/ERROR/WARNING (oklch primitives) _____",
+
+      "successBg":   { "$value": "oklch(0.72 0.16 145)", "$type": "color", "$description": "Toast success background — vibrant emerald oklch. Brighter than nd's semantic success (which is muted sage for in-flow UI)." },
+      "errorBg":     { "$value": "oklch(0.65 0.20 25)",  "$type": "color", "$description": "Toast error background — vibrant red oklch. Brighter than nd's semantic destructive (which is terracotta)." },
+      "warningBg":   { "$value": "oklch(0.75 0.16 80)",  "$type": "color", "$description": "Toast warning background — vibrant amber oklch. Brighter than nd's semantic warning (muted)." },
+
+      "$$_circadian": "_____ DEFAULT TOAST (circadian-driven — mp/globals.css composes) _____",
+
+      "defaultLightness":  { "$value": "var(--L-accent)",    "$type": "string", "$description": "Default toast lightness — pulls from runtime circadian engine in mp. Static fallback: 0.72." },
+      "defaultChroma":     { "$value": "0.12",                "$type": "number", "$description": "Default toast chroma — subtle but visible against any bg." },
+      "defaultHueRef":     { "$value": "var(--dynamic-hue)", "$type": "string", "$description": "Default toast hue — follows circadian-driven --dynamic-hue. Composed in mp/globals.css; primitive lives here." }
+    }
+  }
+}

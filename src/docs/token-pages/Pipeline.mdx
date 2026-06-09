@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ColorSwatch } from '../components';
+
+<Meta title="Tokens/Pipeline" />
+
+# Token pipeline — a worked example
+
+Follow one token, **`--button-primaryBg`**, down all five tiers. Every swatch
+resolves **live** — change `seed.colorPrimary` in `seed.json` and every row below
+shifts with it. That is the 5-tier guarantee: one decision, system-wide.
+
+<div style={{ display: 'grid', gap: 16, maxWidth: 380, margin: '20px 0' }}>
+  <ColorSwatch cssVar="--button-primaryBg" label="component · --button-primaryBg" />
+  <ColorSwatch cssVar="--map-color-primary-Base" label="map · --map-color-primary-Base" />
+  <ColorSwatch cssVar="--seed-colorPrimary" label="seed · --seed-colorPrimary" />
+  <ColorSwatch cssVar="--seed-color-pastel-honey" label="primitive · --seed-color-pastel-honey" />
+</div>
+
+Each tier references the one above it — only the primitive holds a literal:
+
+```text
+--button-primaryBg
+  → var(--map-color-primary-Base)
+    → var(--seed-colorPrimary)
+      → var(--seed-color-pastel-honey)
+        → #FFE082
+```
+
+The same shape holds for dimensions: `--button-controlHeight → var(--seed-controlHeight) → 40px`.

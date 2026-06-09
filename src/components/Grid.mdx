@@ -1,0 +1,45 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import * as GridStories from './Grid.stories';
+
+<Meta of={GridStories} />
+
+<Title />
+<Subtitle>CSS Grid primitive — fixed or responsive column presets.</Subtitle>
+
+## Overview
+
+<Description of={GridStories} />
+
+<Primary />
+
+## Anatomy
+
+A Grid is a single `display: grid` container: `cols` (or a `responsive` preset) sets
+the column track count, `gap` the spacing between cells, and `align` the block-axis
+alignment. It renders no surface of its own — each child is one grid cell.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — use `responsive` presets (`tablet`, `desktop`, `wide`) so a card gallery
+  reflows from one column on mobile up to four on wide screens without media queries
+  in app code.
+- **Don't** — pick a fixed `cols={4}` for content that must stay readable on phones;
+  prefer a responsive preset that collapses to a single column.
+
+## Accessibility
+
+- Grid imposes no semantics — it renders a plain `<div>`. Add a landmark or list
+  wrapper when the collection needs one.
+- DOM order drives the tab and screen-reader order; the column count only changes the
+  visual layout, so keep children in a logical sequence.
+- With `dir="rtl"` the first column starts on the right — author children start-to-end
+  and let direction mirror them.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Layout-only — Grid consumes spacing utilities (`gap-*`) and grid column utilities, no colour tokens.

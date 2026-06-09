@@ -1,0 +1,58 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { Heading } from './Heading';
+import * as HeadingStories from './Heading.stories';
+
+<Meta of={HeadingStories} />
+
+<Title />
+<Subtitle>Semantic section heading — one typographic scale across six levels.</Subtitle>
+
+## Overview
+
+<Description of={HeadingStories} />
+
+<Primary />
+
+## Anatomy
+
+A heading is a single line (or wrapped run) of display-font text. The `level`
+prop drives both the rendered tag (`<h1>`–`<h6>`) and the scale — size, weight,
+and line-height step together down the ramp. Use `as` to keep the visual scale
+while overriding the tag, so the document outline stays correct.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={Heading}
+  rows={{ prop: 'level', values: [1, 2, 3, 4, 5, 6] }}
+  baseArgs={{ children: 'The quick brown fox' }}
+/>
+
+## Usage
+
+- **Do** — pick `level` for the document outline first, then reach for `as` if the visual size needs to differ from the semantic rank.
+- **Don't** — jump straight to `level={1}` for emphasis on a sub-section, or skip a level (h2 → h4) to get a smaller size — use `as` instead.
+
+## Accessibility
+
+- `level` controls the rendered `<h1>`–`<h6>` — visual size is **not** semantic level; an `as`-overridden heading keeps its scale but changes its tag.
+- Don't skip heading levels: a screen-reader outline reads ranks in order, so an h2 followed by an h4 reads as a gap.
+- One `<h1>` per page (the page title); `Heading` defaults to `level={2}` precisely so sections don't accidentally claim the top rank.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Heading sets type through the `font-display` family and the Tailwind size/weight
+scale (`text-4xl`, `font-bold`, `leading-tight`, …); only the text colour is a
+semantic token:
+
+<TokenTable
+  names={[
+    '--fg', '--muted-fg',
+  ]}
+/>

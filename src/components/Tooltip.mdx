@@ -1,0 +1,43 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as TooltipStories from './Tooltip.stories';
+
+<Meta of={TooltipStories} />
+
+<Title />
+<Subtitle>Hover/focus hint anchored to a trigger — 4 sides.</Subtitle>
+
+## Overview
+
+<Description of={TooltipStories} />
+
+<Primary />
+
+## Anatomy
+
+A tooltip wraps a single trigger element and renders its `content` in a portalled
+popup with a pointing arrow. The popup opens on hover or focus after `delayDuration`
+ms and is placed on the requested `side` (`top` by default) with a small offset. It
+fades and zooms in via the bundled `animate-in` keyframes.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — keep `content` to a short hint (a label, a keyboard shortcut); use the `side` prop to keep it clear of screen edges.
+- **Don't** — put essential or interactive content in a tooltip; it's transient and unreachable on touch, so anything required must live in the page.
+
+## Accessibility
+
+- Built on Base UI's tooltip, so the popup is wired to its trigger via `aria-describedby` — the hint is announced with the control.
+- Opens on **both** hover and keyboard focus, so pointer and keyboard users get parity; `Escape` dismisses it.
+- Because it's hover/focus-only and absent on touch, never hide must-have information behind it.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Tooltip consumes **semantic** tokens through Tailwind utilities (`bg-fg`, `text-bg`, `fill-fg` on the arrow):
+
+<TokenTable names={['--fg', '--bg']} />

@@ -1,0 +1,50 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix } from '../docs/components';
+import { Icon } from './Icon';
+import * as IconStories from './Icon.stories';
+
+<Meta of={IconStories} />
+
+<Title />
+<Subtitle>Token-aware Iconify wrapper — any icon set, 4 sizes.</Subtitle>
+
+## Overview
+
+<Description of={IconStories} />
+
+<Primary />
+
+## Anatomy
+
+An icon is a single inline glyph rendered by Iconify from an `icon` identifier
+(`set:name`, e.g. `ph:house-duotone` or `lucide:search`). Box size is locked per
+`size`; colour is inherited from the surrounding text via `currentColor`, so any
+`text-*` utility recolours it.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={Icon}
+  rows={{ prop: 'size', values: ['sm', 'md', 'lg', 'xl'] }}
+  baseArgs={{ icon: 'ph:house-duotone' }}
+/>
+
+## Usage
+
+- **Do** — colour icons with text utilities (`text-primary`, `text-muted-fg`) so they track the theme; pick a consistent icon set per surface.
+- **Don't** — convey state by icon shape alone without a label; pair it with text or an `aria-label` when it carries meaning.
+
+## Accessibility
+
+- Decorative by default — with no `aria-label` the icon is `aria-hidden`, so screen readers skip it (correct when adjacent text already conveys the meaning).
+- Pass `aria-label` to make it semantic: that switches it to `role="img"` with an accessible name, for standalone icon-only controls.
+- Inheriting `currentColor` keeps icon/background contrast in lockstep with the text it sits beside.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Icon defines no colour tokens of its own — it inherits `currentColor`, so it picks up whatever semantic text colour (`--fg`, `--primary`, `--muted-fg`, …) the surrounding `text-*` utility resolves to. Size maps to fixed Tailwind box utilities (`size-4` … `size-8`).

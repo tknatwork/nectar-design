@@ -41,11 +41,12 @@ export {
   PopoverTitle,
   PopoverDescription,
   PopoverClose,
-  ToastProvider,
-  ToastItem,
+  GlassToastContainer,
+  dismiss,
+  subscribe,
   toast,
-  toastManager,
-  toastVariants,
+  type ToastItem,
+  type ToastVariant,
   Stack,
   stackVariants,
   Container,
@@ -64,6 +65,13 @@ export {
   MenuContent,
   MenuItem,
   MenuSeparator,
+  Eyebrow,
+  FlipCard,
+  type FlipCardProps,
+  NavPill,
+  type NavPillItem,
+  type NavPillLinkProps,
+  type NavPillProps,
   Heading,
   headingVariants,
   Link,
@@ -85,6 +93,33 @@ export {
   Icon,
   iconVariants,
 } from './components';
+
+// Sub-brand system (ADR 0026 — Branded House with sub-brands)
+export {
+  SubBrandProvider,
+  useSubBrand,
+  useAtmospherePreset,
+  useHeroComposition,
+  useTagline,
+} from './SubBrandProvider';
+export type { SubBrandProviderProps } from './SubBrandProvider';
+export {
+  AtmosphereRegistryProvider,
+  useAtmosphereComponent,
+} from './atmosphere/AtmosphereRegistry';
+export type { AtmosphereComponents } from './atmosphere/AtmosphereRegistry';
+export {
+  SUB_BRANDS,
+  SUB_BRAND_NAMES,
+  MASTER_DEFAULTS,
+} from './sub-brands.generated';
+export { resolveSubBrandSlug } from './resolveSubBrand';
+export type {
+  SubBrandRecord,
+  SubBrandAssets,
+  AtmospherePreset,
+  HeroComposition,
+} from './sub-brands.generated';
 
 // Hooks
 export { useTheme } from './hooks/useTheme';

@@ -1,0 +1,47 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as DividerStories from './Divider.stories';
+
+<Meta of={DividerStories} />
+
+<Title />
+<Subtitle>Hairline separator — horizontal or vertical, with spacing presets.</Subtitle>
+
+## Overview
+
+<Description of={DividerStories} />
+
+<Primary />
+
+## Anatomy
+
+A Divider is a single 1px rule: `orientation` chooses the axis (a full-width `h-px`
+line or a `w-px` line that stretches to its flex parent), and `spacing` adds symmetric
+margin around it. It renders a native `<hr>` filled with the border colour.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — separate stacked sections of related content (a `horizontal` rule between
+  list groups) or inline items (a `vertical` rule between toolbar actions).
+- **Don't** — stack a divider against existing card borders or large whitespace; the
+  redundant line just adds visual noise.
+
+## Accessibility
+
+- Renders `<hr role="separator">` with `aria-orientation` — a meaningful, announced
+  break between groups.
+- If the rule is purely decorative (e.g. between two already-labelled regions), prefer
+  `aria-hidden` over a `separator` so assistive tech doesn't announce noise.
+- A `vertical` divider needs a height to show — give its flex parent a defined height
+  or let `self-stretch` pick one up.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Divider fills with the semantic border colour via the `bg-border` utility:
+
+<TokenTable names={['--border']} />

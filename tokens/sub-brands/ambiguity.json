@@ -1,0 +1,23 @@
+{
+  "$schema": "./_sub-brand.schema.json",
+  "name": "ambiguity",
+  "displayName": "Ambiguity",
+  "extends": "master",
+  "routes": ["/projects/ambiguity"],
+  "overrides": {
+    "color": {
+      "brand-accent": "{seed.color.pastel.plum}",
+      "brand-tint":   "{seed.color.pastel.wisteria}",
+      "eyebrow-tone": "{seed.color.pastel.plum}"
+    },
+    "typography": {
+      "display-family": "{seed.typography.fontFamily.serif}",
+      "heading-rhythm": "tight-editorial"
+    },
+    "motion": { "intensity-scale": 0.85 },
+    "surface": { "glass-tint": "{seed.color.pastel.lavender}", "radius-scale": 1 },
+    "atmosphere": { "preset": "ink-route" },
+    "hero": { "composition": "typography-led" }
+  },
+  "voice": { "tagline": "A case study on systemic uncertainty" }
+}

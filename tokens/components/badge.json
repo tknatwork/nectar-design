@@ -14,9 +14,6 @@
       "fontSizeSM":  { "$value": "{map.fontSize.XS}",  "$type": "number", "$description": "Small/default font (10px ~ text-xs)" },
       "fontSizeLG":  { "$value": "{map.fontSize.SM}",  "$type": "number", "$description": "Large font (13px ~ text-sm)" },
 
-      "borderRadius":   { "$value": "{map.borderRadius.MD}", "$type": "number", "$description": "Default radius (8px = rounded-md)" },
-      "borderRadiusSM": { "$value": "{map.borderRadius.SM}", "$type": "number", "$description": "Small radius (4px = rounded-sm)" },
-
       "defaultBg": { "$value": "{map.color.neutralFill.colorFillSecondary}", "$type": "color", "$description": "Default intent — muted fill" },
       "defaultFg": { "$value": "{map.color.neutralText.colorTextSecondary}", "$type": "color", "$description": "Default intent — muted text" },
 

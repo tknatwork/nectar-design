@@ -1,0 +1,51 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { Switch } from './Switch';
+import * as SwitchStories from './Switch.stories';
+
+<Meta of={SwitchStories} />
+
+<Title />
+<Subtitle>On/off toggle for instant settings — 3 sizes.</Subtitle>
+
+## Overview
+
+<Description of={SwitchStories} />
+
+<Primary />
+
+## Anatomy
+
+A pill track with a sliding circular thumb. The track is `muted` when off and `primary`
+when on; the thumb translates from left to right on toggle. Track and thumb scale together
+per `size`. Built on Base UI for state, keyboard, and focus handling.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={Switch}
+  rows={{ prop: 'size', values: ['sm', 'md', 'lg'] }}
+  baseArgs={{ 'aria-label': 'Toggle setting', defaultChecked: true }}
+/>
+
+## Usage
+
+- **Do** — use a switch for a setting that applies immediately on toggle (no Save step), e.g. airplane mode or notifications.
+- **Don't** — use it inside a form that needs an explicit submit; a `Checkbox` better signals "stage this value, then save".
+
+## Accessibility
+
+- Renders with `role="switch"` and an on/off state via Base UI; Space or Enter toggles it.
+- Provide a name with `aria-label` or a wrapping `<label>` — the track has no text of its own.
+- State is conveyed semantically (not by colour alone), so it survives high-contrast and colour-blind viewing.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Switch consumes **semantic** tokens — `muted` track off, `primary` track on, `bg` thumb:
+
+<TokenTable names={['--muted', '--primary', '--bg', '--ring']} />

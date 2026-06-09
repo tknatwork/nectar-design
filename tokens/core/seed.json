@@ -7,6 +7,21 @@
       "$type": "color",
       "$description": "Primary brand color — honey golden"
     },
+    "brandRed": {
+      "$value": "#E4342C",
+      "$type": "color",
+      "$description": "Brand red — alert / urgency accent. Moved from mp/globals.css per ADR 0024 phase 3."
+    },
+    "inkBone": {
+      "$value": "#F4ECE0",
+      "$type": "color",
+      "$description": "Ink mode bone — light surface tone for case-study route override. Moved from mp/globals.css per ADR 0024 phase 3."
+    },
+    "inkDeep": {
+      "$value": "#0A0A0D",
+      "$type": "color",
+      "$description": "Ink mode deep — dark surface tone for case-study route override. Moved from mp/globals.css per ADR 0024 phase 3."
+    },
     "colorSuccess": {
       "$value": "{seed.color.success}",
       "$type": "color",
@@ -86,10 +101,10 @@
       "$description": "Default border width in px — neo-brutalist thick border"
     },
 
-    "motion": {
+    "motionEnabled": {
       "$value": "true",
       "$type": "boolean",
-      "$description": "Enable animations globally — respects prefers-reduced-motion"
+      "$description": "Enable animations globally — respects prefers-reduced-motion. Renamed from `motion` in ADR 0024 phase 8b to free up the `seed.motion` path for the duration+easing primitive tree in primitives.json (previously dropped on merge due to leaf/branch collision)."
     },
     "motionBase": {
       "$value": "0",
@@ -100,6 +115,17 @@
       "$value": "0.1",
       "$type": "number",
       "$description": "Duration increment in seconds — motionBase + N × motionUnit"
-    }
+    },
+
+    "$$_phase6": "_____ ADR 0024 phase 6 — moved from mp/globals.css _____",
+
+    "durationInstant":   { "$value": "50ms",  "$type": "duration", "$description": "Instant feedback duration (was --dur-instant in mp). Used for taps + micro-feedback." },
+    "durationFast":      { "$value": "100ms", "$type": "duration", "$description": "Fast UI duration (hover, micro-interactions). Ant alphabet motionUnit×1 (0.1s) — kept in sync with seed.motion.duration.fast (ADR 0027 Stage 2). NOTE: duplicate of the seed.motion tree; consolidation is a tracked follow-up." },
+    "durationBase":      { "$value": "200ms", "$type": "duration", "$description": "Base UI duration (was --dur-base in mp). Most state transitions." },
+    "durationSlow":      { "$value": "300ms", "$type": "duration", "$description": "Slow UI duration (was --dur-slow in mp). Card lifts, page transitions." },
+    "durationSlower":    { "$value": "500ms", "$type": "duration", "$description": "Slower UI duration (was --dur-slower in mp). Surface morphs." },
+    "durationThemeFade": { "$value": "800ms", "$type": "duration", "$description": "Canonical engine cross-fade duration (was --dur-theme-fade in mp). Used by every depth-toggle and heat-axis transition." },
+
+    "zIndexModal":       { "$value": "9999",  "$type": "number",   "$description": "Modal layer z-index (was --z-modal in mp). Top of UI stack — GateOverlay, sheets, dialogs above all other surfaces." }
   }
 }

@@ -10,28 +10,48 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
+    "./motion": {
+      "import": "./dist/motion/index.js",
+      "types": "./dist/motion/index.d.ts"
+    },
+    "./motion/react": {
+      "import": "./dist/motion/react.js",
+      "types": "./dist/motion/react.d.ts"
+    },
+    "./interaction": {
+      "import": "./dist/interaction/index.js",
+      "types": "./dist/interaction/index.d.ts"
+    },
+    "./interaction/react": {
+      "import": "./dist/interaction/react.js",
+      "types": "./dist/interaction/react.d.ts"
+    },
+    "./provider": {
+      "import": "./dist/provider/index.js",
+      "types": "./dist/provider/index.d.ts"
+    },
     "./tokens.css": "./dist/tokens.css",
+    "./sub-brands.css": "./dist/sub-brands.css",
     "./theme.css": "./dist/theme.css",
+    "./engine.css": "./dist/engine.css",
+    "./motion.css": "./dist/motion.css",
     "./gsap": "./dist/gsap/presets.js",
     "./framer": "./dist/framer/variants.js",
     "./animation.css": "./dist/animation-keyframes.css",
     "./tiptap.css": "./dist/tiptap-theme.css",
-    "./circadian": {
-      "import": "./dist/circadian/index.js",
-      "types": "./dist/circadian/index.d.ts"
-    },
-    "./circadian.css": "./dist/circadian.css",
+    "./responsive.css": "./dist/responsive.css",
     "./echarts-theme": "./dist/echarts-theme.json"
   },
   "files": [
     "dist",
     "tokens",
+    "vendor",
     "scripts/build-tokens-sd.mjs",
     "scripts/build-motion-presets.mjs"
   ],
   "scripts": {
-    "prebuild": "node scripts/build-tokens-sd.mjs",
-    "build": "tsup && node scripts/build-tokens-sd.mjs && node scripts/build-motion-presets.mjs && node scripts/audit-theme-namespaces.mjs && cp css/tokens.css dist/tokens.css && cp css/theme.css dist/theme.css && cp css/tiptap-theme.css dist/tiptap-theme.css && cp css/circadian.css dist/circadian.css",
+    "prebuild": "node scripts/build-tokens-sd.mjs && node scripts/build-sub-brands.mjs",
+    "build": "tsup && node scripts/build-tokens-sd.mjs && node scripts/build-sub-brands.mjs && node scripts/build-motion-presets.mjs && node scripts/audit-theme-namespaces.mjs && cp css/tokens.css dist/tokens.css && cp css/sub-brands.css dist/sub-brands.css && cp css/theme.css dist/theme.css && cp css/engine.css dist/engine.css && cp css/tiptap-theme.css dist/tiptap-theme.css && cp css/responsive.css dist/responsive.css && cp css/motion.css dist/motion.css",
     "audit:theme": "node scripts/audit-theme-namespaces.mjs",
     "validate:tokens": "node scripts/validate-token-types.mjs",
     "dev": "tsup --watch",
@@ -45,9 +65,17 @@
     "build-storybook": "storybook build"
   },
   "peerDependencies": {
-    "react": ">=19.2.6",
-    "react-dom": ">=19.2.6",
+    "motion": ">=12",
+    "motion-dom": ">=12.40.0",
+    "motion-plus": ">=2.11",
+    "react": ">=19.2.7",
+    "react-dom": ">=19.2.7",
     "tailwindcss": ">=4.3.0"
+  },
+  "peerDependenciesMeta": {
+    "motion-plus": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@base-ui/react": "1.5.0",
@@ -61,30 +89,33 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^5.2.1",
     "@size-limit/file": "^12.1.0",
-    "@storybook/addon-a11y": "^10.4.0",
-    "@storybook/addon-docs": "^10.4.0",
-    "@storybook/addon-onboarding": "^10.4.0",
-    "@storybook/addon-vitest": "^10.4.0",
-    "@storybook/react-vite": "^10.4.0",
+    "@storybook/addon-a11y": "^10.4.2",
+    "@storybook/addon-docs": "^10.4.2",
+    "@storybook/addon-onboarding": "^10.4.2",
+    "@storybook/addon-vitest": "^10.4.2",
+    "@storybook/react-vite": "^10.4.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/chroma-js": "^3.1.2",
-    "@types/node": "^25.9.1",
-    "@types/react": "^19.2.15",
+    "@types/node": "^25.9.2",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/suncalc": "^1.9.2",
-    "@vitest/browser": "^4.1.7",
-    "axe-core": "^4.11.4",
+    "@vitest/browser": "^4.1.8",
+    "axe-core": "^4.12.0",
     "jsdom": "^29.1.1",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6",
+    "motion": "^12.40.0",
+    "motion-dom": "12.40.0",
+    "motion-plus": "file:vendor/motion-plus-2.11.3.tgz",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "size-limit": "^12.1.0",
-    "storybook": "^10.4.0",
-    "style-dictionary": "^5.4.1",
+    "storybook": "^10.4.2",
+    "style-dictionary": "^5.4.3",
     "tsup": "^8.5.1",
     "typescript": "~6.0.3",
-    "vitest": "^4.1.7",
+    "vitest": "^4.1.8",
     "vitest-axe": "^0.1.0"
   },
   "keywords": [
@@ -107,9 +138,9 @@
     }
   ],
   "engines": {
-    "node": "24.15.0"
+    "node": "24.16.0"
   },
-  "packageManager": "pnpm@10.33.4",
+  "packageManager": "pnpm@10.34.1",
   "author": "Tushar Kant Naik <hi@tusharkantnaik.com>",
   "license": "UNLICENSED",
   "repository": {
@@ -119,5 +150,10 @@
   "homepage": "https://design.tusharkantnaik.com",
   "bugs": {
     "url": "https://github.com/tknatwork/nectar-design/issues"
+  },
+  "pnpm": {
+    "overrides": {
+      "qs": ">=6.15.2"
+    }
   }
 }

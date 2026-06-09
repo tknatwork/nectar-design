@@ -12,7 +12,7 @@ const containerVariants = cva('mx-auto w-full', {
     },
     padding: {
       none: '',
-      responsive: 'px-md tablet:px-lg desktop:px-xl',
+      responsive: 'px-md tablet:px-lg tablet-landscape:px-xl',
       fixed: 'px-md',
     },
   },

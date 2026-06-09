@@ -3,7 +3,6 @@
     "card": {
       "$description": "Card component tokens — surface, padding, border, shadow",
 
-      "borderRadius":  { "$value": "{map.borderRadius.LG}",   "$type": "number", "$description": "Card radius (12px = rounded-lg)" },
       "borderWidth":   { "$value": "{seed.lineWidth}",         "$type": "number", "$description": "Card border width" },
       "borderColor":   { "$value": "{map.color.neutralBorder.colorBorder}", "$type": "color", "$description": "Default border" },
 
@@ -13,7 +12,13 @@
       "paddingMD":     { "$value": "{map.size.LG}",  "$type": "number", "$description": "Default padding (24px = p-6)" },
       "paddingLG":     { "$value": "{map.size.XL}",  "$type": "number", "$description": "Large padding (32px = p-8)" },
 
-      "hoverBorderColor": { "$value": "{map.color.primary.Base}", "$type": "color", "$description": "Interactive variant hover border" }
+      "hoverBorderColor": { "$value": "{map.color.primary.Base}", "$type": "color", "$description": "Interactive variant hover border" },
+
+      "$$_softSurface": "_____ CONTENT-SURFACE RADII — collapsed onto the single tight scale (radius consolidation) _____",
+
+      "radiusSm":      { "$value": "{map.borderRadius.MD}", "$type": "dimension", "$description": "Content-surface small radius (8px = rounded-md). Collapsed onto the single tight scale — was a parallel 10px soft scale. Used by hero, work tiles, contact inputs." },
+      "radiusMd":      { "$value": "{map.borderRadius.LG}", "$type": "dimension", "$description": "Content-surface medium radius (12px = rounded-lg). Default for content card surfaces. Was 14px." },
+      "radiusLg":      { "$value": "{map.borderRadius.XL}", "$type": "dimension", "$description": "Content-surface large radius (16px = rounded-xl). For larger touch targets + CTAs. Was 20px." }
     }
   }
 }

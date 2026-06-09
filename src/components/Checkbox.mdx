@@ -1,0 +1,51 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { Checkbox } from './Checkbox';
+import * as CheckboxStories from './Checkbox.stories';
+
+<Meta of={CheckboxStories} />
+
+<Title />
+<Subtitle>Binary (and indeterminate) checkbox — 3 sizes.</Subtitle>
+
+## Overview
+
+<Description of={CheckboxStories} />
+
+<Primary />
+
+## Anatomy
+
+A square control with a 2px border that fills with `primary` when checked, showing a
+check glyph — or a minus glyph when `indeterminate`. Built on Base UI for state and
+focus management; the box scales with `size` while the glyph stays centred.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={Checkbox}
+  rows={{ prop: 'size', values: ['sm', 'md', 'lg'] }}
+  baseArgs={{ 'aria-label': 'Toggle option', defaultChecked: true }}
+/>
+
+## Usage
+
+- **Do** — use a checkbox for an independent on/off choice (one box) or several non-exclusive options stacked together.
+- **Don't** — use checkboxes for mutually exclusive choices; that's a `RadioGroup`. Reserve `indeterminate` for a parent summarising mixed children.
+
+## Accessibility
+
+- Give every checkbox a name: a wrapping `<label>` / `<Label htmlFor>`, or `aria-label` when standalone.
+- `indeterminate` is a visual + `aria` mixed state — it is not a third value; the box is still semantically checked or not.
+- Fully keyboard-operable (Space toggles); `disabled` removes it from the tab order via Base UI.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Checkbox consumes **semantic** tokens — neutral border, `primary` fill when checked:
+
+<TokenTable names={['--border', '--primary', '--primary-fg', '--ring']} />

@@ -1,0 +1,42 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as SkeletonStories from './Skeleton.stories';
+
+<Meta of={SkeletonStories} />
+
+<Title />
+<Subtitle>Animated placeholder for content that hasn't loaded yet.</Subtitle>
+
+## Overview
+
+<Description of={SkeletonStories} />
+
+<Primary />
+
+## Anatomy
+
+A skeleton is a single pulsing block. Shape comes from `variant` — `default`
+(rectangle), `circular` (avatar), or `text` (a 75%-width line). Size is set by
+the caller via `className` (`h-*`, `w-*`); the muted fill and pulse are fixed.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — mirror the real content's layout: a circle where the avatar lands, text lines where copy will flow.
+- **Don't** — leave skeletons up after data arrives, or animate so many at once that the pulse becomes a distracting strobe.
+
+## Accessibility
+
+- Renders with `aria-hidden="true"` so the placeholder shape is skipped by screen readers.
+- Mark the surrounding region `aria-busy="true"` while loading, then announce the loaded content once it swaps in.
+- The pulse honours the platform; pair it with `prefers-reduced-motion` handling at the app level if motion-sensitive users are a concern.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Skeleton consumes **semantic** tokens through Tailwind utilities (`bg-muted`, `rounded-md`, `rounded-sm`):
+
+<TokenTable names={['--muted', '--radius-sm', '--radius-md']} />

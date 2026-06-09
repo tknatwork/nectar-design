@@ -86,15 +86,16 @@
     /* breakpoint */
     --seed-breakpoint-android: 360px; /* Android minimum — Galaxy/Pixel base viewport */
     --seed-breakpoint-ios: 390px; /* iOS minimum — iPhone 16e viewport */
-    --seed-breakpoint-tablet: 768px; /* Tablet — iPad Mini portrait */
-    --seed-breakpoint-desktop: 1024px; /* Desktop — laptops/iPad Pro landscape */
+    --seed-breakpoint-tablet: 768px; /* Tablet vertical — iPad Mini / iPad portrait */
+    --seed-breakpoint-tabletHorizontal: 1024px; /* Tablet horizontal — iPad / iPad Pro landscape */
+    --seed-breakpoint-desktop: 1280px; /* Desktop / laptop — MacBook + standard 13–15" panels */
     --seed-breakpoint-wide: 1440px; /* Wide desktop — QHD+ displays */
 
     /* container */
-    --seed-container-sm: 640px; /* Small container max-width */
-    --seed-container-md: 768px; /* Medium container max-width */
-    --seed-container-lg: 1200px; /* Desktop container max-width */
-    --seed-container-xl: 1400px; /* Wide container max-width */
+    --seed-container-sm: 720px; /* Tablet content width (ADR 0027 device-class content-max) */
+    --seed-container-md: 1024px; /* Tablet-landscape content width */
+    --seed-container-lg: 1280px; /* Desktop content width (default) */
+    --seed-container-xl: 1440px; /* Wide content width */
 
     /* typography */
     --seed-typography-fontFamily-sans: 'Plus Jakarta Sans', sans-serif; /* Body — variable geometric sans (wght 200-800) */
@@ -152,10 +153,91 @@
     --seed-zIndex-50: 50;
 
     /* motion */
-    --seed-motion: true; /* Enable animations globally — respects prefers-reduced-motion */
+    --seed-motion-duration-instant: 0.05s; /* Micro-interactions (taps) — grammar exception, below the ×1 grid */
+    --seed-motion-duration-fast: 0.1s; /* Quick transitions (hover, toggle) — Ant alphabet, motionUnit×1 (0.1s) */
+    --seed-motion-duration-press: 0.16s; /* Button press feedback — grammar exception (Emil Kowalski: 100–160ms for tactile :active feedback) */
+    --seed-motion-duration-base: 0.2s; /* Standard transitions — Ant alphabet, motionUnit×2 (0.2s) */
+    --seed-motion-duration-slow: 0.3s; /* Complex transitions (expand, slide) — Ant alphabet, motionUnit×3 (0.3s) */
+    --seed-motion-duration-slower: 0.5s; /* Page-level transitions — grammar exception, above the ×3 grid */
+    --seed-motion-easing-easeOut: cubic-bezier(0.215, 0.61, 0.355, 1); /* Default exit — smooth deceleration */
+    --seed-motion-easing-easeInOut: cubic-bezier(0.645, 0.045, 0.355, 1); /* Symmetric — enter + exit */
+    --seed-motion-easing-easeOutCirc: cubic-bezier(0.08, 0.82, 0.17, 1); /* Snappy exit — organic feel */
+    --seed-motion-easing-easeInOutCirc: cubic-bezier(0.78, 0.14, 0.15, 0.86); /* Snappy symmetric */
+    --seed-motion-easing-easeOutBack: cubic-bezier(0.12, 0.4, 0.29, 1.46); /* Bouncy overshoot — playful */
+    --seed-motion-easing-easeInBack: cubic-bezier(0.71, -0.46, 0.88, 0.6); /* Anticipation pull-back */
+    --seed-motion-easing-easeOutQuint: cubic-bezier(0.23, 1, 0.32, 1); /* Aggressive deceleration */
+    --seed-motion-easing-easeInQuint: cubic-bezier(0.755, 0.05, 0.855, 0.06); /* Slow start, fast end */
+    --seed-motion-easing-standard: cubic-bezier(0.4, 0, 0.2, 1); /* Material/Apple standard curve — symmetric ease for general state transitions, clip-path animations, theme cross-fades */
+    --seed-motion-easing-easeInOutStrong: cubic-bezier(0.77, 0, 0.175, 1); /* Emil Kowalski — stronger symmetric curve for on-screen movement (more punch than easeInOut) */
+    --seed-motion-easing-easeDrawer: cubic-bezier(0.32, 0.72, 0, 1); /* iOS-like drawer curve from Ionic — sheet/drawer slide-in/out */
+    --seed-motion-spring-card: cubic-bezier(0.34, 1.56, 0.64, 1); /* Card lift / hover — approximates Framer spring k=300 d=20 */
+    --seed-motion-spring-button: cubic-bezier(0.34, 1.8, 0.64, 1); /* Button press spring-back — approximates Framer spring k=500 d=25 */
+    --seed-motion-spring-nav: cubic-bezier(0.45, 1.2, 0.4, 1); /* Nav / pill movement — approximates Framer spring k=200 d=30 */
+
+    /* engine */
+    --seed-engine-hue-rest: 250; /* Hue (deg) at heat=0 — cool blue */
+    --seed-engine-hue-heatSpan: 280; /* Degrees subtracted across heat 0→100 (heat=100 → 250−280 = −30 ≡ 330 pink) */
+    --seed-engine-lightness-bg-lightMode: 0.96;
+    --seed-engine-lightness-bg-darkMode: 0.15;
+    --seed-engine-lightness-heading-lightMode: 0.2;
+    --seed-engine-lightness-heading-darkMode: 0.95;
+    --seed-engine-lightness-body-lightMode: 0.35;
+    --seed-engine-lightness-body-darkMode: 0.68;
+    --seed-engine-lightness-muted-lightMode: 0.5;
+    --seed-engine-lightness-muted-darkMode: 0.6;
+    --seed-engine-lightness-accent-lightMode: 0.5;
+    --seed-engine-lightness-accent-darkMode: 0.72;
+    --seed-engine-lightness-surface-lightMode: 0.98;
+    --seed-engine-lightness-surface-darkMode: 0.18;
+    --seed-engine-lightness-btnBg-lightMode: 0.45;
+    --seed-engine-lightness-btnBg-darkMode: 0.78;
+    --seed-engine-lightness-btnFg-lightMode: 0.98;
+    --seed-engine-lightness-btnFg-darkMode: 0.15;
+    --seed-engine-chroma-bg-lightMode: 0.02;
+    --seed-engine-chroma-bg-darkMode: 0.16;
+    --seed-engine-chroma-accent-lightMode: 0.28; /* Honey-S/V vivid (re-anchored from 0.26) */
+    --seed-engine-chroma-accent-darkMode: 0.28; /* Honey-S/V vivid (re-anchored from 0.20) */
+
+    /* atmosphere */
+    --seed-atmosphere-orb-primary-lightness-lightMode: 0.55;
+    --seed-atmosphere-orb-primary-lightness-darkMode: 0.72;
+    --seed-atmosphere-orb-primary-chroma-lightMode: 0.28;
+    --seed-atmosphere-orb-primary-chroma-darkMode: 0.28;
+    --seed-atmosphere-orb-primary-opacity-lightMode: 0.55;
+    --seed-atmosphere-orb-primary-opacity-darkMode: 0.85;
+    --seed-atmosphere-orb-secondary-hueOffset: 40; /* Degrees added to --dynamic-hue */
+    --seed-atmosphere-orb-secondary-lightness-lightMode: 0.45;
+    --seed-atmosphere-orb-secondary-lightness-darkMode: 0.65;
+    --seed-atmosphere-orb-secondary-chroma-lightMode: 0.27;
+    --seed-atmosphere-orb-secondary-chroma-darkMode: 0.27;
+    --seed-atmosphere-orb-secondary-opacity-lightMode: 0.5;
+    --seed-atmosphere-orb-secondary-opacity-darkMode: 0.8;
+    --seed-atmosphere-pageTint-lightnessOffset: 0.02; /* Added to --L-bg for the page-tint gradient lightness */
+    --seed-atmosphere-pageTint-chroma-lightMode: 0.14;
+    --seed-atmosphere-pageTint-chroma-darkMode: 0.01;
+    --seed-atmosphere-pageTint-alpha: 0.85;
+    --seed-atmosphere-sunset-envelope-peak: 40; /* Depth at which the bloom peaks */
+    --seed-atmosphere-sunset-envelope-sigma: 20; /* Gaussian σ over depth 0–100 */
+    --seed-atmosphere-sunset-layer1-lightness: 0.75;
+    --seed-atmosphere-sunset-layer1-chroma: 0.18;
+    --seed-atmosphere-sunset-layer1-hue: 70; /* Golden yellow */
+    --seed-atmosphere-sunset-layer1-intensity: 0.55; /* Peak alpha multiplier */
+    --seed-atmosphere-sunset-layer2-lightness: 0.78;
+    --seed-atmosphere-sunset-layer2-chroma: 0.16;
+    --seed-atmosphere-sunset-layer2-hue: 50;
+    --seed-atmosphere-sunset-layer2-intensity: 0.3;
 
     /* colorPrimary */
     --seed-colorPrimary: var(--seed-color-pastel-honey); /* Primary brand color — honey golden */
+
+    /* brandRed */
+    --seed-brandRed: #E4342C; /* Brand red — alert / urgency accent. Moved from mp/globals.css per ADR 0024 phase 3. */
+
+    /* inkBone */
+    --seed-inkBone: #F4ECE0; /* Ink mode bone — light surface tone for case-study route override. Moved from mp/globals.css per ADR 0024 phase 3. */
+
+    /* inkDeep */
+    --seed-inkDeep: #0A0A0D; /* Ink mode deep — dark surface tone for case-study route override. Moved from mp/globals.css per ADR 0024 phase 3. */
 
     /* colorSuccess */
     --seed-colorSuccess: var(--seed-color-success); /* Success intent — muted sage */
@@ -199,11 +281,35 @@
     /* lineWidth */
     --seed-lineWidth: 3; /* Default border width in px — neo-brutalist thick border */
 
+    /* motionEnabled */
+    --seed-motionEnabled: true; /* Enable animations globally — respects prefers-reduced-motion. Renamed from `motion` in ADR 0024 phase 8b to free up the `seed.motion` path for the duration+easing primitive tree in primitives.json (previously dropped on merge due to leaf/branch collision). */
+
     /* motionBase */
     --seed-motionBase: 0; /* Base motion duration in seconds — derivatives add motionUnit increments */
 
     /* motionUnit */
     --seed-motionUnit: 0.1; /* Duration increment in seconds — motionBase + N × motionUnit */
+
+    /* durationInstant */
+    --seed-durationInstant: 0.05s; /* Instant feedback duration (was --dur-instant in mp). Used for taps + micro-feedback. */
+
+    /* durationFast */
+    --seed-durationFast: 0.1s; /* Fast UI duration (hover, micro-interactions). Ant alphabet motionUnit×1 (0.1s) — kept in sync with seed.motion.duration.fast (ADR 0027 Stage 2). NOTE: duplicate of the seed.motion tree; consolidation is a tracked follow-up. */
+
+    /* durationBase */
+    --seed-durationBase: 0.2s; /* Base UI duration (was --dur-base in mp). Most state transitions. */
+
+    /* durationSlow */
+    --seed-durationSlow: 0.3s; /* Slow UI duration (was --dur-slow in mp). Card lifts, page transitions. */
+
+    /* durationSlower */
+    --seed-durationSlower: 0.5s; /* Slower UI duration (was --dur-slower in mp). Surface morphs. */
+
+    /* durationThemeFade */
+    --seed-durationThemeFade: 0.8s; /* Canonical engine cross-fade duration (was --dur-theme-fade in mp). Used by every depth-toggle and heat-axis transition. */
+
+    /* zIndexModal */
+    --seed-zIndexModal: 9999; /* Modal layer z-index (was --z-modal in mp). Top of UI stack — GateOverlay, sheets, dialogs above all other surfaces. */
 
     /* Tier 2 Map (derived from seed) */
     /* color */
@@ -286,12 +392,14 @@
     --map-controlHeight-XS: 24; /* Extra small control — h-6 (60% of base) */
 
     /* borderRadius */
-    --map-borderRadius-XS: 2; /* Minimal rounding */
-    --map-borderRadius-SM: 4; /* Default (matches seed.borderRadius) */
-    --map-borderRadius-MD: 8; /* Medium rounding */
-    --map-borderRadius-LG: 12; /* Large rounding */
-    --map-borderRadius-XL: 16; /* Extra large rounding */
-    --map-borderRadius-Full: 9999; /* Pill shape */
+    --map-borderRadius-none: 0; /* No rounding (rounded-none) */
+    --map-borderRadius-XS: 2px; /* Minimal rounding */
+    --map-borderRadius-SM: 4px; /* Small (rounded-sm) — matches seed.borderRadius */
+    --map-borderRadius-MD: 8px; /* Medium rounding (rounded-md) */
+    --map-borderRadius-LG: 12px; /* Large rounding (rounded-lg) */
+    --map-borderRadius-XL: 16px; /* Extra large rounding (rounded-xl) */
+    --map-borderRadius-2XL: 24px; /* Chrome / atmospheric surfaces — glass panels, GlassNav, AccessGate (rounded-2xl) */
+    --map-borderRadius-Full: 9999px; /* Pill shape (rounded-full) */
 
     /* fontSize */
     --map-fontSize-XS: 10; /* Fine print */
@@ -396,15 +504,19 @@
     --grid-margin-tablet: var(--seed-spacing-8); /* 32px tablet margin */
     --grid-margin-desktop: var(--seed-spacing-10); /* 40px desktop margin */
     --grid-margin-wide: var(--seed-spacing-12); /* 48px wide margin */
-    --grid-max-width-desktop: var(--seed-container-lg); /* 1200px desktop container */
-    --grid-max-width-wide: var(--seed-container-xl); /* 1400px wide container */
+    --grid-max-width-desktop: var(--seed-container-lg); /* 1280px desktop container */
+    --grid-max-width-wide: var(--seed-container-xl); /* 1440px wide container */
 
     /* border */
     --border-w: var(--seed-borderWidth-3); /* Default thick border (neo-brutalist) */
-    --border-radius: var(--seed-borderRadius-sm); /* Small radius (4px) — structured, less bubbly */
 
     /* shadow */
     --shadow: var(--seed-shadow-md); /* Default hard shadow */
+    --shadow-elevation1: 0 1px 2px oklch(0 0 0 / 0.08), 0 1px 4px oklch(0 0 0 / 0.04); /* Subtle resting elevation — input fields, low-emphasis cards */
+    --shadow-elevation2: 0 2px 6px oklch(0 0 0 / 0.10), 0 4px 12px oklch(0 0 0 / 0.06); /* Standard elevation — default cards, raised surfaces */
+    --shadow-elevation3: 0 4px 12px oklch(0 0 0 / 0.16), 0 8px 24px oklch(0 0 0 / 0.10); /* Floating elevation — hover state, lifted cards */
+    --shadow-elevation4: 0 12px 48px oklch(0 0 0 / 0.32), 0 2px 8px oklch(0 0 0 / 0.18); /* Menu/dropdown/popover elevation — strong drop on dark or bright backgrounds (was inline in GlassNav drop) */
+    --shadow-elevation5: 0 24px 64px oklch(0 0 0 / 0.40), 0 8px 16px oklch(0 0 0 / 0.20); /* Modal/sheet elevation — full overlays */
 
     /* a11y */
     --alias-a11y-focus-ring-width: 3px; /* AAA visible focus indicator width */
@@ -413,10 +525,14 @@
     --alias-a11y-min-touch-target-enhanced: 48px; /* AAA enhanced touch target */
 
     /* motion */
+    --motion-ease-standard: cubic-bezier(0.4, 0, 0.2, 1); /* Material/Apple standard curve — for animation-timing-function consumers (view-transition, @keyframes) */
+    --motion-ease-out: cubic-bezier(0.215, 0.61, 0.355, 1); /* Default exit deceleration — matches seed.motion.easing.easeOut */
     --transition-fast: var(--seed-motion-duration-instant) var(--seed-motion-easing-easeOutCirc); /* Instant snap — near-zero delay, snappy curve */
     --transition-base: var(--seed-motion-duration-base) var(--seed-motion-easing-easeOut); /* Standard smooth — default for most interactions */
     --transition-bounce: var(--seed-motion-duration-slow) var(--seed-motion-easing-easeOutBack); /* Slow + overshoot — playful, visible bounce */
     --transition-snap: var(--seed-motion-duration-fast) var(--seed-motion-easing-easeInOutCirc); /* Quick + symmetric — punchy, mechanical feel */
+    --transition-standard: var(--seed-motion-duration-base) var(--seed-motion-easing-standard); /* Material/Apple standard — symmetric ease at base duration (200ms). For general state, theme cross-fades, clip-path. Composes from primitives now that ADR 0024 phase 8b unblocked the seed.motion path (was leaf/branch collision). */
+    --transition-standardSlow: var(--seed-motion-duration-slow) var(--seed-motion-easing-standard); /* 300ms standard ease — card hovers, glass surface interactions (was 280ms inline in mp). Composes from primitives now (phase 8b). */
   }
 
   /* ── Tier 4: Component Tokens ──────────────────────────────────────── */
@@ -430,8 +546,6 @@
     --badge-paddingInlineLG: var(--map-size-SM); /* Large padding (12px = px-3) */
     --badge-fontSizeSM: var(--map-fontSize-XS); /* Small/default font (10px ~ text-xs) */
     --badge-fontSizeLG: var(--map-fontSize-SM); /* Large font (13px ~ text-sm) */
-    --badge-borderRadius: var(--map-borderRadius-MD); /* Default radius (8px = rounded-md) */
-    --badge-borderRadiusSM: var(--map-borderRadius-SM); /* Small radius (4px = rounded-sm) */
     --badge-defaultBg: var(--map-color-neutralFill-colorFillSecondary); /* Default intent — muted fill */
     --badge-defaultFg: var(--map-color-neutralText-colorTextSecondary); /* Default intent — muted text */
     --badge-primaryBg: var(--map-color-primary-Bg); /* Primary intent bg (10% tint) */
@@ -449,9 +563,6 @@
     --button-paddingInlineLG: var(--map-size-LG); /* Large horizontal padding (24px = px-6) */
     --button-fontSize: var(--map-fontSize-SM); /* Default/small font size (13px ~ text-sm) */
     --button-fontSizeLG: var(--seed-fontSize); /* Large font size (16px = text-base) */
-    --button-borderRadius: var(--map-borderRadius-MD); /* Default radius (8px = rounded-md) */
-    --button-borderRadiusSM: var(--map-borderRadius-SM); /* Small radius (4px = rounded-sm) */
-    --button-borderRadiusLG: var(--map-borderRadius-LG); /* Large radius (12px = rounded-lg) */
     --button-primaryBg: var(--map-color-primary-Base); /* Primary intent background */
     --button-primaryFg: var(--seed-colorTextBase); /* Primary intent text — dark on honey */
     --button-accentBg: var(--map-color-accent-Base); /* Accent intent background */
@@ -461,7 +572,6 @@
     --button-gap: var(--map-size-XS); /* Icon-text gap (8px = gap-2) */
 
     /* card */
-    --card-borderRadius: var(--map-borderRadius-LG); /* Card radius (12px = rounded-lg) */
     --card-borderWidth: var(--seed-lineWidth); /* Card border width */
     --card-borderColor: var(--map-color-neutralBorder-colorBorder); /* Default border */
     --card-bg: var(--map-color-neutralBg-colorBgContainer); /* Card surface */
@@ -469,12 +579,17 @@
     --card-paddingMD: var(--map-size-LG); /* Default padding (24px = p-6) */
     --card-paddingLG: var(--map-size-XL); /* Large padding (32px = p-8) */
     --card-hoverBorderColor: var(--map-color-primary-Base); /* Interactive variant hover border */
+    --card-radiusSm: var(--map-borderRadius-MD); /* Content-surface small radius (8px = rounded-md). Collapsed onto the single tight scale — was a parallel 10px soft scale. Used by hero, work tiles, contact inputs. */
+    --card-radiusMd: var(--map-borderRadius-LG); /* Content-surface medium radius (12px = rounded-lg). Default for content card surfaces. Was 14px. */
+    --card-radiusLg: var(--map-borderRadius-XL); /* Content-surface large radius (16px = rounded-xl). For larger touch targets + CTAs. Was 20px. */
 
     /* glass */
-    --glass-frostedBlurSurface: 8px; /* Frosted blur for shallow surfaces (containers, panels) */
-    --glass-frostedBlurRaised: 12px; /* Frosted blur for raised cards (default GlassCard depth) */
-    --glass-frostedBlurFloating: 18px; /* Frosted blur for floating overlays (dialogs, modals) */
-    --glass-frostedSaturate: 162%; /* Color saturation boost through the frosted layer. 162% validated in /tmp/glass-demo/ on 2026-05-21. */
+    --glass-frostedBlurSurface: 20px; /* Frosted blur — unified to 20px across all tiers per the NavPill recipe (2026-05-26). Surface tier intent: shallow cards/containers. Blur is constant across tiers; tiers differentiate via alpha + shadow. */
+    --glass-frostedBlurRaised: 20px; /* Frosted blur — unified to 20px (was 12px). See frostedBlurSurface rationale. */
+    --glass-frostedBlurFloating: 20px; /* Frosted blur — unified to 20px (was 18px). See frostedBlurSurface rationale. */
+    --glass-frostedSaturate: 180%; /* Color saturation boost through the frosted layer. 180% (1.8) per the NavPill recipe (was 162% from 2026-05-21 Migrim tuning). */
+    --glass-frostedChroma: 0.012; /* OKLCH chroma applied to glass background fills (2026-05-26). 0.012 matches the NavPill recipe — subtle tint that doesn't compete with content. Was 0.02 hard-coded in mp/globals.css glass-bg formula. */
+    --glass-frostedBorderWidth: 1.5px; /* Border width on every glass surface (2026-05-26). 1.5px matches the NavPill recipe (was 1px in .glass class). Slightly more presence makes the edge highlight read at typical card sizes. */
     --glass-frostedBg: rgba(85, 85, 85, 0.12); /* Frosted plate tint. 10-12% gray gives milky look without crushing legibility. */
     --glass-frostedBorderLight: rgba(255, 255, 255, 0.28); /* Top edge highlight border in light mode */
     --glass-frostedBorderDark: rgba(255, 255, 255, 0.10); /* Top edge highlight border in dark mode (reduced for contrast) */
@@ -483,14 +598,25 @@
     --glass-frostedShadowFloating: 0 30px 80px rgba(0, 0, 0, 0.45); /* Drop shadow for floating depth */
     --glass-frostedInsetTop: inset 0 1px 0 rgba(255, 255, 255, 0.30); /* Inset top highlight (light bleed simulation) */
     --glass-frostedInsetBottom: inset 0 -1px 0 rgba(0, 0, 0, 0.15); /* Inset bottom shadow (depth anchor) */
-    --glass-liquidDisplacementScale: 10; /* feDisplacementMap scale. Subtle default — set 0 to disable. Tune via mp/app/layout.tsx <GlassFilterDefs/>. Demo /tmp/glass-demo/ used scale 20 — production keeps subtler so text stays readable. */
+    --glass-liquidDisplacementScale: 10; /* feDisplacementMap scale. Subtle default — set 0 to disable. Tune via the consuming app's <GlassFilterDefs/> SVG. Reference demo used scale 20 — production keeps subtler so text stays readable. */
     --glass-liquidNoiseFrequency: 0.012; /* feTurbulence baseFrequency. Lower = bigger ripples. */
     --glass-liquidNoiseOctaves: 2; /* feTurbulence numOctaves. 2 = subtle, 4 = rougher. */
-    --glass-liquidFilterId: glass-liquid; /* SVG filter id consumed via filter: url(#glass-liquid). mp/app/layout.tsx must mount the <defs><filter id=...> matching this id. */
-    --glass-borderRadius: var(--map-borderRadius-XL); /* Glass surface radius (20-28px range) — slightly larger than standard card for the rounded-pill look from Migrim */
+    --glass-liquidFilterId: glass-liquid; /* SVG filter id consumed via filter: url(#glass-liquid). The consuming app must mount a matching <defs><filter id=...> somewhere in the document tree (typically root layout). */
     --glass-specularColor: rgba(255, 255, 255, 0.35); /* Specular peak color at cursor position */
     --glass-specularMidColor: rgba(255, 255, 255, 0.08); /* Specular midtone (25% radius) */
     --glass-specularMixBlend: overlay; /* Blend mode for specular layer (overlay = pops against any bg) */
+    --glass-alphaSurfaceLight: 0.20; /* Surface tier translucency in light mode (most translucent — kit-home aesthetic) */
+    --glass-alphaSurfaceDark: 0.62; /* Surface tier translucency in dark mode (denser glass) */
+    --glass-alphaRaisedLight: 0.45; /* Raised tier translucency (cards, popovers) light mode */
+    --glass-alphaRaisedDark: 0.78; /* Raised tier translucency dark mode */
+    --glass-alphaFloatingLight: 0.62; /* Floating tier (hero cards, sheets) light mode */
+    --glass-alphaFloatingDark: 0.85; /* Floating tier dark mode */
+    --glass-alphaChromeLight: 0.88; /* Chrome tier (nav, fixed UI) light mode — high opacity for readability */
+    --glass-alphaChromeDark: 0.72; /* Chrome tier dark mode — lerps to 0.72 (was 0.88) to match the NavPill recipe. The depth engine still resolves to 0.88 at full light and 0.72 at full dark; the slightly lower dark alpha lets the page colour bleed through enough to feel like glass. */
+    --glass-alphaSolidLight: 0.96; /* Solid tier (modals) light mode — near-opaque */
+    --glass-alphaSolidDark: 0.96; /* Solid tier dark mode */
+    --glass-radiusMobile: var(--map-borderRadius-2XL); /* Glass surface radius on mobile (<768px) — 24px, on the single tight scale (was 24px). */
+    --glass-radiusDesktop: var(--map-borderRadius-2XL); /* Glass surface radius on tablet+ (>=768px) — 24px, collapsed onto the tight scale (was 36px). */
 
     /* input */
     --input-controlHeight: var(--seed-controlHeight); /* Default height (md = 40px) */
@@ -500,13 +626,18 @@
     --input-paddingInlineSM: var(--map-size-SM); /* Small horizontal padding (12px = px-3) */
     --input-fontSize: var(--map-fontSize-SM); /* Default/small font size (13px ~ text-sm) */
     --input-fontSizeLG: var(--seed-fontSize); /* Large font size (16px = text-base) */
-    --input-borderRadius: var(--map-borderRadius-MD); /* Default radius (8px = rounded-md) */
-    --input-borderRadiusSM: var(--map-borderRadius-SM); /* Small radius (4px = rounded-sm) */
-    --input-borderRadiusLG: var(--map-borderRadius-LG); /* Large radius (12px = rounded-lg) */
     --input-borderColor: var(--map-color-neutralBorder-colorBorder); /* Default border */
     --input-errorBorderColor: var(--map-color-error-Base); /* Error state border */
     --input-bg: var(--map-color-neutralBg-colorBgContainer); /* Input background */
     --input-placeholderColor: var(--map-color-neutralText-colorTextTertiary); /* Placeholder text — 45% opacity */
+
+    /* toast */
+    --toast-successBg: oklch(0.72 0.16 145); /* Toast success background — vibrant emerald oklch. Brighter than nd's semantic success (which is muted sage for in-flow UI). */
+    --toast-errorBg: oklch(0.65 0.20 25); /* Toast error background — vibrant red oklch. Brighter than nd's semantic destructive (which is terracotta). */
+    --toast-warningBg: oklch(0.75 0.16 80); /* Toast warning background — vibrant amber oklch. Brighter than nd's semantic warning (muted). */
+    --toast-defaultLightness: var(--L-accent); /* Default toast lightness — pulls from runtime circadian engine in mp. Static fallback: 0.72. */
+    --toast-defaultChroma: 0.12; /* Default toast chroma — subtle but visible against any bg. */
+    --toast-defaultHueRef: var(--dynamic-hue); /* Default toast hue — follows circadian-driven --dynamic-hue. Composed in mp/globals.css; primitive lives here. */
   }
 
   /* ── Tier 5 Light (default) ──────────────────────────────────────────── */

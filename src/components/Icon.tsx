@@ -1,3 +1,5 @@
+'use client';
+
 import { Icon as IconifyIcon } from '@iconify/react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../cn';

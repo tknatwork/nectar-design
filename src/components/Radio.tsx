@@ -1,3 +1,5 @@
+'use client';
+
 import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
 import { Radio as BaseRadio } from '@base-ui/react/radio';
 import { cva, type VariantProps } from 'class-variance-authority';

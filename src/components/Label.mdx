@@ -1,0 +1,51 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { Label } from './Label';
+import * as LabelStories from './Label.stories';
+
+<Meta of={LabelStories} />
+
+<Title />
+<Subtitle>Form-control label — default, error, and disabled tones, with an optional required mark.</Subtitle>
+
+## Overview
+
+<Description of={LabelStories} />
+
+<Primary />
+
+## Anatomy
+
+A native `<label>` carrying the field name, optionally followed by a red required
+asterisk (`required`). Its `variant` recolours the text to signal the field's state,
+and a `peer-disabled:` hook lets it dim automatically when its control is disabled.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={Label}
+  rows={{ prop: 'variant', values: ['default', 'error', 'disabled'] }}
+  baseArgs={{ children: 'Email address' }}
+/>
+
+## Usage
+
+- **Do** — set `htmlFor` to the control's `id` so clicking the label focuses the input.
+- **Don't** — convey "required" with the asterisk alone; the asterisk is `aria-hidden`, so also set `required`/`aria-required` on the control.
+
+## Accessibility
+
+- `htmlFor` ↔ control `id` is the association screen readers use; without it the label is decorative.
+- The required `*` is `aria-hidden="true"` — it's a visual cue only, never the source of the required semantics.
+- Prefer the `error`/`disabled` variants over raw colour so the tone tracks the field state consistently.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Label consumes **semantic** text-colour tokens, one per `variant`:
+
+<TokenTable names={['--fg', '--destructive', '--muted-fg']} />

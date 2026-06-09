@@ -88,7 +88,7 @@ describe('Grid', () => {
   it('applies responsive preset', () => {
     const { container } = render(<Grid responsive="desktop">Items</Grid>);
     const el = container.firstChild as HTMLElement;
-    expect(el.className).toContain('desktop:grid-cols-3');
+    expect(el.className).toContain('tablet-landscape:grid-cols-3');
   });
 
   it('applies token-based gap', () => {

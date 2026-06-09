@@ -9,7 +9,7 @@ Index: self
 
 # Nectar Design — System Index
 
-> **Scope**: this index is local to the `nectar-design` repo. The full multi-repo central+federal pairing pattern is established in the parent portfolio at `Portfolio/docs/SYSTEM-INDEX.md`. nd is consumed by portfolio via git submodule, but it has its own AI sessions that need a small registry of nd-side paired files.
+> **Scope**: this index is local to the standalone `nectar-design` mirror repo. The full multi-repo central+federal pairing pattern is established in the parent portfolio at `Portfolio/docs/SYSTEM-INDEX.md`. Post-[ADR 0024](https://github.com/tknatwork/myportfolio/blob/main/docs/decisions/0024-monorepo-nd-native.md), nd lives in-tree in mp as a native pnpm workspace package; this repo is a one-way sync target. AI sessions in this clone are read-only with respect to development; canonical edits land in mp.
 >
 > **Rule**: every entry below has a corresponding `<!-- === SYSTEM PAIRING === ... === END PAIRING === -->` block at the top of the file itself. Adding a new nd system-level file requires both: a row here AND a header in the file.
 
@@ -33,7 +33,7 @@ Index: self
 | Portfolio file | What it provides nd | Consequence for nd |
 |----------------|---------------------|---------------------|
 | `Portfolio/config/integration-compat.yaml` | version compatibility matrix nd's `package.json` must respect | bumping nd's React/Tailwind/etc requires a coordinated portfolio update |
-| `Portfolio/docs/SYSTEM-INDEX.md` | central registry of portfolio-side paired files | nd files appear there only via the submodule pointer; no nd-side files are individually indexed in portfolio |
+| `Portfolio/docs/SYSTEM-INDEX.md` | central registry of portfolio-side paired files | post-[ADR 0024](https://github.com/tknatwork/myportfolio/blob/main/docs/decisions/0024-monorepo-nd-native.md), nd files live in-tree in mp and are indexed alongside everything else |
 | `Portfolio/.github/dependabot.yml` (Dependabot) + `renovate.json` here (Renovate) | dependency bump automation | see "Dependency Management" in `CLAUDE.md` for the full split |
 
 ## How the pairing pattern works in nd
@@ -59,4 +59,4 @@ Same as portfolio:
 ## See also
 
 - Portfolio's [`docs/SYSTEM-INDEX.md`](https://github.com/tknatwork/myportfolio/blob/main/docs/SYSTEM-INDEX.md) — full pairing pattern reference (where this convention originated)
-- Parent workspace [`design-docs/CLAUDE.md`](../../AGENTS.md) — dual-clone protocol for nd (dedicated vs submodule)
+- Parent workspace [`design-docs/CLAUDE.md`](../../AGENTS.md) — post-ADR 0024 source-of-truth model (nd lives in mp as a workspace package; this standalone clone is a one-way sync target)

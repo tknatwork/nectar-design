@@ -1,0 +1,50 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as ListStories from './List.stories';
+
+<Meta of={ListStories} />
+
+<Title />
+<Subtitle>Vertical list container — 3 spacing variants, ordered or unordered.</Subtitle>
+
+## Overview
+
+<Description of={ListStories} />
+
+<Primary />
+
+## Anatomy
+
+`List` is a flex column that renders a `<ul>` (or `<ol>` when `ordered`). Its
+`variant` sets row rhythm: `default` flush, `spaced` with a small gap, or `divided`
+with separator lines. Each `ListItem` is an `<li>` with its own `size` (row padding)
+and an `interactive` flag that adds a pointer cursor and hover wash.
+
+## Props
+
+<Controls />
+
+## Variants
+
+Two independent axes split across the container and the item: `List` owns
+`variant` (`default` / `spaced` / `divided`), while `ListItem` owns `size`
+(`sm` / `md` / `lg`) and `interactive`. The **Variants**, **Sizes**, and
+**Interactive** stories demonstrate each.
+
+## Usage
+
+- **Do** — use `variant="divided"` for dense settings rows, and mark rows `interactive` only when clicking them actually does something.
+- **Don't** — set `ordered` for content where sequence is irrelevant; the `<ol>` numbering implies an order to assistive tech.
+
+## Accessibility
+
+- Renders a real `<ul>`/`<ol>` of `<li>` items, so screen readers announce list semantics and item counts.
+- Choose `ordered` only when sequence carries meaning — it switches the element to `<ol>` and exposes position.
+- An `interactive` row is styled but not itself a control; nest a `<button>`/`<a>` (or wire keyboard handlers) so it's reachable and operable by keyboard.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+List consumes **semantic** tokens through Tailwind utilities (`text-fg`, `divide-border`, `hover:bg-muted`):
+
+<TokenTable names={['--fg', '--border', '--muted']} />

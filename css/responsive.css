@@ -1,0 +1,91 @@
+/*
+ * nectar-design / responsive.css — device-class layout tokens (ADR 0027).
+ *
+ * Mobile-first. @media uses static breakpoint literals because CSS @media
+ * cannot read var() (same constraint as theme.css breakpoints). Safe-area
+ * insets are RUNTIME env() — never tokenized — composed via max(token, env()).
+ * Import alongside theme.css:  @import "nectar-design/responsive.css";
+ *
+ * Device classes + values are the signed-off board (docs/design-system/layout-structures.md):
+ *   mobile / tablet(768) / tablet-landscape(1024) / desktop(1440) / wide(1920).
+ */
+
+:root {
+  /* mobile (base) */
+  --layout-gutter: 16px;
+  --layout-page-margin: 16px;
+  --layout-content-max: 100%;
+  --layout-columns: 4;
+
+  /* safe-area insets — device-reported at runtime, never tokenized */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+
+  /* effective page inset = max(token margin, device safe inset) */
+  --layout-inset-left: max(var(--layout-page-margin), var(--safe-left));
+  --layout-inset-right: max(var(--layout-page-margin), var(--safe-right));
+}
+
+@media (min-width: 768px) {
+  /* tablet (portrait) */
+  :root {
+    --layout-gutter: 24px;
+    --layout-page-margin: 32px;
+    --layout-content-max: 720px;
+    --layout-columns: 8;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* tablet (landscape) */
+  :root {
+    --layout-gutter: 24px;
+    --layout-page-margin: 48px;
+    --layout-content-max: 1024px;
+    --layout-columns: 12;
+  }
+}
+
+@media (min-width: 1440px) {
+  /* desktop */
+  :root {
+    --layout-gutter: 24px;
+    --layout-page-margin: 32px;
+    --layout-content-max: 1280px;
+    --layout-columns: 12;
+  }
+}
+
+@media (min-width: 1920px) {
+  /* wide — cap content, center */
+  :root {
+    --layout-gutter: 32px;
+    --layout-content-max: 1440px;
+    --layout-columns: 12;
+  }
+}
+
+/* phone landscape — short viewport: respect side notches, tighten content.
+   Last so it wins over the width rules for landscape phones >768px wide. */
+@media (orientation: landscape) and (max-height: 480px) {
+  :root {
+    --layout-page-margin: 20px;
+    --layout-content-max: 640px;
+    --layout-columns: 6;
+  }
+}
+
+/* opt-in page shell helpers — token-driven, clear device safe areas */
+.nectar-page {
+  padding-left: var(--layout-inset-left);
+  padding-right: var(--layout-inset-right);
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+}
+
+.nectar-content {
+  max-width: var(--layout-content-max);
+  margin-inline: auto;
+}

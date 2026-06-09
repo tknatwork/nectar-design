@@ -1,0 +1,49 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as TableStories from './Table.stories';
+
+<Meta of={TableStories} />
+
+<Title />
+<Subtitle>Composable data table with a horizontally-scrolling wrapper.</Subtitle>
+
+## Overview
+
+<Description of={TableStories} />
+
+<Primary />
+
+## Anatomy
+
+`Table` renders a native `<table>` inside an `overflow-auto` wrapper, so wide tables
+scroll instead of overflowing the page. You compose the body from `TableHeader`,
+`TableBody`, `TableRow`, `TableHead` (a `<th>`), and `TableCell` (a `<td>`). Rows
+get a bottom border and a hover wash; the last row's border is dropped.
+
+## Props
+
+<Controls />
+
+## Variants
+
+The visual surface is driven entirely by composition (which subcomponents you nest)
+rather than a `variant` prop — see the **Default**, **NumericColumns**, and
+**HeaderOnly** stories for the common shapes.
+
+## Usage
+
+- **Do** — keep one `TableHeader` row of `TableHead` cells, and add `className="text-end"` to numeric columns so figures align on the right.
+- **Don't** — hand-roll a `<table>` to get extra columns; compose the provided subcomponents so border, hover, and spacing stay consistent.
+
+## Accessibility
+
+- Renders semantic table elements (`<table>`/`<thead>`/`<tbody>`/`<th>`/`<td>`) so assistive tech exposes real row/column navigation.
+- Add a `<caption>` (it renders `caption-bottom`) to give the table an accessible name.
+- For data tables, set `scope="col"` / `scope="row"` on `TableHead` cells so screen readers announce the right header for each cell.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Table consumes **semantic** tokens through Tailwind utilities (`border-border`, `text-muted-fg`, `hover:bg-muted/50`):
+
+<TokenTable names={['--border', '--muted', '--muted-fg']} />

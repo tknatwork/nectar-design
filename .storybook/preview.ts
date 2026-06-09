@@ -3,21 +3,23 @@ import type { Preview } from '@storybook/react-vite'
 // .storybook/theme-colors.ts header for why the split.
 import { themeBase } from './theme-colors';
 
-// Import design tokens so components render with correct styles
+// Import design tokens + the engine CSS so components render with correct
+// styles. engine.css (consolidation P3) carries the Heat × Depth :root vars,
+// the glass kit (.glass--*), the oklch palette utilities, and the rAF gate —
+// without it, glass surfaces + engine-driven colors render unstyled and the
+// depth/heat toolbar toggles below have nothing to drive. Order matters: engine
+// reads --seed-engine-*/--glass-*/--seed-atmosphere-* from tokens + theme.
 import '../css/tokens.css';
 import '../css/theme.css';
-// Circadian engine adds 16 typography + motion + shadow vars from solar
-// position. The Storybook canvas inherits the engine's default state
-// (heat=0, depth=0 by default; @media flips depth to 100 when the
-// visitor's OS prefers dark mode) via preview-head.html; circadian
-// provides the runtime layer atop that. Components that opt into
-// useCircadian() will read the live values; components that don't
-// ignore them.
-import '../css/circadian.css';
+import '../css/engine.css';
+// Sub-brand token overlays (.sub-brand-* classes) — drive the Brand toolbar.
+// After engine.css so its unlayered .glass--chrome override wins; references
+// --seed-* from tokens.css (loaded above).
+import '../css/sub-brands.css';
 
 /* ─────────────────────────────────────────────────────────────
-   Depth toggle — port of myportfolio's useDepthEngine to the
-   Storybook canvas. The live site's theme transition is a
+   Depth toggle — Storybook canvas port of the consuming app's
+   depth-engine algorithm. The live site's theme transition is a
    450ms gradual --ui-depth sweep with a Gaussian-shaped golden
    hour hue shift (peaks at depth=40, fades at 0 and 100), plus
    a chroma boost during the sweep. This decorator wires the
@@ -25,7 +27,7 @@ import '../css/circadian.css';
    can flip light ↔ dark on any story and see the engine
    breathe in real time.
 
-   Constants verbatim from app/hooks/useDepthEngine.ts:
+   Constants mirror the consuming app's depth-engine implementation:
      TRANSITION_DURATION_MS = 450  ← fast golden hour sweep
      GOLDEN_HOUR_PEAK       = 40   ← depth value where amber peaks
      σ (gaussian width)     = 20
@@ -51,19 +53,18 @@ function setDepth(root: HTMLElement, v: number) {
 
 /** Animate from one depth value to another, ease-in-out, ~450ms.
  *
- * Adds the `depth-animating` class to <html> while the RAF is in
- * flight so manager-head.html / preview-head.html disable their
- * theme-fade transitions for the duration. Without this, the body
- * background's CSS 800ms transition keeps restarting every time the
- * RAF writes the var (60fps) and the chrome appears stuck mid-flight.
- * Same fix as portfolio's useDepthEngine.
+ * Sets `data-nectar-raf="color"` on <html> while the RAF is in flight so
+ * engine.css's gate (`:root[data-nectar-raf~="color"]`) disables theme-fade
+ * transitions for the duration — the same gate the consuming app uses (ADR
+ * 0028 / consolidation P3). Without it, the CSS cross-fade keeps restarting on
+ * every 60fps var write and the chrome appears stuck mid-flight.
  */
 function animateDepth(root: HTMLElement, from: number, to: number) {
   if (typeof window === 'undefined') return () => {};
   const start = performance.now();
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const duration = prefersReduced ? 0 : TRANSITION_DURATION_MS;
-  if (duration > 0) root.classList.add('depth-animating');
+  if (duration > 0) root.setAttribute('data-nectar-raf', 'color');
   let raf = 0;
   const step = (now: number) => {
     const t = duration > 0 ? Math.min(1, (now - start) / duration) : 1;
@@ -73,13 +74,13 @@ function animateDepth(root: HTMLElement, from: number, to: number) {
     if (t < 1) {
       raf = requestAnimationFrame(step);
     } else {
-      root.classList.remove('depth-animating');
+      root.removeAttribute('data-nectar-raf');
     }
   };
   raf = requestAnimationFrame(step);
   return () => {
     cancelAnimationFrame(raf);
-    root.classList.remove('depth-animating');
+    root.removeAttribute('data-nectar-raf');
   };
 }
 
@@ -102,17 +103,17 @@ function setHeat(root: HTMLElement, v: number) {
 
 /** Animate heat over the same 450ms ease-in-out timing as depth.
  *
- * Toggles the same `depth-animating` class as animateDepth so the
- * theme-fade transitions are disabled during the heat sweep too.
- * Heat shifts hue → resolved colors change → CSS transition would
- * compete with the RAF without the gate. Same fix as depth path.
+ * Holds the same `data-nectar-raf="color"` gate as animateDepth so the
+ * theme-fade transitions are disabled during the heat sweep too. Heat shifts
+ * hue → resolved colors change → CSS transition would compete with the RAF
+ * without the gate. Same gate as the depth path.
  */
 function animateHeat(root: HTMLElement, from: number, to: number) {
   if (typeof window === 'undefined') return () => {};
   const start = performance.now();
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const duration = prefersReduced ? 0 : TRANSITION_DURATION_MS;
-  if (duration > 0) root.classList.add('depth-animating');
+  if (duration > 0) root.setAttribute('data-nectar-raf', 'color');
   let raf = 0;
   const step = (now: number) => {
     const t = duration > 0 ? Math.min(1, (now - start) / duration) : 1;
@@ -121,13 +122,13 @@ function animateHeat(root: HTMLElement, from: number, to: number) {
     if (t < 1) {
       raf = requestAnimationFrame(step);
     } else {
-      root.classList.remove('depth-animating');
+      root.removeAttribute('data-nectar-raf');
     }
   };
   raf = requestAnimationFrame(step);
   return () => {
     cancelAnimationFrame(raf);
-    root.classList.remove('depth-animating');
+    root.removeAttribute('data-nectar-raf');
   };
 }
 
@@ -141,8 +142,8 @@ const preview: Preview = {
      Default = OS prefers-color-scheme. If the visitor's OS is in
      dark mode, the toolbar starts at Dark (depth=100); otherwise
      Light (depth=0). This keeps the design system site consistent
-     with the visitor's device-wide theme — same as how the
-     portfolio's DepthToggle defaults. preview-head.html does the
+     with the visitor's device-wide theme — same approach the
+     consuming app's depth toggle uses. preview-head.html does the
      same swap via @media (prefers-color-scheme: dark), and theme.ts
      picks light/dark hex snapshots the same way. The three layers
      resolve to the same starting state.
@@ -155,6 +156,7 @@ const preview: Preview = {
         ? 100
         : 0,
     heat: 0,
+    subBrand: 'master',
   },
   globalTypes: {
     /* Depth axis: light ↔ dark sweep (450ms with golden-hour hue burst) */
@@ -187,6 +189,22 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    /* Sub-brand axis: overlays scoped token overrides (.sub-brand-*).
+       Items mirror tokens/sub-brands/*.json + sub-brands.css; the Phase-4
+       sub-brand-registry-parity gate keeps them in sync. */
+    subBrand: {
+      description: 'Sub-brand token overlay (.sub-brand-* on <body>)',
+      toolbar: {
+        title: 'Brand',
+        icon: 'paintbrush',
+        items: [
+          { value: 'master',           title: 'Master (default)' },
+          { value: 'ambiguity',        title: 'Ambiguity' },
+          { value: 'systems-thinking', title: 'Systems Thinking (EAST)' },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   decorators: [
     (Story, context) => {
@@ -211,8 +229,41 @@ const preview: Preview = {
       }
       return Story();
     },
+    /* Sub-brand class on <body> — composes with the engine decorator above.
+       Engine vars live on <html>; the .sub-brand-* override on <body> wins
+       for everything inside (incl. the unlayered .glass--chrome rule). */
+    (Story, context) => {
+      const sb = (context.globals.subBrand as string | undefined) ?? 'master';
+      if (typeof document !== 'undefined') {
+        Array.from(document.body.classList)
+          .filter((c) => c.startsWith('sub-brand-'))
+          .forEach((c) => document.body.classList.remove(c));
+        if (sb !== 'master') document.body.classList.add(`sub-brand-${sb}`);
+      }
+      return Story();
+    },
   ],
   parameters: {
+    /* ─── Sidebar order — professional IA ───────────────────────────────
+       Getting Started → Foundations → Tokens → Components → Patterns.
+       Array-of-arrays nests child order under a section; '*' catches
+       everything unlisted (so new stories still appear, just last). */
+    options: {
+      storySort: {
+        order: [
+          'Getting Started',
+          ['Introduction', 'Installation', 'Usage'],
+          'Foundations',
+          'Tokens',
+          ['Overview', 'Seed', 'Map', 'Semantic', 'Component', 'Typography', 'Scale', 'Pipeline'],
+          'Components',
+          ['Actions', 'Forms', 'Data Display', 'Feedback', 'Navigation', 'Layout', 'Typography'],
+          'Patterns',
+          '*',
+        ],
+      },
+    },
+
     /* ─── Docs theme — match manager chrome ─────────────────────────────
        Storybook's docs renderer (Foundations/* MDX, autogenerated docs)
        has a separate theme from the manager. Without an explicit override

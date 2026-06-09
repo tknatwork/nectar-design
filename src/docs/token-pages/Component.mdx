@@ -1,0 +1,34 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../components';
+
+<Meta title="Tokens/Component" />
+
+# Component tokens
+
+Six components own a dedicated `--<name>-*` token set (below). The other 28
+components consume **semantic** tokens directly via Tailwind utilities
+(`bg-primary`, `rounded-md`, …) — see each component's *Tokens used* section.
+
+## Button
+
+<TokenTable prefix="--button-" showVar />
+
+## Card
+
+<TokenTable prefix="--card-" showVar />
+
+## Input
+
+<TokenTable prefix="--input-" showVar />
+
+## Badge
+
+<TokenTable prefix="--badge-" showVar />
+
+## Glass
+
+<TokenTable prefix="--glass-" showVar />
+
+## Toast
+
+<TokenTable prefix="--toast-" showVar />

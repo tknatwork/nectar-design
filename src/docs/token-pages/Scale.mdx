@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ScaleRamp, TokenTable } from '../components';
+
+<Meta title="Tokens/Scale" />
+
+# Spacing & radius
+
+One tight, px-valued **radius** scale (`map.borderRadius`) feeds Tailwind's
+`rounded-*` and every surface. The **spacing** scale is the seed step ladder.
+Both render live from the token pipeline.
+
+## Radius
+
+<ScaleRamp kind="radius" />
+
+<TokenTable prefix="--map-borderRadius" showVar />
+
+## Spacing
+
+<ScaleRamp kind="spacing" />
+
+<TokenTable prefix="--seed-spacing" showVar />

@@ -1,0 +1,42 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import * as ProjectLayoutStories from './ProjectLayout.stories';
+
+<Meta of={ProjectLayoutStories} />
+
+<Title />
+<Subtitle>Per-project theming wrapper — injects CSS custom properties down the tree.</Subtitle>
+
+## Overview
+
+<Description of={ProjectLayoutStories} />
+
+<Primary />
+
+## Anatomy
+
+ProjectLayout is a single wrapping `<div>` carrying a `data-project` attribute
+and inline `--primary` / `--accent` / `--bg` overrides built from the `project`
+theme. Descendants read those custom properties; every derived token (hover,
+shadow via `color-mix`) recomputes through the CSS cascade — no JS re-derivation.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — wrap a whole project/case-study page once at its root, passing only the colour fields that project actually overrides; let the rest inherit global tokens.
+- **Don't** — nest a second ProjectLayout inside an already-themed subtree, or set per-element colours that fight the cascaded `--primary` / `--accent`.
+
+## Accessibility
+
+- It's a structural wrapper, not a landmark — keep the real `header` / `main` / `nav` regions, a skip-link, and correct heading order inside it.
+- Overriding `--primary` / `--accent` / `--bg` changes foreground/background pairings; verify the resulting text-on-surface contrast per project rather than assuming the defaults still hold.
+- `data-project` is a styling hook only — don't rely on it to convey meaning to assistive tech.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+ProjectLayout consumes no semantic tokens directly — it **writes** the
+`--primary`, `--accent`, and `--bg` custom properties for descendants to read,
+rather than reading any itself.

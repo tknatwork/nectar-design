@@ -1,0 +1,43 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as GlassToastStories from './GlassToast.stories';
+
+<Meta of={GlassToastStories} />
+
+<Title />
+<Subtitle>Glass-styled transient notification — published imperatively via `toast()`.</Subtitle>
+
+## Overview
+
+<Description of={GlassToastStories} />
+
+<Primary />
+
+## Anatomy
+
+`GlassToastContainer` is mounted once at the app root and takes no props. Each
+toast is a floating glass card with a variant-coloured left border, the message
+text, and a dismiss affordance. Stacking, enter, exit, and reflow are driven by
+a spring; toasts are pushed through the `toast()` store, not as children.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — mount one container at the root and fire toasts through `toast.success()` / `toast.error()` for confirmations and recoverable failures.
+- **Don't** — use a toast for content the user must act on or read carefully; it auto-dismisses and won't survive a glance away.
+
+## Accessibility
+
+- The container is an `aria-live="polite"` `role="status"` region — new toasts are announced without stealing focus.
+- For urgent, error-class messages, escalate the live region to `assertive` so it interrupts.
+- Every toast carries a labelled dismiss button (`aria-label="Dismiss"`) so it never depends on the auto-timeout alone.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+GlassToast reads its variant accent from app-supplied component tokens (the `--toast-*` family):
+
+<TokenTable prefix="--toast-" />

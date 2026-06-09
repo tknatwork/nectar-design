@@ -1,0 +1,45 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as SelectStories from './Select.stories';
+
+<Meta of={SelectStories} />
+
+<Title />
+<Subtitle>Dropdown single-select built on Base UI — 3 sizes × default/error.</Subtitle>
+
+## Overview
+
+<Description of={SelectStories} />
+
+<Primary />
+
+## Anatomy
+
+A trigger button (styled like `Input` — border, focus ring, error state) showing the
+current value or `placeholder` and a chevron, plus a portalled popup of `options`.
+Each item shows its label and a check on the selected row; per-option `disabled` is
+supported. Trigger geometry is locked per `size`.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — keep `options` to a scannable list for one-of-many choice; mark unavailable entries with per-option `disabled`.
+- **Don't** — reach for `Select` when only two or three mutually exclusive choices exist; a `RadioGroup` shows them all at once.
+
+## Accessibility
+
+- Built on Base UI's accessible select: full keyboard support (arrows, type-ahead, Enter, Escape) and managed focus.
+- Pair with a `<Label htmlFor>` matching the trigger's `id`, or pass `aria-label`; the `error` state can be wired via `aria-describedby` + `aria-required`.
+- The popup renders in a portal but stays in the accessibility tree as a listbox owned by the trigger.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Select consumes **semantic** tokens — the trigger reuses input surfaces, the popup uses surface/muted:
+
+<TokenTable
+  names={['--input', '--fg', '--border', '--destructive', '--ring', '--muted-fg', '--surface', '--surface-fg', '--muted']}
+/>

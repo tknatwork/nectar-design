@@ -15,7 +15,8 @@ export { Skeleton, skeletonVariants } from './Skeleton';
 export { Tooltip } from './Tooltip';
 export { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogClose } from './Dialog';
 export { Popover, PopoverTrigger, PopoverContent, PopoverTitle, PopoverDescription, PopoverClose } from './Popover';
-export { ToastProvider, ToastItem, toast, toastManager, toastVariants } from './Toast';
+export { GlassToastContainer } from './GlassToast';
+export { dismiss, subscribe, toast, type ToastItem, type ToastVariant } from './toast-store';
 export { Stack, stackVariants } from './Stack';
 export { Container, containerVariants } from './Container';
 export { Grid, gridVariants } from './Grid';
@@ -23,6 +24,14 @@ export { Divider, dividerVariants } from './Divider';
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './Tabs';
 export { Breadcrumbs } from './Breadcrumbs';
 export { Menu, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from './Menu';
+export { Eyebrow } from './Eyebrow';
+export { FlipCard, type FlipCardProps } from './FlipCard';
+export {
+  NavPill,
+  type NavPillItem,
+  type NavPillLinkProps,
+  type NavPillProps,
+} from './NavPill';
 export { Heading, headingVariants } from './Heading';
 export { Link, linkVariants } from './Link';
 export { Avatar, avatarVariants } from './Avatar';

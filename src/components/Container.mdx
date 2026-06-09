@@ -1,0 +1,44 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import * as ContainerStories from './Container.stories';
+
+<Meta of={ContainerStories} />
+
+<Title />
+<Subtitle>Centered max-width wrapper for page-level content.</Subtitle>
+
+## Overview
+
+<Description of={ContainerStories} />
+
+<Primary />
+
+## Anatomy
+
+A Container is a single centered `<div>`: `mx-auto` plus a token-based `max-width` per
+`size`, with optional responsive horizontal `padding`. It constrains line length and
+gutters; it has no background or border of its own.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — wrap each page section in a Container so body content shares one consistent
+  measure and gutter across the site.
+- **Don't** — wrap a full-bleed hero or background band in a sized Container; use
+  `size="full"` (or no Container) and let an inner Container constrain just the text.
+
+## Accessibility
+
+- Container imposes no semantics — it renders a plain `<div>`. Pair it with the page
+  landmark (`<main>`, `<section>`) rather than relying on the Container itself.
+- Capping `max-width` keeps line length in a readable range, which aids low-vision and
+  dyslexic readers — keep body copy inside a sized Container, not at `full`.
+- Content order is untouched, so reading and tab order follow the DOM; `dir="rtl"`
+  only flips the padding side.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Layout-only — Container consumes max-width container utilities and spacing (`px-*`) utilities, no colour tokens.

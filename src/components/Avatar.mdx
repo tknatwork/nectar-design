@@ -1,0 +1,52 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { Avatar } from './Avatar';
+import * as AvatarStories from './Avatar.stories';
+
+<Meta of={AvatarStories} />
+
+<Title />
+<Subtitle>User image with automatic initials fallback — 4 sizes.</Subtitle>
+
+## Overview
+
+<Description of={AvatarStories} />
+
+<Primary />
+
+## Anatomy
+
+An avatar is a fixed circle that clips its contents. When `src` loads it shows the
+image cover-fit; on load error (or when no `src` is given) it falls back to up-to-two
+initials, derived from `alt` or overridden with `fallback`. Diameter and text size
+are locked per `size`.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={Avatar}
+  rows={{ prop: 'size', values: ['sm', 'md', 'lg', 'xl'] }}
+  baseArgs={{ alt: 'Jane Doe' }}
+/>
+
+## Usage
+
+- **Do** — always pass a human-readable `alt` (the person or org name); it doubles as the accessible label and the initials source.
+- **Don't** — rely on the image always loading; the initials fallback is the safety net, so keep `alt`/`fallback` meaningful even when `src` is set.
+
+## Accessibility
+
+- The root is `role="img"` with `aria-label={alt}`, so the avatar announces as one labelled image — the inner initials are `aria-hidden`.
+- An empty `alt` produces an unlabelled image; pass a name whenever the avatar identifies someone.
+- The initials fallback guarantees a visible identity even when the network image 404s.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Avatar's fallback chip consumes **semantic** tokens (`bg-muted`, `text-muted-fg`):
+
+<TokenTable names={['--muted', '--muted-fg']} />

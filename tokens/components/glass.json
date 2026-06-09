@@ -3,13 +3,17 @@
     "glass": {
       "$description": "Glass surface tokens — combined frosted (backdrop-filter blur+saturate) + liquid (SVG displacement filter). Three depth levels per the existing GlassCard.stories.tsx pattern.",
 
-      "$$_frosted": "_____ FROSTED LAYER (backdrop-filter) — Migrim-tuned defaults validated 2026-05-21 _____",
+      "$$_frosted": "_____ FROSTED LAYER (backdrop-filter) — unified NavPill recipe (2026-05-26 token consolidation). All glass surfaces except homepage ProjectEnvelope cards converge on this single blur/saturate/chroma triple so visual treatment stays consistent across NavPill, cards, dialogs, and modals.",
 
-      "frostedBlurSurface":      { "$value": "8px",                  "$type": "dimension",  "$description": "Frosted blur for shallow surfaces (containers, panels)" },
-      "frostedBlurRaised":       { "$value": "12px",                 "$type": "dimension",  "$description": "Frosted blur for raised cards (default GlassCard depth)" },
-      "frostedBlurFloating":     { "$value": "18px",                 "$type": "dimension",  "$description": "Frosted blur for floating overlays (dialogs, modals)" },
+      "frostedBlurSurface":      { "$value": "20px",                 "$type": "dimension",  "$description": "Frosted blur — unified to 20px across all tiers per the NavPill recipe (2026-05-26). Surface tier intent: shallow cards/containers. Blur is constant across tiers; tiers differentiate via alpha + shadow." },
+      "frostedBlurRaised":       { "$value": "20px",                 "$type": "dimension",  "$description": "Frosted blur — unified to 20px (was 12px). See frostedBlurSurface rationale." },
+      "frostedBlurFloating":     { "$value": "20px",                 "$type": "dimension",  "$description": "Frosted blur — unified to 20px (was 18px). See frostedBlurSurface rationale." },
 
-      "frostedSaturate":         { "$value": "162%",                 "$type": "string",     "$description": "Color saturation boost through the frosted layer. 162% validated in /tmp/glass-demo/ on 2026-05-21." },
+      "frostedSaturate":         { "$value": "180%",                 "$type": "string",     "$description": "Color saturation boost through the frosted layer. 180% (1.8) per the NavPill recipe (was 162% from 2026-05-21 Migrim tuning)." },
+
+      "frostedChroma":           { "$value": "0.012",                "$type": "number",     "$description": "OKLCH chroma applied to glass background fills (2026-05-26). 0.012 matches the NavPill recipe — subtle tint that doesn't compete with content. Was 0.02 hard-coded in mp/globals.css glass-bg formula." },
+
+      "frostedBorderWidth":      { "$value": "1.5px",                "$type": "dimension",  "$description": "Border width on every glass surface (2026-05-26). 1.5px matches the NavPill recipe (was 1px in .glass class). Slightly more presence makes the edge highlight read at typical card sizes." },
 
       "frostedBg":               { "$value": "rgba(85, 85, 85, 0.12)", "$type": "color",    "$description": "Frosted plate tint. 10-12% gray gives milky look without crushing legibility." },
 
@@ -25,20 +29,34 @@
 
       "$$_liquid": "_____ LIQUID LAYER (SVG displacement filter) — static, no canvas regen _____",
 
-      "liquidDisplacementScale": { "$value": "10",                   "$type": "number",    "$description": "feDisplacementMap scale. Subtle default — set 0 to disable. Tune via mp/app/layout.tsx <GlassFilterDefs/>. Demo /tmp/glass-demo/ used scale 20 — production keeps subtler so text stays readable." },
+      "liquidDisplacementScale": { "$value": "10",                   "$type": "number",    "$description": "feDisplacementMap scale. Subtle default — set 0 to disable. Tune via the consuming app's <GlassFilterDefs/> SVG. Reference demo used scale 20 — production keeps subtler so text stays readable." },
       "liquidNoiseFrequency":    { "$value": "0.012",                "$type": "number",    "$description": "feTurbulence baseFrequency. Lower = bigger ripples." },
       "liquidNoiseOctaves":      { "$value": "2",                    "$type": "number",    "$description": "feTurbulence numOctaves. 2 = subtle, 4 = rougher." },
-      "liquidFilterId":          { "$value": "glass-liquid",         "$type": "string",    "$description": "SVG filter id consumed via filter: url(#glass-liquid). mp/app/layout.tsx must mount the <defs><filter id=...> matching this id." },
-
-      "$$_radius": "_____ SHAPE _____",
-
-      "borderRadius":            { "$value": "{map.borderRadius.XL}", "$type": "number",   "$description": "Glass surface radius (20-28px range) — slightly larger than standard card for the rounded-pill look from Migrim" },
+      "liquidFilterId":          { "$value": "glass-liquid",         "$type": "string",    "$description": "SVG filter id consumed via filter: url(#glass-liquid). The consuming app must mount a matching <defs><filter id=...> somewhere in the document tree (typically root layout)." },
 
       "$$_specular": "_____ SPECULAR HIGHLIGHT (mouse-tracked, cheap radial gradient) _____",
 
       "specularColor":           { "$value": "rgba(255, 255, 255, 0.35)", "$type": "color", "$description": "Specular peak color at cursor position" },
       "specularMidColor":        { "$value": "rgba(255, 255, 255, 0.08)", "$type": "color", "$description": "Specular midtone (25% radius)" },
-      "specularMixBlend":        { "$value": "overlay",                   "$type": "string", "$description": "Blend mode for specular layer (overlay = pops against any bg)" }
+      "specularMixBlend":        { "$value": "overlay",                   "$type": "string", "$description": "Blend mode for specular layer (overlay = pops against any bg)" },
+
+      "$$_alpha": "_____ PER-TIER ALPHA PRIMITIVES (ADR 0024 phase 3 — moved from mp/globals.css) _____",
+
+      "alphaSurfaceLight":       { "$value": "0.20",                      "$type": "number", "$description": "Surface tier translucency in light mode (most translucent — kit-home aesthetic)" },
+      "alphaSurfaceDark":        { "$value": "0.62",                      "$type": "number", "$description": "Surface tier translucency in dark mode (denser glass)" },
+      "alphaRaisedLight":        { "$value": "0.45",                      "$type": "number", "$description": "Raised tier translucency (cards, popovers) light mode" },
+      "alphaRaisedDark":         { "$value": "0.78",                      "$type": "number", "$description": "Raised tier translucency dark mode" },
+      "alphaFloatingLight":      { "$value": "0.62",                      "$type": "number", "$description": "Floating tier (hero cards, sheets) light mode" },
+      "alphaFloatingDark":       { "$value": "0.85",                      "$type": "number", "$description": "Floating tier dark mode" },
+      "alphaChromeLight":        { "$value": "0.88",                      "$type": "number", "$description": "Chrome tier (nav, fixed UI) light mode — high opacity for readability" },
+      "alphaChromeDark":         { "$value": "0.72",                      "$type": "number", "$description": "Chrome tier dark mode — lerps to 0.72 (was 0.88) to match the NavPill recipe. The depth engine still resolves to 0.88 at full light and 0.72 at full dark; the slightly lower dark alpha lets the page colour bleed through enough to feel like glass." },
+      "alphaSolidLight":         { "$value": "0.96",                      "$type": "number", "$description": "Solid tier (modals) light mode — near-opaque" },
+      "alphaSolidDark":          { "$value": "0.96",                      "$type": "number", "$description": "Solid tier dark mode" },
+
+      "$$_radius": "_____ RESPONSIVE RADIUS PRIMITIVES (mp composes via media query) _____",
+
+      "radiusMobile":            { "$value": "{map.borderRadius.2XL}",    "$type": "dimension", "$description": "Glass surface radius on mobile (<768px) — 24px, on the single tight scale (was 24px)." },
+      "radiusDesktop":           { "$value": "{map.borderRadius.2XL}",    "$type": "dimension", "$description": "Glass surface radius on tablet+ (>=768px) — 24px, collapsed onto the tight scale (was 36px)." }
     }
   }
 }

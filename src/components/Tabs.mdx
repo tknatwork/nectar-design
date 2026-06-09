@@ -1,0 +1,48 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as TabsStories from './Tabs.stories';
+
+<Meta of={TabsStories} />
+
+<Title />
+<Subtitle>Switch between sibling panels in the same context — one tablist, one visible panel.</Subtitle>
+
+## Overview
+
+<Description of={TabsStories} />
+
+<Primary />
+
+## Anatomy
+
+Tabs is a compound built on Base UI: a `TabsList` holds the `TabsTrigger` buttons, and each
+`TabsContent` panel maps to a trigger by `value`. The selected trigger lifts onto a `surface`
+chip; exactly one panel is mounted-visible at a time. Selection is `defaultValue` (uncontrolled)
+or `value` + `onValueChange` (controlled).
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — use for 2–5 peer views of the *same* subject (Overview / Activity / Settings); keep labels to one or two words.
+- **Don't** — use tabs for a linear sequence (that's a wizard) or to hide content a screen reader user needs at once.
+
+## Accessibility
+
+- Base UI wires the WAI-ARIA roles: `role="tablist"` on the list, `role="tab"` on each trigger, `role="tabpanel"` on each panel, linked via `aria-controls`/`aria-labelledby`.
+- Roving tabindex — arrow keys move between triggers, the active tab is the single tab stop, and `disabled` triggers are skipped by keyboard and click.
+- Focus-visible ring via `--ring` on the active trigger.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Tabs consumes **semantic** tokens through Tailwind utilities (`bg-muted`, `text-muted-fg`, `bg-surface`, `rounded-md`, …):
+
+<TokenTable
+  names={[
+    '--muted', '--muted-fg', '--fg', '--surface', '--ring',
+    '--radius-md', '--radius-lg',
+  ]}
+/>

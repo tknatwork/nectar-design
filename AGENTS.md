@@ -214,7 +214,7 @@ The engine test suite validates all 16 CSS variables (typography + motion + shad
 
 Visual component catalog for browsing all components and token documentation.
 
-- **Deployed catalog:** [design.tusharkantnaik.com](https://design.tusharkantnaik.com) — built from `tknatwork/myportfolio` (the **unified Storybook**) per [Portfolio/docs/decisions/0015-unified-storybook-from-mp.md](https://github.com/tknatwork/myportfolio/blob/main/docs/decisions/0015-unified-storybook-from-mp.md), live since 2026-05-07. nd-only ships do **not** auto-deploy here — myportfolio's submodule pointer must bump first.
+- **Deployed catalog:** [design.tusharkantnaik.com](https://design.tusharkantnaik.com) — built from `tknatwork/myportfolio` (the **unified Storybook**) per [Portfolio/docs/decisions/0015-unified-storybook-from-mp.md](https://github.com/tknatwork/myportfolio/blob/main/docs/decisions/0015-unified-storybook-from-mp.md), live since 2026-05-07. Post-[ADR 0024](https://github.com/tknatwork/myportfolio/blob/main/docs/decisions/0024-monorepo-nd-native.md) (2026-05-21), nd lives in-tree in mp; any nd edit lands in the deployed Storybook through the same feature-branch → dev → main flow.
 - **nd standalone Storybook (this repo):** still exists for nd-only iteration (`pnpm storybook` here). No public deployment from nd anymore — the nd-side Vercel project for design.tusharkantnaik.com was decommissioned in the Path F migration.
 - **Config (nd standalone):** `.storybook/` (chrome files), `src/**/*.stories.tsx`, `src/**/*.mdx`
 - **Components:** Button (8 variants), Card (3 sizes), Badge (5 variants), Input, Textarea, GlassCard, ProjectLayout
@@ -226,14 +226,14 @@ pnpm storybook        # Launch nd-only dev server (default port 6006)
 pnpm build-storybook  # Build nd-only static Storybook → storybook-static/
 ```
 
-**How nd changes reach the deployed Storybook:**
+**How nd changes reach the deployed Storybook** (post-[ADR 0024](https://github.com/tknatwork/myportfolio/blob/main/docs/decisions/0024-monorepo-nd-native.md)):
 
-1. nd-feature → nd-dev → nd-main (via standard PR flow in this repo)
-2. mp opens a `chore/bump-nd-submodule-...` branch, advances submodule pointer to new nd-main HEAD, regenerates `pnpm-lock.yaml`
-3. mp-feature → mp-dev → mp-main (via PR flow in `tknatwork/myportfolio`)
-4. Vercel rebuilds the unified Storybook from mp-main and deploys to design.tusharkantnaik.com
+1. Edit `packages/nectar-design/**` directly in `tknatwork/myportfolio` (mp is the source of truth).
+2. Feature branch → mp-dev → mp-main (single PR covers both nd + app changes).
+3. Vercel rebuilds the unified Storybook from mp-main and deploys to design.tusharkantnaik.com.
+4. This standalone `tknatwork/nectar-design` repo receives a periodic one-way sync from mp.
 
-**Chrome dual-source policy:** the chrome files (`.storybook/preview-head.html`, `theme.ts`, `theme-colors.ts`, `manager-head.html`, `manager.ts`) live in BOTH this repo AND `Portfolio/app/.storybook/`. Per ADR 0015, edit nd first, then mirror into mp's copy in the same submodule-bump cycle. This is the deliberate dual-source policy — nd needs its own chrome to remain a self-contained dev surface; mp needs its own because of different stories globs.
+**Chrome dual-source policy:** the chrome files (`.storybook/preview-head.html`, `theme.ts`, `theme-colors.ts`, `manager-head.html`, `manager.ts`) live in BOTH `packages/nectar-design/.storybook/` AND `Portfolio/app/.storybook/`. Per ADR 0015, both copies live in mp; edit both in the same feature branch. (Pre-ADR 0024 this required a submodule-bump cycle — that step is gone.)
 
 **Visual regression (Chromatic) — paired-token model:**
 
@@ -331,38 +331,34 @@ typescript:      "^6.x"       # tsup target + .d.ts emission
 chromatic:       "^5.x"       # nd's visual regression pinned here
 ```
 
-When a Renovate PR opens for one of these critical deps, the AI session should:
+When a Renovate PR opens for one of these critical deps, the AI session should (post-[ADR 0024](https://github.com/tknatwork/myportfolio/blob/main/docs/decisions/0024-monorepo-nd-native.md)):
 
-1. Check `Portfolio/config/integration-compat.yaml` for the `current` and `pin` fields
-2. If the bump exceeds `current`, update the matrix in portfolio FIRST (or block the bump)
-3. After the matrix is updated, merge the nd-side bump
-4. Submodule pointer bump in portfolio comes last (PR 4 of any toolchain cascade)
+1. Check `Portfolio/config/integration-compat.yaml` for the `current` and `pin` fields.
+2. If the bump exceeds `current`, update the matrix in the same PR (or block the bump).
+3. Merge the Renovate PR — nd + app share the same lockfile, so one PR covers both.
 
 ### pnpm lockfile
 
-- nd uses a standalone lockfile (no workspace inheritance) for `pnpm install --frozen-lockfile` in CI
-- The pre-commit hook auto-regenerates `pnpm-lock.yaml` when `package.json` is staged (uses `--ignore-workspace`)
-- The portfolio's `pnpm-workspace.yaml` does NOT propagate to nd — they are independent install graphs
+- Post-[ADR 0024](https://github.com/tknatwork/myportfolio/blob/main/docs/decisions/0024-monorepo-nd-native.md): mp's root `pnpm-lock.yaml` is the single source of truth covering `app/` + `packages/nectar-design/`.
+- This standalone repo still ships a `pnpm-lock.yaml` for self-contained reads, but it's downstream from mp.
+- The pre-commit hook in mp auto-regenerates the lockfile when any `package.json` is staged.
 
-### Coordinated bumps (4-branch protocol)
+### Coordinated bumps (post-ADR 0024)
 
-Bumping a dependency that affects both repos follows the protocol from [`Portfolio/docs/system/submodule.md`](https://github.com/tknatwork/myportfolio/blob/main/docs/system/submodule.md):
+Bumping a dependency lands in one feature branch in mp — no 4-branch protocol, no submodule pointer bump.
 
-1. Open Renovate PR on nd → merge to `nd-dev`
-2. Test on `nd-dev` (Chromatic + Storybook preview)
-3. Merge `nd-dev` → `nd-main`
-4. Bump submodule pointer in portfolio + regenerate `pnpm-lock.yaml`
-5. PR portfolio change → portfolio-dev → portfolio-main
-
-Skipping any step risks `ERR_PNPM_OUTDATED_LOCKFILE` in portfolio CI.
+1. Open Renovate PR in mp (covers nd + app).
+2. CI validates against mp-dev preview.
+3. Merge to mp-dev → mp-main.
+4. Standalone nd repo receives the change via the next one-way sync from mp.
 
 ### When dependencies break the build
 
-Most nd-side breakages get triaged via the parent portfolio's runbook system at [`Portfolio/docs/runbooks/dependency-upgrade.md`](https://github.com/tknatwork/myportfolio/blob/main/docs/runbooks/dependency-upgrade.md). Specifically:
+Most nd breakages get triaged via mp's runbook system at [`Portfolio/docs/runbooks/dependency-upgrade.md`](https://github.com/tknatwork/myportfolio/blob/main/docs/runbooks/dependency-upgrade.md). Specifically:
 
-- **`ERR_PNPM_OUTDATED_LOCKFILE`** → submodule pointer bumped without lockfile regen → fix per the runbook
-- **`ERR_PNPM_LOCKFILE_CONFIG_MISMATCH`** → pnpm version drift between nd's `packageManager` field and what ran → align both repos
-- **Chromatic regression failures on nd** → review the Chromatic dashboard; not blocking unless intentional visual change
+- **`ERR_PNPM_OUTDATED_LOCKFILE`** → `pnpm install` at the mp root regenerates the lockfile.
+- **`ERR_PNPM_LOCKFILE_CONFIG_MISMATCH`** → pnpm version drift; align mp's `packageManager` field.
+- **Chromatic regression failures on nd** → review the Chromatic dashboard; not blocking unless intentional visual change.
 
 ---
 

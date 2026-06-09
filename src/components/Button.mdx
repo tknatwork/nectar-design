@@ -1,0 +1,58 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { Button } from './Button';
+import * as ButtonStories from './Button.stories';
+
+<Meta of={ButtonStories} />
+
+<Title />
+<Subtitle>Primary action trigger — 5 intents × 3 sizes.</Subtitle>
+
+## Overview
+
+<Description of={ButtonStories} />
+
+<Primary />
+
+## Anatomy
+
+A button is one interactive element: an optional leading icon, a text label, and a
+focus ring. Geometry (height, padding, radius) is locked per `size`; colour per
+`intent`. It always renders a native `<button>`.
+
+## Props
+
+<Controls of={ButtonStories.Default} />
+
+## Variants
+
+<VariantMatrix
+  component={Button}
+  rows={{ prop: 'intent', values: ['primary', 'accent', 'outline', 'ghost', 'destructive'] }}
+  cols={{ prop: 'size', values: ['sm', 'md', 'lg'] }}
+  baseArgs={{ children: 'Button' }}
+/>
+
+## Usage
+
+- **Do** — one `primary` button per view for the main action; pair `destructive` with a confirm step.
+- **Don't** — stack competing `primary` buttons, or rely on colour alone for `destructive` (the label should say so too).
+
+## Accessibility
+
+- Native `<button type="button">` — no accidental form submit.
+- Focus-visible ring via `--ring` (2px offset).
+- `disabled` leaves the tab order; **also gate the handler** — dimming alone isn't a disabled state.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Button consumes **semantic** tokens through Tailwind utilities (`bg-primary`, `text-fg`, `rounded-md`, …):
+
+<TokenTable
+  names={[
+    '--primary', '--primary-fg', '--accent', '--accent-fg',
+    '--destructive', '--destructive-fg', '--border', '--fg', '--muted', '--ring',
+    '--radius-sm', '--radius-md', '--radius-lg',
+  ]}
+/>

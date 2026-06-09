@@ -10,7 +10,7 @@ const stackVariants = cva('flex', {
     responsive: {
       none: '',
       tablet: 'tablet:flex-row',
-      desktop: 'desktop:flex-row',
+      desktop: 'tablet-landscape:flex-row',
     },
     gap: {
       none: 'gap-0',

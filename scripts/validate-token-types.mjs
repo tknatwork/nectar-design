@@ -25,6 +25,9 @@ const TOKEN_FILES = [
   'components/card.json',
   'components/input.json',
   'components/badge.json',
+  // Added 2026-05-21 — phases 3 + 6 component tokens were missing from validator scope
+  'components/glass.json',
+  'components/toast.json',
 ];
 
 // ── Flatten DTCG (reused from build-tokens-sd.mjs) ──────────────────────────
@@ -72,7 +75,8 @@ for (const token of allTokens) {
   if (token.type !== 'color' || typeof token.value !== 'string') continue;
   const isRef = token.value.includes('{');
   const isHex = HEX_RE.test(token.value);
-  const isCSSFn = /^(color-mix|oklch|hsl|rgb)\(/.test(token.value);
+  // Standard CSS color functions: rgb/rgba, hsl/hsla, oklch/oklab, color-mix, color(), hwb, lab, lch
+  const isCSSFn = /^(color-mix|oklch|oklab|hsla?|rgba?|color|hwb|lab|lch)\(/.test(token.value);
   if (!isRef && !isHex && !isCSSFn) {
     errors.push(`Invalid color: ${token.path.join('.')} = "${token.value}" (not hex, ref, or CSS fn)`);
   }

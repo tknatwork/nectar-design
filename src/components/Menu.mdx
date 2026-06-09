@@ -1,0 +1,48 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as MenuStories from './Menu.stories';
+
+<Meta of={MenuStories} />
+
+<Title />
+<Subtitle>Dropdown of actions triggered by a button — portalled, positioned, dismissible.</Subtitle>
+
+## Overview
+
+<Description of={MenuStories} />
+
+<Primary />
+
+## Anatomy
+
+Menu is a compound built on Base UI: a `MenuTrigger` button opens a portalled `MenuContent`
+popup positioned by `side`, containing `MenuItem` rows and optional `MenuSeparator` dividers.
+Open state is `defaultOpen` (uncontrolled) or `open` + `onOpenChange` (controlled); items
+highlight on hover and keyboard focus.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — collect related actions for one object (Edit / Duplicate / Delete) and group destructive items below a separator.
+- **Don't** — use a menu for primary navigation or for choosing a value (that's a Select); avoid more than ~7 items.
+
+## Accessibility
+
+- Base UI applies `role="menu"` to the popup and `role="menuitem"` to each item, with the trigger exposing `aria-haspopup` and `aria-expanded`.
+- Arrow keys move the highlight, Enter/Space activate, and **Escape** closes the menu and returns focus to the trigger.
+- `disabled` items are dimmed and skipped by both pointer and keyboard.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Menu consumes **semantic** tokens through Tailwind utilities (`bg-surface`, `text-surface-fg`, `border-border`, `rounded-md`, …):
+
+<TokenTable
+  names={[
+    '--surface', '--surface-fg', '--border', '--muted', '--fg',
+    '--radius-sm', '--radius-md',
+  ]}
+/>

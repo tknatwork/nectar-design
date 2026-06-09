@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { TokenTable, ColorGrid } from '../components';
+
+<Meta title="Tokens/Seed" />
+
+# Seed tokens
+
+The **seed** tier is the minimal set of brand decisions that defines the entire
+system — change one value here and every derived token (map → semantic →
+component) shifts. These tables are **generated from `css/tokens.css`**, so they
+always match what ships, and every value resolves **live** against the current
+Heat / Depth / Brand toolbar state.
+
+## Brand pastels
+
+<ColorGrid prefix="--seed-color-pastel" />
+
+## All seed tokens
+
+<TokenTable tier="Seed" showVar />

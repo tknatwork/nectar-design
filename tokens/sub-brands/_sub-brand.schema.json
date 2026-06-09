@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://design.tusharkantnaik.com/schemas/sub-brand.json",
+  "title": "Nectar sub-brand",
+  "description": "A sub-brand of the Nectar master brand (ADR 0026). Inherits everything from master, overrides only the bounded knob surface: 12 base knobs + the v2 `nav` group (ADR 0026 amendment, 2026-06-08, added so per-project nav components like the former EastNavPill collapse into the shared NavPill). additionalProperties:false everywhere enforces the discipline — extending the surface requires a schema change + ADR amendment, exactly as the `nav` group did.",
+  "type": "object",
+  "required": ["name", "displayName", "extends"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "kebab-case slug. Drives the .sub-brand-{name} CSS class + SubBrandProvider name prop."
+    },
+    "displayName": { "type": "string" },
+    "extends": {
+      "const": "master",
+      "description": "Single-inheritance (Pattern A). Only 'master' is valid in v1."
+    },
+    "routes": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^/" },
+      "description": "App routes this sub-brand owns. Informational + used by tooling (sitemap, OG). Wiring still happens via <SubBrandProvider> in the route layout."
+    },
+    "overrides": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "brand-accent": { "$ref": "#/$defs/tokenValue" },
+            "brand-tint":   { "$ref": "#/$defs/tokenValue" },
+            "eyebrow-tone": { "$ref": "#/$defs/tokenValue" }
+          }
+        },
+        "typography": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "display-family": { "$ref": "#/$defs/tokenValue" },
+            "heading-rhythm": {
+              "oneOf": [
+                { "enum": ["tight-editorial", "standard", "airy-display"] },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["line-height", "letter-spacing"],
+                  "properties": {
+                    "line-height":    { "type": "string" },
+                    "letter-spacing": { "type": "string" }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "motion": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "intensity-scale": { "type": "number", "minimum": 0.5, "maximum": 2.0 }
+          }
+        },
+        "surface": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "glass-tint":   { "$ref": "#/$defs/tokenValue" },
+            "radius-scale": { "enum": [0.5, 0.75, 1, 1.25, 1.5] }
+          }
+        },
+        "atmosphere": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "preset": { "enum": ["none", "orbs", "heat", "birds", "ink-route"] }
+          }
+        },
+        "hero": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "composition": { "enum": ["default", "ink-led", "photo-led", "typography-led"] }
+          }
+        },
+        "nav": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Site-nav identity (ADR 0026 v2 amendment, 2026-06-08). Lets a sub-brand re-skin the shared NavPill so per-project nav components (e.g. the former EastNavPill) collapse into one. Presence of `bg` switches the nav from the glass chrome material to a solid (project-coloured) material. Every knob maps to a self-contained --nav-* CSS var that is UNSET at master :root, so a sub-brand that omits this group leaves the default nav byte-identical.",
+          "properties": {
+            "bg":           { "$ref": "#/$defs/tokenValue" },
+            "fg":           { "$ref": "#/$defs/tokenValue" },
+            "fg-muted":     { "$ref": "#/$defs/tokenValue" },
+            "active-bg":    { "$ref": "#/$defs/tokenValue" },
+            "active-fg":    { "$ref": "#/$defs/tokenValue" },
+            "labels":       { "enum": ["default", "uppercase"] },
+            "label-family": { "$ref": "#/$defs/tokenValue" },
+            "toggle":       { "enum": ["shown", "hidden"] }
+          }
+        }
+      }
+    },
+    "voice": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tagline": { "type": "string", "maxLength": 200 }
+      }
+    },
+    "assets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "logo":     { "type": "string" },
+        "logoMark": { "type": "string" },
+        "favicon":  { "type": "string" },
+        "ogImage":  { "type": "string" }
+      }
+    }
+  },
+  "$defs": {
+    "tokenValue": {
+      "type": "string",
+      "description": "Either a token alias like {seed.color.pastel.plum} (resolved to var(--seed-color-pastel-plum) at build) or a raw CSS value (oklch(...), #hex, transparent, etc.)."
+    }
+  }
+}

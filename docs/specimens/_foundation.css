@@ -181,8 +181,8 @@
   --radius-md:    12px;   /* tab bar slot */
   --radius-lg:    14px;   /* CTA */
   --radius-xl:    20px;   /* cover image */
-  --radius-glass: 24px;   /* card mobile */
-  --radius-glass-lg: 36px; /* card desktop */
+  --radius-glass: 24px;   /* glass surface — single scale (rounded-2xl) */
+  --radius-glass-lg: 24px; /* collapsed onto the single scale (was 36px) */
   --radius-full:  9999px; /* chips */
 
   /* Motion springs — exact values from GlassCard.tsx */

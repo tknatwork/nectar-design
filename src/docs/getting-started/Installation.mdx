@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Getting Started/Installation" />
+
+# Installation
+
+```bash
+pnpm add nectar-design
+```
+
+## CSS import order (load-bearing)
+
+Import in **this order** — the cascade depends on it. `tokens.css` defines the
+raw vars; `sub-brands.css` re-opens the `tokens` layer to override per brand;
+`theme.css` registers tokens into Tailwind's `@theme`; `engine.css` layers the
+runtime Heat/Depth engine + glass kit on top.
+
+```css
+@import "tailwindcss";
+@import "nectar-design/tokens.css" layer(tokens);
+@import "nectar-design/sub-brands.css";
+@import "nectar-design/theme.css";
+@import "nectar-design/engine.css";
+```
+
+## Peer dependencies
+
+`react` 19 · `motion` 12 · `tailwindcss` 4. The motion/interaction engine is
+externalised so the consuming app's single `motion-dom` copy drives one frameloop.

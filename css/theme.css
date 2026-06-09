@@ -67,13 +67,17 @@
   --line-height-normal: var(--seed-typography-lineHeight-normal);
   --line-height-relaxed: var(--seed-typography-lineHeight-relaxed);
 
-  /* ── Border radius — seed tier ── */
-  --radius-none: var(--seed-borderRadius-none);
-  --radius-sm: var(--seed-borderRadius-sm);
-  --radius-md: var(--seed-borderRadius-md);
-  --radius-lg: var(--seed-borderRadius-lg);
-  --radius-xl: var(--seed-borderRadius-xl);
-  --radius-full: var(--seed-borderRadius-full);
+  /* ── Border radius — single source: map.borderRadius (px-valued) ──
+     The one radius scale. Drives Tailwind's rounded-* utilities, and
+     every surface (UI controls + atmospheric/glass) consumes these same
+     steps — no parallel soft scale. Map tier is px, so no calc bridge. */
+  --radius-none: var(--map-borderRadius-none);
+  --radius-sm: var(--map-borderRadius-SM);
+  --radius-md: var(--map-borderRadius-MD);
+  --radius-lg: var(--map-borderRadius-LG);
+  --radius-xl: var(--map-borderRadius-XL);
+  --radius-2xl: var(--map-borderRadius-2XL);
+  --radius-full: var(--map-borderRadius-Full);
 
   /* ── Spacing — semantic tier ── */
   /* Enables: p-xs, gap-md, m-xl, p-section, etc.
@@ -91,12 +95,16 @@
   --spacing-2xl: var(--seed-spacing-12);        /* 48px — major gaps */
   --spacing-section: var(--seed-spacing-24);    /* 96px — between sections */
 
-  /* ── Breakpoints — seed tier (static values required for @media) ── */
-  /* Mobile-first: mobile: tablet: desktop: wide: */
+  /* ── Breakpoints — device-class model (ADR 0027) ── */
+  /* Static literals — CSS @media cannot read var(). 5 classes, mobile-first:
+     mobile / tablet (portrait) / tablet-landscape / desktop / wide.
+     See docs/design-system/layout-structures.md. Behaviour-preserving rename
+     of the prior 4-class set: old desktop(1024)→tablet-landscape, old wide(1440)→desktop. */
   --breakpoint-mobile: 390px;
   --breakpoint-tablet: 768px;
-  --breakpoint-desktop: 1024px;
-  --breakpoint-wide: 1440px;
+  --breakpoint-tablet-landscape: 1024px;
+  --breakpoint-desktop: 1440px;
+  --breakpoint-wide: 1920px;
 
   /* ── Shadows — seed tier (hard shadows, neo-brutalist) ── */
   /* Usage: shadow-sm, shadow-md, shadow-lg, shadow-xl */
@@ -158,6 +166,36 @@
   --transition-property-base: var(--transition-base);
   --transition-property-bounce: var(--transition-bounce);
   --transition-property-snap: var(--transition-snap);
+
+  /* ── Motion: easing — Ant alphabet + Emil grammar (ADR 0027 Stage 2) ── */
+  /* Generates ease-* utilities (ease-out-circ, ease-out-back, …) from the
+     canonical seed.motion.easing tokens. Tailwind's base ease-out/ease-in-out
+     are deliberately NOT overridden (40+ existing app usages tuned to them);
+     these are the distinct Ant curves + grammar additions. The ergonomic raw
+     vars (--ease-out, --dur-*, --spring-*, --tx-*) live in motion.css. */
+  --ease-out-circ: var(--seed-motion-easing-easeOutCirc);
+  --ease-in-out-circ: var(--seed-motion-easing-easeInOutCirc);
+  --ease-out-back: var(--seed-motion-easing-easeOutBack);
+  --ease-in-back: var(--seed-motion-easing-easeInBack);
+  --ease-out-quint: var(--seed-motion-easing-easeOutQuint);
+  --ease-in-quint: var(--seed-motion-easing-easeInQuint);
+  --ease-standard: var(--seed-motion-easing-standard);
+  --ease-in-out-strong: var(--seed-motion-easing-easeInOutStrong);
+  --ease-drawer: var(--seed-motion-easing-easeDrawer);
+
+  /* ── Motion: duration — Ant unit×n alphabet + grammar (ADR 0027 Stage 2) ── */
+  /* Generates duration-* utilities (duration-base, duration-fast, …) from the
+     canonical seed.motion.duration tokens. Tailwind v4 ships no --duration-*
+     defaults; defining the namespace here makes the utilities resolve for
+     standalone consumers (Storybook, future apps). The app re-binds these in
+     its own @theme (cascade last-wins) to the flat-seed source — same values
+     now that seed.durationFast is synced to 100ms. */
+  --duration-instant: var(--seed-motion-duration-instant);
+  --duration-fast: var(--seed-motion-duration-fast);
+  --duration-press: var(--seed-motion-duration-press);
+  --duration-base: var(--seed-motion-duration-base);
+  --duration-slow: var(--seed-motion-duration-slow);
+  --duration-slower: var(--seed-motion-duration-slower);
 
   /* ── Accessibility — semantic tier ── */
   --ring-width: var(--a11y-focus-ring-width);

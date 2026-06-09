@@ -1,0 +1,31 @@
+{
+  "$schema": "./_sub-brand.schema.json",
+  "name": "systems-thinking",
+  "displayName": "Systems Thinking Experiments",
+  "extends": "master",
+  "routes": ["/projects/systems-thinking-experiments"],
+  "overrides": {
+    "color": {
+      "brand-accent": "#e4342c",
+      "brand-tint":   "#b3251f",
+      "eyebrow-tone": "#e4342c"
+    },
+    "typography": {
+      "display-family": "'Anton', Impact, sans-serif",
+      "heading-rhythm": "tight-editorial"
+    },
+    "atmosphere": { "preset": "heat" },
+    "hero": { "composition": "ink-led" },
+    "nav": {
+      "bg":           "#0e0e12cc",
+      "fg":           "#f4ece0",
+      "fg-muted":     "#9e978b",
+      "active-bg":    "#e4342c",
+      "active-fg":    "#07070a",
+      "labels":       "uppercase",
+      "label-family": "'Space Mono', ui-monospace, monospace",
+      "toggle":       "hidden"
+    }
+  },
+  "voice": { "tagline": "Notes from thinking in systems" }
+}

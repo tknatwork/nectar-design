@@ -1,0 +1,58 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { Tag } from './Tag';
+import * as TagStories from './Tag.stories';
+
+<Meta of={TagStories} />
+
+<Title />
+<Subtitle>Pill-shaped label for categorisation — 4 variants × 3 sizes, optionally removable.</Subtitle>
+
+## Overview
+
+<Description of={TagStories} />
+
+<Primary />
+
+## Anatomy
+
+A tag is a bordered, fully-rounded `<span>` holding a text label and — when an
+`onRemove` handler is passed — a trailing icon `<button>`. Border, fill, and text
+colour come from `variant`; padding and text size from `size`. The radius is
+always `rounded-full`.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={Tag}
+  rows={{ prop: 'variant', values: ['default', 'primary', 'accent', 'muted'] }}
+  cols={{ prop: 'size', values: ['sm', 'md', 'lg'] }}
+  baseArgs={{ children: 'Label' }}
+/>
+
+## Usage
+
+- **Do** — use tags for many-of-a-set metadata (filters, topics, skills); add `onRemove` when the user can dismiss them.
+- **Don't** — use a tag as the primary action of a view, or omit `onRemove` but style it to look dismissible.
+
+## Accessibility
+
+- The remove control is a real `<button type="button">` with `aria-label="Remove"` — it is keyboard-focusable and Enter/Space activates it.
+- It carries its own `focus-visible:ring-ring`, so keyboard users see exactly which tag they're about to remove.
+- Drive removal from `onRemove`, not colour or position — the label still has to read on its own.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Tag consumes **semantic** tokens through Tailwind utilities (`border-border`, `bg-surface`, `text-muted-fg`, …):
+
+<TokenTable
+  names={[
+    '--border', '--surface', '--surface-fg',
+    '--primary', '--accent', '--muted', '--muted-fg', '--ring',
+  ]}
+/>

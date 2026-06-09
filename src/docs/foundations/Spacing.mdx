@@ -1,4 +1,5 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import { ScaleRamp } from '../components';
 
 <Meta title="Foundations/Spacing" />
 
@@ -82,69 +83,38 @@ on tappable elements (nav links, buttons, form controls).
 
 ## Radius scale
 
-Two parallel radius scales coexist by design (Wave D consolidation):
+One tight px-valued scale — **`map.borderRadius`** — is the single source. It
+feeds Tailwind's `rounded-*` utilities (via `@theme --radius-*`) and *every*
+surface (UI controls + atmospheric/glass). There is no parallel "soft" scale.
 
-**Package's structured scale** (compact UI primitives — Card, Button,
-Input, Badge):
+| Token | Utility | Value |
+| --- | --- | --- |
+| `--radius-none` | `rounded-none` | 0 |
+| `--radius-sm` | `rounded-sm` | 4px |
+| `--radius-md` | `rounded-md` | 8px |
+| `--radius-lg` | `rounded-lg` | 12px |
+| `--radius-xl` | `rounded-xl` | 16px |
+| `--radius-2xl` | `rounded-2xl` | 24px |
+| `--radius-full` | `rounded-full` | 9999px |
 
-| Token | Value |
-| --- | --- |
-| `--radius-sm` | 4px |
-| `--radius-md` | 8px |
-| `--radius-lg` | 12px |
-| `--radius-xl` | 16px |
-| `--radius-full` | 9999px |
-
-**App-side atmospheric scale** (content surfaces — hero, work tiles,
-contact inputs, glass panels):
-
-| Utility | Value |
-| --- | --- |
-| `rounded-card-sm` | 10px |
-| `rounded-card-md` | 14px |
-| `rounded-card-lg` | 20px |
-| `rounded-glass` | **24px mobile / 36px tablet+** (responsive via `--glass-radius`) |
-
-`rounded-glass` is the only responsive utility — its underlying CSS var
-switches at the 768px breakpoint, no `tablet:` modifier needed.
+Content surfaces consume the same scale via `--card-radiusSm/Md/Lg`
+(8 / 12 / 16px); glass panels use `--radius-2xl` (24px). These were a separate
+10/14/20 + 24/36 atmospheric scale before the radius consolidation — now
+collapsed onto the one scale.
 
 ### Radii grid
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: 12, margin: '12px 0 24px' }}>
-  {[
-    { name: 'sm',     px: 4 },
-    { name: 'md',     px: 8 },
-    { name: 'lg',     px: 12 },
-    { name: 'xl',     px: 16 },
-    { name: 'card-sm', px: 10 },
-    { name: 'card-md', px: 14 },
-    { name: 'card-lg', px: 20 },
-    { name: 'glass',  px: 24 },
-    { name: 'full',   px: 9999 },
-  ].map((r) => (
-    <div key={r.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-      <div
-        style={{
-          width: 88,
-          height: 88,
-          background: 'var(--surface)',
-          borderRadius: r.px,
-          border: '1.5px solid var(--accent)',
-        }}
-      />
-      <div style={{ fontFamily: 'var(--font-mono, ui-monospace)', fontSize: 11, color: 'oklch(var(--L-muted) 0.03 var(--dynamic-hue))' }}>
-        {r.name} · {r.px === 9999 ? '∞' : `${r.px}px`}
-      </div>
-    </div>
-  ))}
-</div>
+Live from `--map-borderRadius-*` — the single canonical scale, resolving under
+the current engine + sub-brand:
+
+<ScaleRamp kind="radius" />
 
 ### GlassCard size strip
 
 The `GlassCard` cva has four sizes; depths (`surface` / `raised` /
 `floating`) cross-cut on top. Strip below renders the four sizes at the
 **raised** depth, sharing the chrome glass blur (`var(--glass-blur-card)`)
-and the responsive `var(--glass-radius)`.
+and the consolidated `--radius-2xl` (24px) corner.
 
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 12, margin: '12px 0 24px' }}>
   {[
@@ -158,7 +128,7 @@ and the responsive `var(--glass-radius)`.
       style={{
         height: c.h,
         padding: c.pad,
-        borderRadius: 'var(--glass-radius, 24px)',
+        borderRadius: 'var(--radius-2xl, 24px)',
         background: 'oklch(var(--L-surface) 0.04 var(--dynamic-hue) / 0.65)',
         backdropFilter: 'blur(12px) saturate(1.4)',
         WebkitBackdropFilter: 'blur(12px) saturate(1.4)',

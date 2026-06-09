@@ -1,0 +1,54 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { Textarea } from './Textarea';
+import * as TextareaStories from './Textarea.stories';
+
+<Meta of={TextareaStories} />
+
+<Title />
+<Subtitle>Multi-line text field — 3 sizes × default/error, vertically resizable.</Subtitle>
+
+## Overview
+
+<Description of={TextareaStories} />
+
+<Primary />
+
+## Anatomy
+
+A native `<textarea>` that mirrors `Input`'s border, focus ring, and error treatment,
+but stacks vertical padding for multiple lines and allows vertical resize (`resize-y`).
+Set `rows` for the initial height; it forwards its ref for form integration.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={Textarea}
+  rows={{ prop: 'variant', values: ['default', 'error'] }}
+  cols={{ prop: 'size', values: ['sm', 'md', 'lg'] }}
+  baseArgs={{ rows: 3, placeholder: 'Share your thoughts…' }}
+/>
+
+## Usage
+
+- **Do** — set a sensible `rows` default for the expected content length, then let the user resize vertically.
+- **Don't** — disable resize or cap height so tightly that long entries scroll inside a two-line box.
+
+## Accessibility
+
+- The `error` variant sets `aria-invalid="true"`; wire the message in with `aria-describedby` (or use `FormField`).
+- Give it a real label via `<Label htmlFor>` or `aria-label` — placeholder text disappears on input and isn't announced as a name.
+- `disabled` drops it from the tab order and excludes its value from submission.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Textarea consumes **semantic** tokens through Tailwind utilities (`bg-input`, `text-fg`, `border-border`, …):
+
+<TokenTable
+  names={['--input', '--fg', '--muted-fg', '--border', '--destructive', '--ring', '--bg']}
+/>

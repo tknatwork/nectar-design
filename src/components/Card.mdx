@@ -1,0 +1,56 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { VariantMatrix, TokenTable } from '../docs/components';
+import { Card } from './Card';
+import * as CardStories from './Card.stories';
+
+<Meta of={CardStories} />
+
+<Title />
+<Subtitle>Themed surface container — 3 variants × 4 padding steps.</Subtitle>
+
+## Overview
+
+<Description of={CardStories} />
+
+<Primary />
+
+## Anatomy
+
+A Card is a single rounded `<div>` surface: a `bg-surface` fill, a `border`, and a
+`padding` step around arbitrary `children`. `variant` layers behaviour on top —
+`interactive` adds a hover border and button semantics, `elevated` adds a shadow.
+
+## Props
+
+<Controls />
+
+## Variants
+
+<VariantMatrix
+  component={Card}
+  rows={{ prop: 'variant', values: ['default', 'interactive', 'elevated'] }}
+  baseArgs={{ children: 'Card body' }}
+/>
+
+## Usage
+
+- **Do** — group one coherent unit of content per Card (a project tile, a stat); use
+  `elevated` to lift a card off a busy background.
+- **Don't** — use `interactive` for a card that isn't actually clickable — it adds
+  `role="button"` and a hover affordance that imply an action.
+
+## Accessibility
+
+- `variant="interactive"` sets `role="button"` and `tabIndex={0}`, so it enters the
+  tab order — wire an `onClick`/`onKeyDown` handler and a clear accessible name.
+- When a Card wraps a content region, keep a sensible heading hierarchy inside it
+  (e.g. an `<h2>`/`<h3>` title) rather than relying on visual weight alone.
+- Don't signal state (selected, error) with border colour alone — pair it with text
+  or an icon.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Card owns a set of **component** tokens (`--card-bg`, `--card-borderColor`, `--card-radius*`, …):
+
+<TokenTable prefix="--card-" />

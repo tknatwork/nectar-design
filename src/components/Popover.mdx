@@ -1,0 +1,49 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import { TokenTable } from '../docs/components';
+import * as PopoverStories from './Popover.stories';
+
+<Meta of={PopoverStories} />
+
+<Title />
+<Subtitle>Floating panel anchored to a trigger — 4 sides, built on Base UI.</Subtitle>
+
+## Overview
+
+<Description of={PopoverStories} />
+
+<Primary />
+
+## Anatomy
+
+A popover is a compound component: `PopoverTrigger` anchors it, and
+`PopoverContent` portals a positioned surface with a pointing `Arrow`,
+composing `PopoverTitle` / `PopoverDescription` / `PopoverClose`. The `side`
+prop (`top` / `bottom` / `left` / `right`) picks the edge; the panel scales and
+fades on open and close.
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — use a popover for contextual, dismissible extras (account details, a share menu) anchored to the control that opened it.
+- **Don't** — put critical, must-resolve actions in one; it closes on outside click and ESC, so anything mandatory belongs in a Dialog.
+
+## Accessibility
+
+- Base UI moves focus into the open panel and returns it to the trigger on close.
+- `Escape` and an outside click both dismiss; the trigger exposes `aria-expanded` / `aria-controls` for the panel.
+- `PopoverTitle` / `PopoverDescription` supply the panel's `aria-labelledby` / `aria-describedby` — render a title for a named region.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Popover consumes **semantic** tokens through Tailwind utilities (`bg-surface`, `border-border`, `text-fg`, `ring-ring`, `rounded-lg`, …):
+
+<TokenTable
+  names={[
+    '--surface', '--border', '--fg', '--muted', '--muted-fg', '--ring',
+    '--radius-md', '--radius-lg',
+  ]}
+/>

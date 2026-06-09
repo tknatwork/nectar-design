@@ -1,0 +1,48 @@
+import { Meta, Title, Subtitle, Description, Primary, Controls } from '@storybook/addon-docs/blocks';
+import * as FlipCardStories from './FlipCard.stories';
+
+<Meta of={FlipCardStories} />
+
+<Title />
+<Subtitle>3D flip container — rotates between two caller-styled faces.</Subtitle>
+
+## Overview
+
+<Description of={FlipCardStories} />
+
+<Primary />
+
+## Anatomy
+
+FlipCard owns only the mechanic: a `position: relative; preserve-3d` container that
+rotates to `rotation` over a transition. The caller passes two fully-styled faces — a
+front in flow (it defines the size) and a back that is `inset:0`, pre-rotated 180°, and
+`backface-hidden`. The visible face is `rotation mod 360` (0 = front, 180 = back).
+
+## Props
+
+<Controls />
+
+## Usage
+
+- **Do** — drive `rotation` as a cumulative, always-forward value; adding a full 360°
+  forces a visible spin back to the same face, which a boolean `flipped` can't express.
+- **Don't** — put two different interactive faces behind one flip and expect both to be
+  reachable; only the front-facing side should be operable at a time.
+
+## Accessibility
+
+- Don't hide essential content or the only path to an action behind a hover-only flip —
+  the back face must be reachable without a pointer.
+- Provide a keyboard-operable toggle for the value that drives `rotation`, so the flip
+  isn't mouse-only.
+- The back face is rotated and `backface-hidden` but still in the DOM — manage focus and
+  `aria-hidden` on the off-screen face so assistive tech doesn't read the hidden side.
+- Honour `prefers-reduced-motion`: shorten or skip the spin (via `durationSec`) for users
+  who opt out of motion.
+- Use the **Accessibility** tab on any story canvas for the live axe audit.
+
+## Tokens used
+
+Mechanic-only — FlipCard styles just the rotating container (transform + transition) and
+consumes no colour or radius tokens; the caller's faces own all surface styling.
