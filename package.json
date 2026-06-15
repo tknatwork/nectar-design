@@ -47,7 +47,7 @@
   "peerDependencies": {
     "react": ">=19.2.7",
     "react-dom": ">=19.2.7",
-    "tailwindcss": ">=4.3.0"
+    "tailwindcss": ">=4.3.1"
   },
   "dependencies": {
     "@base-ui/react": "1.5.0",
@@ -70,12 +70,12 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/chroma-js": "^3.1.2",
-    "@types/node": "^25.9.2",
+    "@types/node": "^25.9.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/suncalc": "^1.9.2",
     "@vitest/browser": "^4.1.8",
-    "axe-core": "^4.12.0",
+    "axe-core": "^4.12.1",
     "jsdom": "^29.1.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
@@ -109,7 +109,7 @@
   "engines": {
     "node": "24.16.0"
   },
-  "packageManager": "pnpm@10.34.1",
+  "packageManager": "pnpm@10.34.3",
   "author": "Tushar Kant Naik <hi@tusharkantnaik.com>",
   "license": "UNLICENSED",
   "repository": {
