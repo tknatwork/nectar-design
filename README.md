@@ -1,5 +1,11 @@
 # nectar-design
 
+> ## ⚠️ This repo is a downstream MIRROR — wound down 2026-06-17
+>
+> The canonical `nectar-design` is the **in-tree workspace package** inside `tknatwork/myportfolio` at `packages/nectar-design/` (per [mp ADR 0024](https://github.com/Tushar-Kant-Naik/myportfolio/blob/main/docs/decisions/0024-monorepo-nd-native.md)). All development — tokens, components, Storybook, CI, Renovate — happens in mp. This standalone repo receives a periodic one-way sync from mp (`scripts/sync-nd-to-nd-repo.mjs`) and is kept for archive / external publishing only.
+>
+> **No CI runs here** (0 self-hosted runners post-AD-072; previous workflows disabled / removed). **No Renovate runs here** (`renovate.json` has `"enabled": false`; the single Renovate source is mp). Do not open PRs against `main` — file issues in mp instead. Decision trail: [claude-bus #5](https://github.com/tknatwork/claude-bus/issues/5).
+
 Private design system for the **Nectar Portfolio Platform**.
 5-tier token pipeline generating **494 CSS custom properties** plus a Biomimetic Adaptive Theme engine that computes 16 runtime CSS variables from solar physics.
 
